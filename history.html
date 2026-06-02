@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History — Dhruv Chopra</title>
+  <meta name="description" content="Dhruv Chopra on history — the past as the best explanation for the present." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── History Theme ──────────────────────────────────────── */
+    :root {
+      --ink:        #1a1209;
+      --parchment:  #f5edd8;
+      --parchment2: #ede2c8;
+      --sepia:      #8b6914;
+      --rust:       #8b3a1a;
+      --aged:       #c4a96a;
+    }
+
+    body { background: var(--parchment); color: var(--ink); }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .history-hero {
+      position: relative; overflow: hidden;
+      padding: 5rem 0 4rem;
+      border-bottom: 1px solid var(--aged);
+      margin-bottom: 3.5rem;
+      background: var(--ink);
+      color: var(--parchment);
+    }
+
+    /* Noise texture overlay */
+    .history-hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(139,105,20,.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(139,58,26,.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Aged paper grain via repeated radial dots */
+    .paper-grain {
+      position: absolute; inset: 0; pointer-events: none; opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* Animated quill ink line drawing across */
+    .ink-line {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: var(--aged); opacity: .5;
+      transform-origin: left;
+      animation: inkDraw 2s ease .3s both;
+    }
+    @keyframes inkDraw {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    .history-hero__content { position: relative; z-index: 2; }
+    .history-hero__eyebrow {
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(245,237,216,.4); margin-bottom: 1rem;
+    }
+    .history-hero__title {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem,6vw,4.8rem);
+      line-height: .95; letter-spacing: -.02em;
+      margin-bottom: 1.25rem; color: var(--parchment);
+    }
+    .history-hero__sub {
+      font-size: 1rem; max-width: 500px;
+      color: rgba(245,237,216,.65); line-height: 1.75;
+    }
+
+    /* ── Timeline ─────────────────────────────────────────── */
+    .timeline {
+      position: relative; padding-left: 2.5rem; margin-bottom: 3rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: .5rem; bottom: 0;
+      width: 1px; background: var(--aged);
+    }
+    .timeline-entry {
+      position: relative; margin-bottom: 2.5rem; opacity: 0;
+      animation: entryFade .5s ease both;
+    }
+    .timeline-entry:nth-child(1) { animation-delay: .2s; }
+    .timeline-entry:nth-child(2) { animation-delay: .4s; }
+    .timeline-entry:nth-child(3) { animation-delay: .6s; }
+    .timeline-entry:nth-child(4) { animation-delay: .8s; }
+    .timeline-entry:nth-child(5) { animation-delay: 1s; }
+    .timeline-entry:nth-child(6) { animation-delay: 1.2s; }
+    @keyframes entryFade {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .timeline-entry::before {
+      content: '';
+      position: absolute; left: -2.72rem; top: .5rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--sepia); border: 1.5px solid var(--aged);
+    }
+
+    .timeline-entry__date {
+      font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--sepia); margin-bottom: .4rem;
+    }
+    .timeline-entry__title {
+      font-family: var(--serif); font-size: 1.05rem; margin-bottom: .4rem; color: var(--ink);
+    }
+    .timeline-entry__desc { font-size: .9rem; color: var(--secondary); line-height: 1.6; }
+
+    /* ── Eras of interest ─────────────────────────────────── */
+    .eras-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px,1fr));
+      gap: 1px; background: var(--aged); border: 1px solid var(--aged);
+      margin-bottom: 3rem;
+    }
+    .era-card {
+      background: var(--parchment); padding: 1.5rem 1.25rem;
+      display: flex; flex-direction: column; gap: .4rem;
+      transition: background .2s;
+    }
+    .era-card:hover { background: var(--parchment2); }
+    .era-card__period {
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--sepia);
+    }
+    .era-card__name { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+    .era-card__note { font-size: .78rem; color: var(--secondary); line-height: 1.5; }
+
+    /* ── Book list ────────────────────────────────────────── */
+    .books-list { list-style: none; margin-bottom: 3rem; }
+    .books-list li {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.1rem 0; border-bottom: 1px solid var(--aged);
+    }
+    .books-list li:first-child { border-top: 1px solid var(--aged); }
+    .books-list__icon { font-size: 1.4rem; flex-shrink: 0; }
+    .books-list__body { font-size: .9rem; }
+    .books-list__title { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+    .books-list__author { font-size: .75rem; color: var(--sepia); margin-bottom: .25rem; }
+    .books-list__note { color: var(--secondary); line-height: 1.55; }
+
+    /* ── Quote block ──────────────────────────────────────── */
+    .history-quote {
+      border-left: 2px solid var(--sepia);
+      padding: 1.5rem 2rem; background: var(--parchment2);
+      margin-bottom: 3rem;
+    }
+    .history-quote p {
+      font-family: var(--serif); font-size: 1.2rem; font-style: italic;
+      line-height: 1.65; color: var(--ink); margin-bottom: .75rem;
+    }
+    .history-quote cite {
+      font-size: .75rem; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--sepia); font-style: normal;
+    }
+
+    /* Overrides for parchment-bg page */
+    .site-nav { background: rgba(245,237,216,.97) !important; border-bottom-color: var(--aged) !important; }
+    .site-footer { border-top-color: var(--aged); }
+    .section-head h2 { color: var(--sepia); }
+    .section-head__rule { background: var(--aged); }
+
+    @media (max-width: 640px) {
+      .timeline { padding-left: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="history-hero">
+      <div class="paper-grain" aria-hidden="true"></div>
+      <div class="ink-line" aria-hidden="true"></div>
+      <div class="container--wide history-hero__content">
+        <p class="history-hero__eyebrow">Dhruv Chopra · History</p>
+        <h1 class="history-hero__title">The past<br>explains<br>everything.</h1>
+        <p class="history-hero__sub">
+          History isn't what happened. It's what we decided to remember and how we decided to frame it. The gap between those two things is where most of the interesting questions live.
+        </p>
+      </div>
+    </section>
+
+    <div class="container--wide">
+
+      <!-- Eras -->
+      <div class="section-head">
+        <h2>Eras I find myself returning to</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <div class="eras-grid mb-5">
+        <div class="era-card">
+          <span class="era-card__period">1618–1648</span>
+          <span class="era-card__name">Thirty Years' War</span>
+          <span class="era-card__note">The war that defined the modern state system. Religion, dynasty, and catastrophe.</span>
+        </div>
+        <div class="era-card">
+          <span class="era-card__period">1789–1799</span>
+          <span class="era-card__name">French Revolution</span>
+          <span class="era-card__note">How quickly an idea can consume the people who started it.</span>
+        </div>
+        <div class="era-card">
+          <span class="era-card__period">1858–1947</span>
+          <span class="era-card__name">Colonial India</span>
+          <span class="era-card__note">The structure of extraction. How an empire convinces itself of its own virtue.</span>
+        </div>
+        <div class="era-card">
+          <span class="era-card__period">1914–1918</span>
+          <span class="era-card__name">The Great War</span>
+          <span class="era-card__note">Industrial slaughter dressed as honour. The century's original trauma.</span>
+        </div>
+        <div class="era-card">
+          <span class="era-card__period">1939–1945</span>
+          <span class="era-card__name">World War II</span>
+          <span class="era-card__note">Ideology made material. The shadow everything that came after lives in.</span>
+        </div>
+        <div class="era-card">
+          <span class="era-card__period">1947–1991</span>
+          <span class="era-card__name">Cold War</span>
+          <span class="era-card__note">A conflict fought mostly in the minds of strategists and the cities of others.</span>
+        </div>
+      </div>
+
+      <!-- Events timeline -->
+      <div class="section-head">
+        <h2>Moments I keep thinking about</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <div class="timeline mb-5">
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">218 BCE</p>
+          <h3 class="timeline-entry__title">Hannibal crosses the Alps</h3>
+          <p class="timeline-entry__desc">Elephants across mountain passes in winter. A military campaign so audacious it defined what ambition looks like for two thousand years.</p>
+        </div>
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">1453</p>
+          <h3 class="timeline-entry__title">Fall of Constantinople</h3>
+          <p class="timeline-entry__desc">The end of a thousand-year empire in a single afternoon. Greek fire, Ottoman cannon, and the last Roman emperor dying in the breach.</p>
+        </div>
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">1815</p>
+          <h3 class="timeline-entry__title">Waterloo</h3>
+          <p class="timeline-entry__desc">An hour of bad timing ending twenty years of continental dominance. Fate as contingency.</p>
+        </div>
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">1919</p>
+          <h3 class="timeline-entry__title">Treaty of Versailles</h3>
+          <p class="timeline-entry__desc">The peace settlement that planted the seeds of the next war. How punishment mistaken for justice becomes prologue.</p>
+        </div>
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">1969</p>
+          <h3 class="timeline-entry__title">Moon landing</h3>
+          <p class="timeline-entry__desc">Not just a technical achievement. A civilisational statement about what is possible when the ambition is large enough. Still astonishing.</p>
+        </div>
+        <div class="timeline-entry">
+          <p class="timeline-entry__date">1991</p>
+          <h3 class="timeline-entry__title">Dissolution of the Soviet Union</h3>
+          <p class="timeline-entry__desc">The largest country on earth ceasing to exist over a long weekend. The geopolitical puzzle we're still living inside.</p>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="history-quote">
+        <p>"Those who cannot remember the past are condemned to repeat it."</p>
+        <cite>George Santayana, 1905</cite>
+      </div>
+
+      <!-- Reading list -->
+      <div class="section-head">
+        <h2>Books that shaped how I read the past</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <ul class="books-list">
+        <li>
+          <span class="books-list__icon">📖</span>
+          <div class="books-list__body">
+            <p class="books-list__title">Sapiens: A Brief History of Humankind</p>
+            <p class="books-list__author">Yuval Noah Harari, 2011</p>
+            <p class="books-list__note">The broadest possible lens. Cognitively violent in the best way — you can't unsee the fictions that hold civilisations together once you see them.</p>
+          </div>
+        </li>
+        <li>
+          <span class="books-list__icon">📖</span>
+          <div class="books-list__body">
+            <p class="books-list__title">The Guns of August</p>
+            <p class="books-list__author">Barbara Tuchman, 1962</p>
+            <p class="books-list__note">How a continent sleepwalked into the most destructive war in history. Narrative history at its finest.</p>
+          </div>
+        </li>
+        <li>
+          <span class="books-list__icon">📖</span>
+          <div class="books-list__body">
+            <p class="books-list__title">India After Gandhi</p>
+            <p class="books-list__author">Ramachandra Guha, 2007</p>
+            <p class="books-list__note">The making of the republic I live in. Enormous in scope, patient in argument.</p>
+          </div>
+        </li>
+        <li>
+          <span class="books-list__icon">📖</span>
+          <div class="books-list__body">
+            <p class="books-list__title">The Rise and Fall of the Third Reich</p>
+            <p class="books-list__author">William L. Shirer, 1960</p>
+            <p class="books-list__note">Eleven hundred pages and still not enough to fully explain how it happened. The question is why you should ask anyway.</p>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

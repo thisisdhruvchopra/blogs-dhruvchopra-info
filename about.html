@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Dhruv Chopra</title>
+  <meta name="description" content="About Dhruv Chopra — astrophysics nerd, solo traveller, coffee obsessive, security researcher." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ════════ ABOUT — the late-night study ════════ */
+    body { background:#0a0a12; color:#d9d7e6; font-weight:400; overflow-x:hidden; }
+    .site-nav { --nav-accent:#ffcf8a; }
+    .site-footer { --foot-accent:#ffcf8a; }
+
+    .about-hero {
+      position: relative; overflow: hidden;
+      padding: 5rem 1.75rem 3.5rem;
+    }
+    .about-hero::before {
+      content:''; position:absolute; inset:0; z-index:-1;
+      background:
+        radial-gradient(80% 60% at 85% 0%, rgba(255,196,120,.16) 0%, transparent 55%),
+        radial-gradient(70% 60% at 0% 20%, rgba(140,150,255,.12) 0%, transparent 55%),
+        linear-gradient(#0d0d18,#0a0a12);
+    }
+    .about-hero__inner { max-width: var(--wide); margin: 0 auto; display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap; }
+    .about-avatar {
+      width: 120px; height: 120px; flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#ffcf8a,#ff8a5a 60%,#8c96ff);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--fancy); font-size: 2.6rem; font-weight: 600; color: #0a0a12;
+      box-shadow: 0 0 50px -6px rgba(255,196,120,.5);
+    }
+    .about-hero__name { font-family: var(--fancy); font-size: clamp(2.6rem,6vw,4.2rem); font-weight: 600; line-height: .95; color: #fff; margin-bottom: .6rem; letter-spacing: -.02em; }
+    .about-hero__role { font-family: var(--grotesk); font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: #ffcf8a; }
+
+    .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem; }
+
+    .about-lede {
+      font-family: var(--fancy); font-size: clamp(1.3rem,3vw,1.9rem);
+      line-height: 1.5; color: #efeefa; font-weight: 400;
+      max-width: 880px; margin: 3.5rem auto 1rem;
+    }
+    .about-lede em { font-style: italic; color: #ffcf8a; }
+
+    .about-body { max-width: 720px; margin: 2.5rem 0 4rem; font-size: 1.05rem; line-height: 1.9; color: #c3c1d4; }
+    .about-body p { margin-bottom: 1.4rem; }
+    .about-body a { color: #ffcf8a; border-bottom: 1px solid rgba(255,207,138,.35); }
+    .about-body a:hover { border-color: #ffcf8a; }
+
+    .block-label {
+      font-family: var(--grotesk); font-size: .7rem; letter-spacing: .22em;
+      text-transform: uppercase; color: #6f6e88;
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem;
+    }
+    .block-label::after { content:''; flex:1; height:1px; background: rgba(255,255,255,.1); }
+
+    .section-pad { padding: 1rem 0 4rem; }
+
+    /* interests as glowing chips → portals */
+    .ints { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: .9rem; }
+    .int {
+      position: relative; padding: 1.4rem 1.2rem; border-radius: 12px;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+      transition: transform .25s, border-color .25s, background .25s;
+      overflow: hidden;
+    }
+    .int::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .3s;
+      background: radial-gradient(120% 120% at 0% 0%, var(--c) 0%, transparent 55%); }
+    .int:hover { transform: translateY(-4px); border-color: var(--c); }
+    .int:hover::before { opacity:.16; }
+    .int__icon { font-size: 1.6rem; display: block; margin-bottom: .6rem; }
+    .int__label { font-family: var(--grotesk); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: #d9d7e6; position: relative; }
+
+    /* quick facts */
+    .facts { list-style: none; }
+    .facts li {
+      display: flex; gap: 1.2rem; align-items: baseline;
+      padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: 1rem; color: #c3c1d4;
+    }
+    .facts li::before { content: '✦'; color: #ffcf8a; font-size: .8rem; flex-shrink: 0; }
+
+    /* socials */
+    .socs { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 1px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; }
+    .soc { background: #0c0c16; padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .25rem; transition: background .25s; }
+    .soc:hover { background: #12121f; }
+    .soc__k { font-family: var(--grotesk); font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: #6f6e88; }
+    .soc__v { font-family: var(--fancy); font-size: 1.05rem; color: #efeefa; }
+    .soc__v:hover { color: #ffcf8a; }
+
+    @media (max-width:640px){ .about-hero__inner{ gap:1.5rem; } .about-avatar{ width:88px;height:88px;font-size:2rem; } }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <header class="about-hero">
+      <div class="about-hero__inner">
+        <div class="about-avatar" aria-label="Dhruv Chopra">DC</div>
+        <div>
+          <h1 class="about-hero__name">Dhruv Chopra</h1>
+          <p class="about-hero__role">Kanpur, India · researcher by day, everything else by night</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <p class="about-lede">
+        I've been interested in computers since nursery and built my own PC at <em>ten</em>. That probably explains most of what followed — and none of why I now think this hard about coffee.
+      </p>
+
+      <div class="about-body">
+        <p>
+          By day I work in deception technology — building honeypots, studying how attackers behave inside artificial environments, and chasing a question I find genuinely fascinating: how long can you keep a sophisticated adversary inside a digital fiction before they realise it isn't real? If you want the work itself, it's all at <a href="https://dhruvchopra.info" target="_blank" rel="noopener">dhruvchopra.info</a>.
+        </p>
+        <p>
+          This site is for everything else. Astrophysics has been with me as long as computers have — the scale of things, the indifference of the cosmos, the sheer fact that we exist to ask about it. I travel solo when I can, five countries so far, and I'm convinced productive disorientation is the entire point of going. I love cinema the way I love good writing: for the compression. I have an astrophysicist's curiosity about perfume chemistry and a footballer's irrational emotional investment in results I have no control over.
+        </p>
+        <p>I also drink too much coffee. I've accepted this about myself.</p>
+        <p>
+          I'm targeting Masters programs in Germany for 2026/27, and slowly building toward video — thinking out loud on camera about the things I can't stop thinking about. The channel exists. The videos are coming.
+        </p>
+      </div>
+
+      <section class="section-pad">
+        <p class="block-label">The things that make me, me</p>
+        <div class="ints">
+          <a href="astrophysics.html" class="int" style="--c:#8ea2ff"><span class="int__icon">🔭</span><span class="int__label">Astrophysics</span></a>
+          <a href="travel.html" class="int" style="--c:#ffb45a"><span class="int__icon">🧭</span><span class="int__label">Travel</span></a>
+          <a href="tech.html" class="int" style="--c:#51e0c9"><span class="int__icon">🖥️</span><span class="int__label">Tech</span></a>
+          <a href="cinema.html" class="int" style="--c:#ff5a5a"><span class="int__icon">🎬</span><span class="int__label">Cinema</span></a>
+          <a href="coffee.html" class="int" style="--c:#d39a5e"><span class="int__icon">☕</span><span class="int__label">Coffee</span></a>
+          <a href="perfumes.html" class="int" style="--c:#ff8fc7"><span class="int__icon">🌸</span><span class="int__label">Perfumes</span></a>
+          <a href="football.html" class="int" style="--c:#3ddc84"><span class="int__icon">⚽</span><span class="int__label">Football</span></a>
+          <a href="history.html" class="int" style="--c:#e3c074"><span class="int__icon">📜</span><span class="int__label">History</span></a>
+        </div>
+      </section>
+
+      <section class="section-pad">
+        <p class="block-label">Quick facts</p>
+        <ul class="facts">
+          <li>5 countries, 3 solo trips — still counting</li>
+          <li>Built my own PC at age 10</li>
+          <li>Been using computers since nursery school</li>
+          <li>Programming in Java since 2016</li>
+          <li>B.Tech in Computer Science, AKTU Lucknow (2025)</li>
+          <li>Executive PG in Cloud Computing &amp; DevOps, iHUB IIT Roorkee</li>
+          <li>Way too into coffee and perfumes — unrepentant about both</li>
+          <li>Targeting MS in Cybersecurity in Germany, 2026/27 intake</li>
+          <li>Video content coming. Channel: @dchopra92</li>
+        </ul>
+      </section>
+
+      <section class="section-pad">
+        <p class="block-label">Find me</p>
+        <div class="socs">
+          <a class="soc" href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener"><span class="soc__k">GitHub</span><span class="soc__v">thisisdhruvchopra</span></a>
+          <a class="soc" href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener"><span class="soc__k">LinkedIn</span><span class="soc__v">dhruvchopra92</span></a>
+          <a class="soc" href="https://instagram.com/thisisntdhruv" target="_blank" rel="noopener"><span class="soc__k">Instagram</span><span class="soc__v">@thisisntdhruv</span></a>
+          <a class="soc" href="https://instagram.com/dhruvxnotes" target="_blank" rel="noopener"><span class="soc__k">Instagram · notes</span><span class="soc__v">@dhruvxnotes</span></a>
+          <a class="soc" href="https://youtube.com/@dchopra92" target="_blank" rel="noopener"><span class="soc__k">YouTube</span><span class="soc__v">@dchopra92</span></a>
+          <a class="soc" href="https://x.com/dhruvch38580862" target="_blank" rel="noopener"><span class="soc__k">X / Twitter</span><span class="soc__v">@dhruvch38580862</span></a>
+          <a class="soc" href="mailto:dhruvc@iitk.ac.in"><span class="soc__k">Email</span><span class="soc__v">dhruvc@iitk.ac.in</span></a>
+          <a class="soc" href="https://dhruvchopra.info" target="_blank" rel="noopener"><span class="soc__k">Portfolio</span><span class="soc__v">dhruvchopra.info ↗</span></a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra · still awake</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three Trips, Five Countries — Dhruv Chopra</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* Warm travel-journal header with a dashed route line */
+    body.theme-travel { background: #faf6f1; }
+    .travel-hero {
+      position: relative; overflow: hidden;
+      padding: 2rem 0 2.5rem; margin-bottom: 2.5rem;
+      border-bottom: 1px dashed #d8c4b4;
+    }
+    .travel-hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; opacity: .5;
+      background: radial-gradient(110% 80% at 0% 0%, #f7e9dc 0%, transparent 55%),
+                  radial-gradient(90% 70% at 100% 20%, #f1e3d6 0%, transparent 50%);
+    }
+    .travel-hero__inner { position: relative; z-index: 1; }
+    .travel-hero .post-header__title { margin: .4rem 0 1.2rem; }
+    .route-line {
+      display: flex; align-items: center; gap: .55rem; flex-wrap: wrap;
+      margin-top: 1.5rem; font-size: .72rem; letter-spacing: .06em;
+      text-transform: uppercase; color: #9a6a4f;
+    }
+    .route-line .dot { color: #c0614a; }
+    .route-line .stop { color: #7a4b36; font-weight: 500; }
+  </style>
+</head>
+<body class="theme-travel themed">
+  <div class="read-progress" id="readProgress"></div>
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="../index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../blog.html" class="active">Writing</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="container">
+      <a href="../blog.html" class="back-link">← All writing</a>
+      <header class="post-header travel-hero">
+        <div class="travel-hero__inner">
+          <p class="post-header__kicker">Travel</p>
+          <h1 class="post-header__title">Three Trips, Five Countries, One Recurring Feeling</h1>
+          <div class="post-header__meta">
+            <span>Dhruv Chopra</span><span>April 2025</span><span>8 min read</span>
+          </div>
+          <div class="route-line">
+            <span class="stop">Solo</span><span class="dot">✈</span>
+            <span class="stop">5 countries</span><span class="dot">✈</span>
+            <span class="stop">3 trips</span><span class="dot">✈</span>
+            <span>still counting</span>
+          </div>
+        </div>
+      </header>
+      <article class="post-body">
+        <p>The first time I did it, I told myself it was practical: easier to plan around one person, fewer compromises, nobody waiting for you when you've spent too long at the wrong museum. That was the rational justification, and it was true as far as it went. But it wasn't the real reason, and I think I knew that.</p>
+        <p>The real reason was that I wanted to find out what it felt like to be somewhere completely alone — not lonely, not isolated, but genuinely alone. Responsible for your own navigation, your own meals, your own errors. Unmediated by anyone who already knew you.</p>
+        <h2>The problem with going with people</h2>
+        <p>When you travel with other people, you're partly experiencing the place and partly experiencing the relationship. That's not a bad thing — some of my best memories involve cities I shared with people I love. But there's a filtering that happens. Everything gets processed through a shared frame. You notice the things that connect to conversations you've already had. You're never quite alone with the strangeness of a place.</p>
+        <p>Solo travel removes that buffer. You have no choice but to actually be where you are. The city is just you and the city, which sounds obvious but turns out to be quite different in practice.</p>
+        <blockquote><p>There's a quality of attention that only arrives when there's no one to share the load with. You notice more. Not because you're trying harder — because you have no alternative.</p></blockquote>
+        <h2>The recurring feeling</h2>
+        <p>Across three trips and five countries, there's been one experience I've had every single time, usually on the first full day: a specific feeling I've come to think of as productive disorientation.</p>
+        <p>It happens when the place you're in turns out to be genuinely different from the version of it you'd assembled in your head. Not disappointing — different. The rhythms are off from what you expected. The distances are wrong. Things look different at ground level than they do in photographs, and photographs are almost all you have going in. And there's nobody with you to collaboratively reconstruct the mental model. You just have to sit with the gap between what you imagined and what you found.</p>
+        <p>That moment of gap-sitting, I've decided, is most of the point.</p>
+        <h2>What you actually learn</h2>
+        <p>You learn how you make decisions when there are no social stakes. You learn what you actually want to do versus what you'd agree to do if someone else suggested it. You learn how you handle things going wrong when there's nobody to help you be calm.</p>
+        <p>You also learn, very quickly, how many of your ideas about yourself are correct. I thought I was someone who loved museums. It turns out I love the idea of loving museums but get saturated after about two hours. I thought I needed a lot of alone time. It turns out I seek out conversations with strangers quite naturally when there's no pressure to be a certain way for the people who already know me. That was a surprise.</p>
+        <h2>On doing it again</h2>
+        <p>I will. I don't know when, and I don't know where, and at this point I've stopped trying to figure either out in advance. The trips have taught me, if nothing else, that the planning is mostly noise. You decide to go, you show up, and the rest of it happens to you.</p>
+        <p>Five countries is not a lot. But it's enough to know that this is something I need — not as self-improvement, not as content, just as a way of being in the world that happens to involve a lot of time in airports and a recurring feeling I haven't found a better name for yet.</p>
+      </article>
+      <p class="post-endmark">✈ ✈ ✈</p>
+      <a href="../blog.html" class="back-link mt-5">← Back to all writing</a>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var bar = document.getElementById('readProgress');
+      if (!bar) return;
+      function update() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (h.scrollTop / max * 100) + '%' : '0%';
+      }
+      document.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>

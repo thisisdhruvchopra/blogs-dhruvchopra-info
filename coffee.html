@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee — Dhruv Chopra</title>
+  <meta name="description" content="Dhruv Chopra on coffee — it's gone too far and he's not stopping." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Coffee Theme ────────────────────────────────────────── */
+    :root {
+      --espresso:  #2c1a0e;
+      --crema:     #c9853a;
+      --latte:     #d4a96a;
+      --milk-foam: #f5ede3;
+      --parchment: #faf5ef;
+    }
+
+    body { background: var(--parchment); }
+
+    .coffee-hero {
+      position: relative; overflow: hidden;
+      padding: 4.5rem 0 3.5rem;
+      border-bottom: 1px solid #e8d9c8;
+      margin-bottom: 3.5rem;
+      background: var(--espresso);
+      color: var(--white);
+    }
+
+    /* Crema ring animation */
+    .crema-ring {
+      position: absolute;
+      right: -40px; top: 50%; transform: translateY(-50%);
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%,
+        #c9853a 0%,
+        #a0602a 30%,
+        #7a4520 55%,
+        #3d1f0a 80%,
+        var(--espresso) 100%
+      );
+      opacity: .3;
+      animation: creamaSpin 20s linear infinite;
+    }
+    @keyframes creamaSpin {
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Steam wisps */
+    .steam-container {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .steam {
+      position: absolute; bottom: 0;
+      width: 2px; border-radius: 999px;
+      background: linear-gradient(to top, rgba(255,255,255,.4) 0%, transparent 100%);
+      animation: steamRise 3s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .steam:nth-child(1) { left: -16px; height: 50px; animation-delay: 0s; }
+    .steam:nth-child(2) { left: 0px;   height: 65px; animation-delay: .8s; width: 3px; }
+    .steam:nth-child(3) { left: 16px;  height: 45px; animation-delay: 1.6s; }
+    @keyframes steamRise {
+      0%   { transform: scaleX(1)  translateY(0)    rotate(0deg);  opacity: 0; }
+      20%  { opacity: .8; }
+      60%  { transform: scaleX(1.5) translateY(-30px) rotate(8deg); opacity: .5; }
+      100% { transform: scaleX(.5)  translateY(-60px) rotate(-5deg); opacity: 0; }
+    }
+
+    .coffee-hero__content { position: relative; z-index: 2; }
+    .coffee-hero__eyebrow {
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); margin-bottom: 1rem;
+    }
+    .coffee-hero__title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem,6vw,4.5rem);
+      line-height: .95; letter-spacing: -.02em;
+      margin-bottom: 1.25rem; color: var(--white);
+    }
+    .coffee-hero__sub {
+      font-size: 1rem; max-width: 460px;
+      color: rgba(255,255,255,.65); line-height: 1.7;
+    }
+
+    /* Method cards — circular plates */
+    .method-row {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2.5rem;
+    }
+    .method-pill {
+      display: inline-flex; align-items: center; gap: .6rem;
+      border: 1px solid rgba(255,255,255,.2);
+      padding: .5rem 1.1rem;
+      font-size: .75rem; letter-spacing: .05em; text-transform: uppercase;
+      color: rgba(255,255,255,.7); transition: all .2s;
+    }
+    .method-pill:hover {
+      background: rgba(255,255,255,.08); color: var(--white);
+      border-color: rgba(255,255,255,.4);
+    }
+    .method-pill em { font-style: normal; font-size: 1rem; }
+
+    /* Flavour wheel — simple CSS rings */
+    .wheel-section {
+      background: var(--milk-foam);
+      border: 1px solid #e8d9c8;
+      padding: 2.5rem 1.5rem;
+      margin-bottom: 3rem;
+      display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .wheel {
+      width: 180px; height: 180px; flex-shrink: 0;
+      border-radius: 50%; position: relative;
+      background: conic-gradient(
+        #7a4520 0deg 60deg,
+        #c9853a 60deg 120deg,
+        #2c6e49 120deg 165deg,
+        #e8c07d 165deg 210deg,
+        #c45c26 210deg 255deg,
+        #8b3a3a 255deg 300deg,
+        #d4a96a 300deg 360deg
+      );
+      margin: 0 auto;
+    }
+    .wheel__inner {
+      position: absolute; inset: 20%;
+      border-radius: 50%; background: var(--milk-foam);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .wheel-legend { flex: 1; min-width: 180px; }
+    .wheel-legend h3 {
+      font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); font-family: var(--sans); font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .wheel-item {
+      display: flex; align-items: center; gap: .75rem;
+      margin-bottom: .6rem; font-size: .85rem;
+    }
+    .wheel-item__dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* Rules / opinions list */
+    .coffee-rules { list-style: none; margin-bottom: 3rem; }
+    .coffee-rules li {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.1rem 0; border-bottom: 1px solid #e8d9c8;
+      font-size: .93rem; line-height: 1.65;
+    }
+    .coffee-rules li:first-child { border-top: 1px solid #e8d9c8; }
+    .coffee-rules__num {
+      font-family: var(--serif); font-size: 1.2rem;
+      color: var(--crema); flex-shrink: 0; line-height: 1.3;
+      min-width: 1.5rem;
+    }
+    .coffee-rules__text strong {
+      font-family: var(--serif); font-size: 1rem; font-weight: 500;
+      display: block; margin-bottom: .2rem; color: var(--espresso);
+    }
+
+    /* Current rotation */
+    .rotation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+      gap: 1px; background: #e8d9c8; border: 1px solid #e8d9c8;
+      margin-bottom: 3rem;
+    }
+    .rotation-card {
+      background: var(--parchment); padding: 1.5rem 1.25rem;
+      display: flex; flex-direction: column; gap: .3rem;
+    }
+    .rotation-card__flag { font-size: 1.5rem; }
+    .rotation-card__name { font-family: var(--serif); font-size: 1rem; color: var(--espresso); }
+    .rotation-card__process { font-size: .72rem; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+    .rotation-card__note { font-size: .8rem; color: var(--secondary); margin-top: .3rem; line-height: 1.4; }
+
+    @media (max-width: 640px) {
+      .crema-ring { display: none; }
+      .wheel-section { flex-direction: column; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav" style="--nav-accent:#d39a5e;">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="coffee-hero">
+      <div class="crema-ring" aria-hidden="true"></div>
+      <div class="container--wide coffee-hero__content">
+        <p class="coffee-hero__eyebrow">Dhruv Chopra · Coffee</p>
+        <h1 class="coffee-hero__title">It's gone<br>too far.</h1>
+        <p class="coffee-hero__sub">
+          I know it's gone too far. The grinder, the scales, the 6:00 a.m. bloom timing. I don't know when exactly it stopped being caffeine and became craft, but here we are and I'm not stopping.
+        </p>
+        <div class="method-row">
+          <div class="method-pill"><em>☕</em> Espresso</div>
+          <div class="method-pill"><em>🫗</em> Pour-over</div>
+          <div class="method-pill"><em>🌊</em> AeroPress</div>
+          <div class="method-pill"><em>🍶</em> Cold brew</div>
+          <div class="method-pill"><em>🔬</em> Moka pot</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container--wide">
+
+      <!-- Flavour wheel -->
+      <div class="section-head" style="margin-bottom:0">
+        <h2>Flavour preferences</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <div class="wheel-section">
+        <div class="wheel" aria-hidden="true">
+          <div class="wheel__inner">☕</div>
+        </div>
+        <div class="wheel-legend">
+          <h3>What I reach for</h3>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#7a4520"></div>
+            Chocolate &amp; dark roast
+          </div>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#c9853a"></div>
+            Caramel &amp; brown sugar
+          </div>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#2c6e49"></div>
+            Stone fruit &amp; brightness
+          </div>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#e8c07d"></div>
+            Floral, light roast
+          </div>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#c45c26"></div>
+            Nutty &amp; toasty
+          </div>
+          <div class="wheel-item">
+            <div class="wheel-item__dot" style="background:#8b3a3a"></div>
+            Red fruit acidity
+          </div>
+        </div>
+      </div>
+
+      <!-- Current rotation -->
+      <div class="section-head">
+        <h2>Current rotation</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <div class="rotation-grid">
+        <div class="rotation-card">
+          <span class="rotation-card__flag">🇪🇹</span>
+          <span class="rotation-card__name">Ethiopian Yirgacheffe</span>
+          <span class="rotation-card__process">Washed · Light roast</span>
+          <span class="rotation-card__note">Bergamot and jasmine. The kind that makes you put the cup down and just smell it.</span>
+        </div>
+        <div class="rotation-card">
+          <span class="rotation-card__flag">🇨🇴</span>
+          <span class="rotation-card__name">Colombian Huila</span>
+          <span class="rotation-card__process">Natural · Medium roast</span>
+          <span class="rotation-card__note">Milk chocolate, red apple. The reliable one. Always in the house.</span>
+        </div>
+        <div class="rotation-card">
+          <span class="rotation-card__flag">🇬🇹</span>
+          <span class="rotation-card__name">Guatemalan Antigua</span>
+          <span class="rotation-card__process">Washed · Medium-dark</span>
+          <span class="rotation-card__note">Smooth, full body, brown sugar finish. Good for espresso.</span>
+        </div>
+        <div class="rotation-card">
+          <span class="rotation-card__flag">🇰🇪</span>
+          <span class="rotation-card__name">Kenya AA</span>
+          <span class="rotation-card__process">Washed · Light roast</span>
+          <span class="rotation-card__note">Blackcurrant and grapefruit. Intense. Not for everyone. Mine.</span>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div class="section-head">
+        <h2>Rules I live by</h2>
+        <span class="section-head__rule"></span>
+      </div>
+      <ul class="coffee-rules">
+        <li>
+          <span class="coffee-rules__num">I.</span>
+          <div class="coffee-rules__text">
+            <strong>Grind fresh, always.</strong>
+            Pre-ground coffee is the audio equivalent of a heavily compressed MP3. Technically the same song. Not the same thing.
+          </div>
+        </li>
+        <li>
+          <span class="coffee-rules__num">II.</span>
+          <div class="coffee-rules__text">
+            <strong>Water temperature is not optional.</strong>
+            93°C ± 2 for pour-over. Not boiling. Never boiling. This is not a minor detail.
+          </div>
+        </li>
+        <li>
+          <span class="coffee-rules__num">III.</span>
+          <div class="coffee-rules__text">
+            <strong>Bad coffee in a great place still beats great coffee in a bad one.</strong>
+            Context is a flavour. The thick, sweet sludge at a hole-in-the-wall in Bangkok at 7 a.m. was better than most specialty cups I've had. I can't explain this. I don't need to.
+          </div>
+        </li>
+        <li>
+          <span class="coffee-rules__num">IV.</span>
+          <div class="coffee-rules__text">
+            <strong>Ratio is everything.</strong>
+            1:15 to 1:17 for filter. 1:2 for espresso. Going outside this range without knowing what you're doing is how mediocre coffee happens.
+          </div>
+        </li>
+        <li>
+          <span class="coffee-rules__num">V.</span>
+          <div class="coffee-rules__text">
+            <strong>Instant coffee is not coffee.</strong>
+            I said what I said.
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" style="--foot-accent:#d39a5e;">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

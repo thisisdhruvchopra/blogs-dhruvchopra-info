@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why I Finally Started Writing — Dhruv Chopra</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* Calm, personal header — the first post, so it gets a quiet hero */
+    .personal-hero { padding-top: 1.5rem; }
+    .personal-hero .post-header__title { margin: .4rem 0 1.2rem; }
+    .personal-hero__note {
+      font-family: var(--serif); font-style: italic;
+      color: var(--accent); font-size: 1.05rem; margin-top: 1.4rem;
+    }
+  </style>
+</head>
+<body class="theme-personal themed">
+  <div class="read-progress" id="readProgress"></div>
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="../index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../blog.html" class="active">Writing</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="container">
+      <a href="../blog.html" class="back-link">← All writing</a>
+      <header class="post-header post-header--hero personal-hero">
+        <p class="post-header__kicker">Personal · The first one</p>
+        <h1 class="post-header__title">Why I Finally Started Writing</h1>
+        <div class="post-header__meta">
+          <span>Dhruv Chopra</span><span>March 2025</span><span>5 min read</span>
+        </div>
+        <p class="personal-hero__note">Four years of meaning to. Here goes.</p>
+      </header>
+      <article class="post-body">
+        <p>I've been meaning to start a blog for about four years. I know exactly what stopped me: the suspicion that nothing I had to say was original enough to deserve the space. That the internet already had better versions of every thought I might have. That writing publicly is an act of vanity, and I wasn't sure I'd earned it yet.</p>
+        <p>I don't believe that anymore. Or rather, I've decided to stop letting it win.</p>
+        <h2>The accumulation problem</h2>
+        <p>There's a particular frustration that comes from reading constantly, thinking constantly, having conversations that feel genuinely alive — and then watching all of it evaporate. I would finish a book about the Thirty Years' War, or get obsessed with a paper on deception detection in OT networks, or have a long conversation about cinema with a friend at 1 a.m., and then two months later I could barely reconstruct what I'd actually thought about any of it. Not just the details. The actual texture of the thinking.</p>
+        <p>Writing forces a kind of reckoning. When you have to put something into sentences, you find out very quickly which of your thoughts were real and which were just the feeling of having thoughts. That distinction, I've decided, is worth chasing.</p>
+        <blockquote><p>Writing is thinking made visible. And sometimes you need to see it before you know whether it holds up.</p></blockquote>
+        <h2>What this is and what it isn't</h2>
+        <p>This isn't a professional blog. I'm not trying to build a brand or establish expertise or generate leads for anything. There are enough of those. What I want is something closer to a thinking journal that happens to be public — a place where I can work through what I find interesting, and leave a record of it that I (and, if they like, anyone else) can return to.</p>
+        <p>The range of topics will probably seem scattered to anyone expecting focus. But the connecting thread, if there is one, is curiosity that refuses to stay in its lane. I've always found that the most interesting ideas happen at borders — between disciplines, between cultures, between the things you're supposed to care about and the things you actually can't stop thinking about.</p>
+        <h2>A note on consistency</h2>
+        <p>I won't promise a schedule. I'll write when I have something worth writing, and I'll try to make it actually worth reading. That's the whole deal.</p>
+        <hr />
+        <p>If you've found your way here and you want to stay connected, the links are all in the footer. Thanks for reading the first one. Here's to whatever comes next.</p>
+      </article>
+      <p class="post-endmark">◆ ◆ ◆</p>
+      <a href="../blog.html" class="back-link mt-5">← Back to all writing</a>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var bar = document.getElementById('readProgress');
+      if (!bar) return;
+      function update() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (h.scrollTop / max * 100) + '%' : '0%';
+      }
+      document.addEventListener('scroll', update, { passive: true });
+      update();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhruv Chopra</title>
+  <meta name="description" content="Dhruv Chopra — astrophysics, travel, cinema, coffee, football, history, perfumes, tech. From the top of the world." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ════════════════════════════════════════════════════════
+       HOME — rooftop over the concrete jungle, after midnight.
+       Looking out from the top of the world.
+       ════════════════════════════════════════════════════════ */
+    body { background:#05060d; color:#e7e7f2; font-weight:400; overflow-x:hidden; }
+    .site-nav { --nav-accent:#ff9e6b; background: rgba(6,7,14,0.5); }
+    .site-footer { --foot-accent:#ff9e6b; }
+
+    .city {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* — the night sky with city light-pollution glow on the horizon — */
+    .city__sky {
+      position: absolute; inset: 0; z-index: -6;
+      background: linear-gradient(180deg,
+        #05060d 0%, #090c1c 28%, #161535 50%,
+        #392345 68%, #7a3a48 82%, #c9683f 93%, #f0a35a 100%);
+    }
+    /* haze bloom over the skyline */
+    .city__haze {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 55%; z-index: -5;
+      background: radial-gradient(120% 80% at 50% 100%, rgba(255,150,80,.40) 0%, rgba(255,120,90,.12) 35%, transparent 70%);
+      filter: blur(6px);
+    }
+    /* stars */
+    .city__stars { position: absolute; inset: 0 0 50% 0; z-index: -6;
+      background-image:
+        radial-gradient(1.3px 1.3px at 12% 18%, rgba(255,255,255,.9), transparent),
+        radial-gradient(1px 1px at 28% 8%, rgba(255,255,255,.6), transparent),
+        radial-gradient(1.2px 1.2px at 47% 22%, rgba(210,224,255,.8), transparent),
+        radial-gradient(1px 1px at 63% 12%, rgba(255,255,255,.6), transparent),
+        radial-gradient(1.4px 1.4px at 78% 26%, rgba(255,255,255,.7), transparent),
+        radial-gradient(1px 1px at 88% 9%, rgba(255,255,255,.5), transparent),
+        radial-gradient(1px 1px at 38% 30%, rgba(255,255,255,.5), transparent);
+      animation: starsTwinkle 7s ease-in-out infinite alternate;
+    }
+    @keyframes starsTwinkle { from{opacity:.45} to{opacity:.9} }
+    /* the moon */
+    .city__moon {
+      position: absolute; top: 11%; right: 14%; width: 80px; height: 80px; z-index: -6;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #fdf6e3 0%, #e9dcc0 55%, #d8c69e 100%);
+      box-shadow: 0 0 60px 14px rgba(253,246,227,.25);
+    }
+    @media (prefers-reduced-motion: reduce){ .city__stars{ animation:none } }
+
+    /* skyline layers (filled by JS) sit on the floor */
+    .skyline { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; z-index: -4; }
+    .skyline--far  { bottom: 14%; opacity: .55; filter: blur(.4px); z-index: -5; }
+    .skyline--mid  { bottom: 7%;  opacity: .8;  z-index: -4; }
+    .skyline--near { bottom: 0;   z-index: -3; }
+
+    .bldg { flex: 0 0 auto; position: relative; }
+    .skyline--far .bldg  { background: #15182c; }
+    .skyline--mid .bldg  {
+      background-color:#0b0e1a;
+      background-image:
+        radial-gradient(rgba(255,200,130,.5) .8px, transparent 1.5px),
+        radial-gradient(rgba(180,205,255,.32) .8px, transparent 1.5px);
+      background-size: 11px 15px, 11px 15px;
+      background-position: 0 0, 6px 8px;
+    }
+    .skyline--near .bldg {
+      background-color:#06070e;
+      background-image:
+        radial-gradient(rgba(255,196,120,.6) .9px, transparent 1.6px),
+        radial-gradient(rgba(170,198,255,.34) .9px, transparent 1.6px);
+      background-size: 10px 14px, 10px 14px;
+      background-position: 0 0, 5px 7px;
+      box-shadow: inset 0 -40px 50px rgba(0,0,0,.7);
+    }
+    /* rooftop water-tanks / antennae for silhouette character */
+    .bldg::after {
+      content:''; position:absolute; bottom:100%; width:3px; height:0;
+      background:#06070e;
+    }
+    .bldg.antenna::after { left: 50%; height: 22px; box-shadow: 0 -2px 0 0 #ff4d4d; }
+
+    /* rooftop foreground you're standing on */
+    .rooftop {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 90px; z-index: -2;
+      background: linear-gradient(180deg, #04050a 0%, #020306 100%);
+      border-top: 1px solid rgba(120,140,200,.12);
+    }
+    .rooftop::before { /* parapet railing */
+      content:''; position:absolute; top:-14px; left:0; right:0; height:14px;
+      background:
+        repeating-linear-gradient(90deg, #0a0c14 0 4px, transparent 4px 46px);
+      opacity:.8;
+    }
+    .vignette { position:absolute; inset:0; z-index:-1; pointer-events:none;
+      background: radial-gradient(120% 90% at 50% 30%, transparent 55%, rgba(0,0,0,.55) 100%); }
+
+    /* ── overlay content ── */
+    .city__content {
+      position: relative; z-index: 2;
+      max-width: var(--wide); width: 100%;
+      margin: 0 auto; padding: 5rem 1.75rem 0;
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+    }
+    .city__eyebrow {
+      font-family: var(--grotesk); font-size: .72rem; letter-spacing: .34em;
+      text-transform: uppercase; color: #ff9e6b; margin-bottom: 1.5rem;
+    }
+    .city__name {
+      font-family: var(--fancy);
+      font-size: clamp(3.4rem, 11vw, 8.5rem);
+      font-weight: 600; line-height: .88; letter-spacing: -.03em;
+      color: #fff; margin-bottom: 1.4rem;
+      text-shadow: 0 2px 40px rgba(0,0,0,.6), 0 0 70px rgba(255,158,107,.15);
+    }
+    .city__tagline {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(1.05rem, 2.6vw, 1.5rem); color: #cfd0e2;
+      max-width: 620px; margin-bottom: 3rem;
+      text-shadow: 0 1px 20px rgba(0,0,0,.6);
+    }
+
+    /* worlds — clean type menu, no icons */
+    .worlds { display: flex; flex-wrap: wrap; gap: .4rem 2.2rem; }
+    .world {
+      position: relative; font-family: var(--grotesk);
+      font-size: clamp(.95rem, 1.6vw, 1.15rem); font-weight: 500;
+      letter-spacing: .04em; color: rgba(231,231,242,.62);
+      padding: .35rem 0; transition: color .25s;
+    }
+    .world::after {
+      content:''; position:absolute; left:0; bottom:.1rem; height:2px; width:0;
+      background: var(--c); box-shadow: 0 0 12px var(--c); transition: width .28s ease;
+    }
+    .world:hover { color:#fff; }
+    .world:hover::after { width: 100%; }
+
+    .city__hint {
+      font-family: var(--grotesk); font-size: .72rem; letter-spacing: .18em;
+      text-transform: uppercase; color: #6b6f86; margin: 3.5rem 0 4.5rem;
+    }
+
+    /* ── recent writing strip ── */
+    .home-writing { background:#070810; padding: 4.5rem 0 4rem; position: relative; z-index: 2; }
+    .home-writing__head { max-width: var(--wide); margin: 0 auto 2rem; padding: 0 1.75rem; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+    .home-writing__head h2 { font-family: var(--fancy); font-size: clamp(1.8rem,4vw,2.6rem); font-weight:600; color:#fff; }
+    .home-writing__head a { font-family: var(--grotesk); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:#ff9e6b; border-bottom:1px solid rgba(255,158,107,.4); padding-bottom:2px; }
+    .wlist { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem; list-style: none; }
+    .wlist li { border-top: 1px solid rgba(255,255,255,.08); }
+    .wlist li:last-child { border-bottom: 1px solid rgba(255,255,255,.08); }
+    .wlist a { display:grid; grid-template-columns:1fr auto; gap:.3rem 1.5rem; padding:1.4rem 0; align-items:center; transition: padding-left .25s; }
+    .wlist a:hover { padding-left: 1rem; }
+    .wlist__title { font-family: var(--fancy); font-size:1.25rem; color:#ece9f6; transition:color .25s; }
+    .wlist a:hover .wlist__title { color:#ff9e6b; }
+    .wlist__meta { font-family: var(--grotesk); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7990; }
+    .wlist__date { font-family: var(--grotesk); font-size:.8rem; color:#7a7990; justify-self:end; }
+
+    @media (max-width: 640px){
+      .city__content{ padding-top: 3.5rem; }
+      .city__moon{ width:54px; height:54px; right:10%; }
+      .worlds{ gap:.2rem 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="city">
+      <div class="city__sky" aria-hidden="true"></div>
+      <div class="city__stars" aria-hidden="true"></div>
+      <div class="city__moon" aria-hidden="true"></div>
+      <div class="city__haze" aria-hidden="true"></div>
+
+      <div class="skyline skyline--far"  aria-hidden="true"></div>
+      <div class="skyline skyline--mid"  aria-hidden="true"></div>
+      <div class="skyline skyline--near" aria-hidden="true"></div>
+      <div class="rooftop" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <div class="city__content">
+        <p class="city__eyebrow">Kanpur, India · from the top of the world</p>
+        <h1 class="city__name">Dhruv<br>Chopra</h1>
+        <p class="city__tagline">Curious about everything. Opinionated about most. This is the city of everything I can't stop thinking about — wander it.</p>
+
+        <nav class="worlds" aria-label="Explore">
+          <a class="world" href="astrophysics.html" style="--c:#8ea2ff">Astrophysics</a>
+          <a class="world" href="travel.html"       style="--c:#ffb45a">Travel</a>
+          <a class="world" href="cinema.html"        style="--c:#ff5a5a">Cinema</a>
+          <a class="world" href="coffee.html"        style="--c:#d39a5e">Coffee</a>
+          <a class="world" href="football.html"      style="--c:#3ddc84">Football</a>
+          <a class="world" href="tech.html"          style="--c:#51e0c9">Tech</a>
+          <a class="world" href="perfumes.html"      style="--c:#ff8fc7">Perfumes</a>
+          <a class="world" href="history.html"       style="--c:#e3c074">History</a>
+        </nav>
+
+        <p class="city__hint">Some are essays. Some are just photos and moments.</p>
+      </div>
+    </section>
+
+    <section class="home-writing">
+      <div class="home-writing__head">
+        <h2>From the notebook</h2>
+        <a href="blog.html">All writing →</a>
+      </div>
+      <ul class="wlist">
+        <li>
+          <a href="posts/on-scale-and-silence.html">
+            <span class="wlist__title">On Scale and Silence: What the Cosmos Does to You</span>
+            <span class="wlist__meta">Astrophysics · 7 min</span>
+            <span class="wlist__date">Jun 2025</span>
+          </a>
+        </li>
+        <li>
+          <a href="posts/three-trips-five-countries.html">
+            <span class="wlist__title">Three Trips, Five Countries, One Recurring Feeling</span>
+            <span class="wlist__meta">Travel · 8 min</span>
+            <span class="wlist__date">Apr 2025</span>
+          </a>
+        </li>
+        <li>
+          <a href="posts/hello-world.html">
+            <span class="wlist__title">Why I Finally Started Writing</span>
+            <span class="wlist__meta">Personal · 5 min</span>
+            <span class="wlist__date">Mar 2025</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra · still awake</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://youtube.com/@dchopra92" target="_blank" rel="noopener">YouTube</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Build a layered skyline. No animation — just a still, lit city. */
+    (function () {
+      function build(sel, count, minH, maxH, minW, maxW, antennaChance) {
+        var layer = document.querySelector(sel);
+        if (!layer) return;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < count; i++) {
+          var b = document.createElement('div');
+          b.className = 'bldg';
+          var h = Math.round(minH + Math.random() * (maxH - minH));
+          var w = Math.round(minW + Math.random() * (maxW - minW));
+          b.style.height = h + 'px';
+          b.style.width  = w + 'px';
+          if (Math.random() < antennaChance) b.classList.add('antenna');
+          frag.appendChild(b);
+        }
+        layer.appendChild(frag);
+      }
+      var w = window.innerWidth;
+      var farN  = Math.ceil(w / 46);
+      var midN  = Math.ceil(w / 60);
+      var nearN = Math.ceil(w / 78);
+      build('.skyline--far',  farN,  60, 170, 26, 50, 0);
+      build('.skyline--mid',  midN,  90, 240, 34, 70, 0.12);
+      build('.skyline--near', nearN, 130, 330, 46, 96, 0.18);
+    })();
+  </script>
+
+</body>
+</html>
