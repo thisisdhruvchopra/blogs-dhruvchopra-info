@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sports — Dhruv Chopra</title>
+  <meta name="description" content="Dhruv Chopra on sports — six disciplines, six competitions, zero chill." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ════════════════════════════════════════════════════════
+       SPORTS — stadium at night, floodlights on, no apologies.
+       ════════════════════════════════════════════════════════ */
+    body { background: #07080e; color: #f0f0f8; overflow-x: hidden; }
+    .site-nav { --nav-accent: #ff3d2e; background: rgba(5,6,12,0.72); border-bottom-color: rgba(255,61,46,.15); }
+    .site-footer { --foot-accent: #ff3d2e; background: #05060c; }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    .sports-hero {
+      position: relative; overflow: hidden;
+      min-height: 94vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 0 6rem;
+    }
+
+    /* Stadium backdrop: deep dark + twin floodlight spills */
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: #07080e;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 65% 55% at 15% -5%,  rgba(255,61,46,.14)  0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 88% -8%,  rgba(255,130,30,.10) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 35% at 50% 110%, rgba(255,61,46,.08)  0%, transparent 55%);
+    }
+
+    /* Subtle field grid — like looking down at a lit pitch */
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 1;
+      background-image:
+        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    /* centre circle echo */
+    .hero-grid::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: min(60vw, 520px); height: min(60vw, 520px);
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(255,255,255,.04);
+      border-radius: 50%;
+    }
+
+    /* Vignette overlay */
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: radial-gradient(130% 100% at 50% 40%, transparent 40%, rgba(7,8,14,.75) 100%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: var(--wide); width: 100%;
+      margin: 0 auto; padding: 0 1.75rem;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--grotesk);
+      font-size: .68rem; letter-spacing: .32em; text-transform: uppercase;
+      color: #ff3d2e; margin-bottom: 1.6rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: #ff3d2e; flex-shrink: 0; }
+
+    .hero-title {
+      font-family: var(--fancy);
+      font-size: clamp(4.5rem, 14vw, 11rem);
+      font-weight: 900; line-height: .84; letter-spacing: -.04em;
+      color: #fff; margin-bottom: 2rem;
+    }
+    .hero-title em { font-style: italic; color: #ff3d2e; }
+
+    .hero-sub {
+      font-family: var(--grotesk);
+      font-size: clamp(.9rem, 1.7vw, 1.1rem); line-height: 1.7;
+      color: rgba(240,240,248,.52); max-width: 500px;
+    }
+
+    /* Quick-stat row at base of hero */
+    .hero-stats {
+      display: flex; gap: 0;
+      margin-top: 3.5rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .hero-stat {
+      padding: 1.2rem 2rem 0 0;
+      flex: 0 0 auto;
+    }
+    .hero-stat__n {
+      font-family: var(--fancy); font-size: 2rem; font-weight: 700;
+      color: #fff; line-height: 1; display: block;
+    }
+    .hero-stat__l {
+      font-family: var(--grotesk); font-size: .62rem; letter-spacing: .14em;
+      text-transform: uppercase; color: rgba(240,240,248,.35);
+      display: block; margin-top: .25rem;
+    }
+
+    /* ── TICKER ────────────────────────────────────────────── */
+    .sports-ticker {
+      overflow: hidden;
+      background: rgba(255,61,46,.07);
+      border-top: 1px solid rgba(255,61,46,.18);
+      border-bottom: 1px solid rgba(255,61,46,.18);
+      padding: .75rem 0;
+    }
+    .sports-ticker__track {
+      display: flex; width: max-content;
+      animation: ticker 32s linear infinite;
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-item {
+      font-family: var(--grotesk); font-size: .65rem;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.25); padding: 0 2.2rem; white-space: nowrap;
+    }
+    .ticker-item--hot { color: #ff3d2e; font-weight: 600; }
+    .ticker-sep {
+      font-family: var(--grotesk); font-size: .65rem;
+      color: rgba(255,61,46,.3); padding: 0 .4rem;
+      letter-spacing: 0;
+    }
+
+    /* ── SHARED SECTION LABEL ──────────────────────────────── */
+    .s-label {
+      font-family: var(--grotesk); font-size: .65rem;
+      letter-spacing: .3em; text-transform: uppercase;
+      color: #ff3d2e; margin-bottom: 2.8rem;
+      display: flex; align-items: center; gap: 1.2rem;
+    }
+    .s-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,61,46,.35), transparent);
+    }
+
+    /* ── SPORTS I PLAY ─────────────────────────────────────── */
+    .sports-play { padding: 5.5rem 0 4rem; }
+
+    .play-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.06);
+      margin-bottom: 1px;
+    }
+    .play-grid--bottom {
+      grid-template-columns: 1fr;
+    }
+
+    .sport-card {
+      background: #0b0c16;
+      padding: 2.2rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background .2s;
+    }
+    .sport-card:hover { background: #0e1020; }
+
+    /* Sliding color bar on right edge */
+    .sport-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 2px; height: 0;
+      background: var(--sc, #ff3d2e);
+      transition: height .35s cubic-bezier(.4,0,.2,1);
+    }
+    .sport-card:hover::after { height: 100%; }
+
+    /* Ghost number */
+    .sport-card__num {
+      font-family: var(--fancy); font-size: 3.5rem; font-weight: 800;
+      color: var(--sc, #ff3d2e); opacity: .1; line-height: 1;
+      position: absolute; top: 1.2rem; right: 1.5rem;
+      pointer-events: none; user-select: none;
+      transition: opacity .2s;
+    }
+    .sport-card:hover .sport-card__num { opacity: .18; }
+
+    .sport-card__name {
+      font-family: var(--fancy); font-size: 1.55rem; font-weight: 600;
+      color: #fff; line-height: 1.1; margin-bottom: .55rem;
+    }
+    /* Team badge replacing freq */
+    .sport-card__team {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .6rem .85rem;
+      background: rgba(255,255,255,.04);
+      border-left: 2px solid var(--tc, #aaa);
+      margin-bottom: .95rem;
+    }
+    .sport-card__flag { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
+    .sport-card__team-info { display: flex; flex-direction: column; gap: .12rem; }
+    .sport-card__team-name {
+      font-family: var(--grotesk); font-size: .78rem; font-weight: 600;
+      color: rgba(240,240,248,.85); letter-spacing: .02em;
+    }
+    .sport-card__team-comp {
+      font-family: var(--grotesk); font-size: .58rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(240,240,248,.28);
+    }
+    /* Gym streak counter */
+    .gym-streak { display: flex; align-items: baseline; gap: .4rem; margin-bottom: .95rem; }
+    .gym-streak__n {
+      font-family: var(--fancy); font-size: 2.6rem; font-weight: 800;
+      color: #ff3d2e; line-height: 1;
+    }
+    .gym-streak__l {
+      font-family: var(--grotesk); font-size: .62rem; letter-spacing: .16em;
+      text-transform: uppercase; color: rgba(240,240,248,.3);
+    }
+    .sport-card__note {
+      font-family: var(--grotesk); font-size: .85rem; line-height: 1.6;
+      color: rgba(240,240,248,.42);
+    }
+
+    /* GYM card — full-width hero treatment */
+    .sport-card--gym {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; align-items: center;
+      background: #0e0a0a;
+      border-top: 1px solid rgba(255,61,46,.15);
+    }
+    .sport-card--gym:hover { background: #130d0d; }
+    .sport-card--gym .sport-card__num {
+      font-size: 7rem; top: .8rem; right: 2rem; opacity: .07;
+    }
+    .sport-card--gym:hover .sport-card__num { opacity: .13; }
+    .sport-card--gym .sport-card__name { font-size: 2.2rem; }
+    .sport-card--gym .sport-card__note {
+      font-size: .9rem; line-height: 1.65;
+      color: rgba(240,240,248,.5);
+      border-left: 2px solid rgba(255,61,46,.3); padding-left: 1.2rem;
+    }
+
+    /* ── STATEMENT ─────────────────────────────────────────── */
+    .sports-statement {
+      background: #ff3d2e; padding: 4.5rem 0;
+      position: relative; overflow: hidden;
+    }
+    /* diagonal stripes texture */
+    .sports-statement::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 8px,
+        rgba(0,0,0,.04) 8px, rgba(0,0,0,.04) 9px
+      );
+    }
+    .statement-inner {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto; padding: 0 1.75rem;
+      text-align: center;
+    }
+    .statement-inner blockquote {
+      font-family: var(--fancy); font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+      font-weight: 700; line-height: 1.12; letter-spacing: -.025em;
+      color: #fff; margin-bottom: 1.5rem;
+    }
+    .statement-inner cite {
+      font-family: var(--grotesk); font-size: .65rem;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); font-style: normal;
+    }
+
+    /* ── WHAT I FOLLOW ─────────────────────────────────────── */
+    .sports-follow { padding: 5.5rem 0 6rem; }
+
+    .follow-list { list-style: none; }
+
+    .follow-item {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: start;
+      gap: 1.8rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.055);
+      position: relative;
+    }
+    .follow-item:first-child { border-top: 1px solid rgba(255,255,255,.055); }
+
+    .follow-item__rank {
+      font-family: var(--fancy); font-size: 1.5rem; font-weight: 700;
+      color: rgba(255,255,255,.08); line-height: 1;
+      padding-top: .2rem;
+    }
+    .follow-item--current .follow-item__rank { color: rgba(255,61,46,.25); }
+
+    .follow-item__body { min-width: 0; }
+
+    .follow-item__name-row {
+      display: flex; align-items: center; gap: .9rem;
+      margin-bottom: .4rem;
+    }
+    .follow-item__name {
+      font-family: var(--fancy); font-size: 1.4rem; font-weight: 600;
+      color: #fff; line-height: 1.1;
+    }
+    .follow-item--current .follow-item__name { color: #ff3d2e; }
+
+    .live-badge {
+      font-family: var(--grotesk); font-size: .55rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: #ff3d2e; border: 1px solid rgba(255,61,46,.5);
+      padding: .2rem .55rem; border-radius: 999px;
+      animation: pulseBadge 2.4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulseBadge {
+      0%,100% { opacity: 1; border-color: rgba(255,61,46,.5); }
+      50% { opacity: .6; border-color: rgba(255,61,46,.2); }
+    }
+
+    .follow-item__desc {
+      font-family: var(--grotesk); font-size: .85rem; line-height: 1.6;
+      color: rgba(240,240,248,.38); max-width: 560px;
+    }
+
+    .follow-item__tag {
+      font-family: var(--grotesk); font-size: .6rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(240,240,248,.2); white-space: nowrap;
+      padding-top: .3rem;
+    }
+
+    /* Stacked team badges */
+    .sport-card__team + .sport-card__team { margin-top: .4rem; }
+
+    /* RCB ★★ stars */
+    .rcb-stars { color: #D4AF37; letter-spacing: .04em; font-size: .9em; }
+
+    /* ── ICONS / LEGENDS ───────────────────────────────────── */
+    .sports-icons { padding: 5.5rem 0 5rem; background: #07080e; }
+
+    .icons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .icon-card {
+      background: #0b0c16;
+      border: 1px solid rgba(255,255,255,.07);
+      padding: 2.4rem 2rem 2.2rem;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: border-color .25s, background .2s;
+    }
+    .icon-card:hover { background: #0e1020; border-color: rgba(255,255,255,.16); }
+
+    .icon-card__bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--ic, #ff3d2e);
+    }
+
+    .icon-card__flag { font-size: 2rem; line-height: 1; margin-bottom: 1.2rem; display: block; }
+
+    .icon-card__name {
+      font-family: var(--fancy); font-size: 1.6rem; font-weight: 700;
+      color: #fff; line-height: 1; margin-bottom: .35rem;
+    }
+
+    .icon-card__detail {
+      font-family: var(--grotesk); font-size: .62rem;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--ic, #ff3d2e); margin-bottom: 1.6rem;
+    }
+
+    .icon-card__quote {
+      font-family: var(--fancy); font-style: italic;
+      font-size: .95rem; line-height: 1.65;
+      color: rgba(240,240,248,.55);
+      border-left: 2px solid color-mix(in srgb, var(--ic, #ff3d2e) 45%, transparent);
+      padding-left: 1rem;
+      flex: 1; margin: 0;
+    }
+
+    @media (max-width: 700px) {
+      .icons-grid { grid-template-columns: 1fr; gap: 1rem; }
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .play-grid { grid-template-columns: repeat(2, 1fr); }
+      .sport-card--gym { grid-template-columns: 1fr; }
+      .sport-card--gym .sport-card__note { border-left: none; padding-left: 0; margin-top: .6rem; }
+    }
+    @media (max-width: 560px) {
+      .play-grid { grid-template-columns: 1fr; }
+      .hero-stat:last-child { display: none; }
+      .follow-item { grid-template-columns: 40px 1fr; }
+      .follow-item__tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── HERO ──────────────────────────────────────────── -->
+    <section class="sports-hero">
+      <div class="hero-bg"       aria-hidden="true"></div>
+      <div class="hero-grid"     aria-hidden="true"></div>
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <p class="hero-eyebrow">Dhruv Chopra · Sports</p>
+        <h1 class="hero-title">Built<br>to <em>compete.</em></h1>
+        <p class="hero-sub">
+          Six sports in the rotation. Six competitions followed with unreasonable intensity. The gym every day without exception. Losing is not something I've made peace with.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__n">6</span>
+            <span class="hero-stat__l">Sports I play</span>
+          </div>
+          <div class="hero-stat" style="margin-left: 2.5rem;">
+            <span class="hero-stat__n">6</span>
+            <span class="hero-stat__l">Competitions I follow</span>
+          </div>
+          <div class="hero-stat" style="margin-left: 2.5rem;">
+            <span class="hero-stat__n">365</span>
+            <span class="hero-stat__l">Days at the gym</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TICKER ─────────────────────────────────────────── -->
+    <div class="sports-ticker" aria-hidden="true">
+      <div class="sports-ticker__track">
+        <span class="ticker-item ticker-item--hot">F1</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Football</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Badminton</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">La Liga</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Swimming</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Cricket</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">UCL</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Running</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">The Gym</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Olympics</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">ICC Cricket</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">FIFA</span><span class="ticker-sep">·</span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item ticker-item--hot">F1</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Football</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Badminton</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">La Liga</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Swimming</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Cricket</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">UCL</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Running</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">The Gym</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">Olympics</span><span class="ticker-sep">·</span>
+        <span class="ticker-item">ICC Cricket</span><span class="ticker-sep">·</span>
+        <span class="ticker-item ticker-item--hot">FIFA</span><span class="ticker-sep">·</span>
+      </div>
+    </div>
+
+    <!-- ── SPORTS I PLAY ──────────────────────────────────── -->
+    <section class="sports-play">
+      <div class="container--wide">
+        <p class="s-label">What I play</p>
+
+        <div class="play-grid">
+          <div class="sport-card" style="--sc: #e8e8e8; --tc: #c9a741;">
+            <span class="sport-card__num" aria-hidden="true">01</span>
+            <h3 class="sport-card__name">Football</h3>
+            <div class="sport-card__team">
+              <span class="sport-card__flag">🇪🇸</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">Real Madrid CF</span>
+                <span class="sport-card__team-comp">La Liga · UCL</span>
+              </div>
+            </div>
+            <div class="sport-card__team" style="--tc: #D4213D;">
+              <span class="sport-card__flag">🇵🇹</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">Portugal</span>
+                <span class="sport-card__team-comp">FIFA World Cup · Euro</span>
+              </div>
+            </div>
+            <p class="sport-card__note">First love. Always will be. Give me a ball and a patch of concrete and I'm set. Hala Madrid.</p>
+          </div>
+
+          <div class="sport-card" style="--sc: #ffe050; --tc: #FF9933;">
+            <span class="sport-card__num" aria-hidden="true">02</span>
+            <h3 class="sport-card__name">Badminton</h3>
+            <div class="sport-card__team">
+              <span class="sport-card__flag">🇮🇳</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">India</span>
+                <span class="sport-card__team-comp">BWF World Tour · Thomas Cup</span>
+              </div>
+            </div>
+            <p class="sport-card__note">Fast reflexes, tight angles, deceptive touch. Brutally competitive when played properly.</p>
+          </div>
+
+          <div class="sport-card" style="--sc: #51cbf5; --tc: #138808;">
+            <span class="sport-card__num" aria-hidden="true">03</span>
+            <h3 class="sport-card__name">Swimming</h3>
+            <div class="sport-card__team">
+              <span class="sport-card__flag">🇮🇳</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">India</span>
+                <span class="sport-card__team-comp">Olympics · Asian Games</span>
+              </div>
+            </div>
+            <p class="sport-card__note">The only sport where every thought disappears. Just you, the water, and the wall at the end.</p>
+          </div>
+
+          <div class="sport-card" style="--sc: #ff9e6b; --tc: #003f8a;">
+            <span class="sport-card__num" aria-hidden="true">04</span>
+            <h3 class="sport-card__name">Cricket</h3>
+            <div class="sport-card__team">
+              <span class="sport-card__flag">🇮🇳</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">Team India</span>
+                <span class="sport-card__team-comp">ICC · Test · ODI · T20</span>
+              </div>
+            </div>
+            <div class="sport-card__team" style="--tc: #CE1119;">
+              <span class="sport-card__flag">🏏</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">RCB <span class="rcb-stars">★★</span></span>
+                <span class="sport-card__team-comp">Indian Premier League</span>
+              </div>
+            </div>
+            <p class="sport-card__note">Grew up playing it. The patience it demands is its own kind of violence. Nothing like it.</p>
+          </div>
+
+          <div class="sport-card" style="--sc: #ff6b8a; --tc: #FF9933;">
+            <span class="sport-card__num" aria-hidden="true">05</span>
+            <h3 class="sport-card__name">Running</h3>
+            <div class="sport-card__team">
+              <span class="sport-card__flag">🇮🇳</span>
+              <div class="sport-card__team-info">
+                <span class="sport-card__team-name">India</span>
+                <span class="sport-card__team-comp">Athletics · Olympics</span>
+              </div>
+            </div>
+            <p class="sport-card__note">Not a runner by nature — but when I go, I always end up running further than I planned. The spite fuel is real.</p>
+          </div>
+        </div>
+
+        <!-- GYM — full-width, its own beast -->
+        <div class="play-grid play-grid--bottom">
+          <div class="sport-card sport-card--gym" style="--sc: #ff3d2e;">
+            <div>
+              <span class="sport-card__num" aria-hidden="true">06</span>
+              <h3 class="sport-card__name">The Gym</h3>
+              <div class="gym-streak">
+                <span class="gym-streak__n">365</span>
+                <span class="gym-streak__l">Days / Year · No exceptions</span>
+              </div>
+            </div>
+            <p class="sport-card__note">
+              Not optional. Not negotiable. Consistency is the one discipline that truly compounds — you feel the first missed day, and you hear about the second from yourself. The gym is where I remind myself what I'm capable of.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── STATEMENT ──────────────────────────────────────── -->
+    <section class="sports-statement">
+      <div class="statement-inner">
+        <blockquote>"If you no longer go for a gap that exists, you are no longer a racing driver."</blockquote>
+        <cite>Ayrton Senna</cite>
+      </div>
+    </section>
+
+    <!-- ── ICONS / LEGENDS ───────────────────────────────── -->
+    <section class="sports-icons">
+      <div class="container--wide">
+        <p class="s-label">People I ride with</p>
+        <div class="icons-grid">
+
+          <div class="icon-card" style="--ic: #D4213D;">
+            <div class="icon-card__bar" aria-hidden="true"></div>
+            <span class="icon-card__flag">🇵🇹</span>
+            <h3 class="icon-card__name">Cristiano Ronaldo</h3>
+            <p class="icon-card__detail">Portugal · Real Madrid · GOAT</p>
+            <p class="icon-card__quote">"Talent without working hard is nothing."</p>
+          </div>
+
+          <div class="icon-card" style="--ic: #CE1119;">
+            <div class="icon-card__bar" aria-hidden="true"></div>
+            <span class="icon-card__flag">🇮🇳</span>
+            <h3 class="icon-card__name">Virat Kohli</h3>
+            <p class="icon-card__detail">India · RCB · The King</p>
+            <p class="icon-card__quote">"Self-belief and hard work will always earn you success."</p>
+          </div>
+
+          <div class="icon-card" style="--ic: #F9C31F;">
+            <div class="icon-card__bar" aria-hidden="true"></div>
+            <span class="icon-card__flag">🇮🇳</span>
+            <h3 class="icon-card__name">MS Dhoni</h3>
+            <p class="icon-card__detail">India · CSK · Captain Cool</p>
+            <p class="icon-card__quote">"Winning and losing is not in your hands. What is in your hands is to give your 100 percent."</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WHAT I FOLLOW ──────────────────────────────────── -->
+    <section class="sports-follow">
+      <div class="container--wide">
+        <p class="s-label">What I follow</p>
+
+        <ul class="follow-list">
+
+          <li class="follow-item follow-item--current">
+            <span class="follow-item__rank">01</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">Formula 1</span>
+                <span class="live-badge">Now</span>
+              </div>
+              <p class="follow-item__desc">Currently obsessed. Every race weekend, every qualifying lap, every team radio. Riding with Red Bull and Verstappen — the strategy calls, the politics, the mechanical artistry, the 1-second gap that rewrites everything. Chess at 340 km/h and I am completely gone for it.</p>
+            </div>
+            <span class="follow-item__tag">Motorsport</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">02</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">La Liga</span>
+              </div>
+              <p class="follow-item__desc">Where football philosophy actually lives. Technical, tactical, brutal in the best way. Spanish football made me understand the game differently.</p>
+            </div>
+            <span class="follow-item__tag">Football</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">03</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">UEFA Champions League</span>
+              </div>
+              <p class="follow-item__desc">The only club competition that still gives me actual nerves. Knockout football at its highest level is a different animal entirely.</p>
+            </div>
+            <span class="follow-item__tag">Football</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">04</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">FIFA World Cup</span>
+              </div>
+              <p class="follow-item__desc">Every four years, the whole world agrees on one thing. That shared attention — billions watching the same ninety minutes — is irreplaceable. Nothing else comes close.</p>
+            </div>
+            <span class="follow-item__tag">Football</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">05</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">ICC Cricket</span>
+              </div>
+              <p class="follow-item__desc">World Cups, Test matches, the works. Cricket is the sport I grew up arguing about at 11pm with strangers online. Still do. Never stop.</p>
+            </div>
+            <span class="follow-item__tag">Cricket</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">06</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">IPL — RCB <span class="rcb-stars">★★</span></span>
+              </div>
+              <p class="follow-item__desc">Royal Challengers Bengaluru. Two-time champions. I bleed red and gold every April. The IPL is the best cricket format ever invented and RCB is the most entertaining thing in it — always has been.</p>
+            </div>
+            <span class="follow-item__tag">Cricket · IPL</span>
+          </li>
+
+          <li class="follow-item">
+            <span class="follow-item__rank">07</span>
+            <div class="follow-item__body">
+              <div class="follow-item__name-row">
+                <span class="follow-item__name">Olympics</span>
+              </div>
+              <p class="follow-item__desc">Thirty sports, two weeks, one feeling. Athletes who've spent their entire lives building to this single moment. It's impossible to not get invested in every last one of them.</p>
+            </div>
+            <span class="follow-item__tag">Multi-sport</span>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra · still at the gym</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://youtube.com/@dchopra92" target="_blank" rel="noopener">YouTube</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
