@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhruv Chopra — the notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@300;400;500;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Oswald:wght@200;400;600&family=JetBrains+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{ --ease: cubic-bezier(.16,1,.3,1); }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{ background:#07070c; color:#eee; overflow:hidden; font-family:"Space Grotesk",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+
+  #stage{ position:fixed; inset:0; }
+  #fx{ position:fixed; inset:0; z-index:0; display:block; transition:opacity .8s var(--ease); }
+  #stage[data-view="reader"] #fx{ opacity:.2; }
+  #stage[data-view="notebook"] #fx{ opacity:.6; }
+
+  .ground{ position:fixed; inset:0; z-index:0; transition:background .9s var(--ease); }
+
+  .overlay{ position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .8s var(--ease); }
+  #vignette{ background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.85) 100%); }
+  #scanlines{ background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.18) 3px, rgba(0,0,0,0) 4px); mix-blend-mode:multiply; }
+  #grain{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); animation:grainshift .4s steps(2) infinite; }
+  @keyframes grainshift{ 0%{transform:translate(0,0)} 50%{transform:translate(-2%,1%)} 100%{transform:translate(1%,-1%)} }
+  #letterbox-top,#letterbox-bottom{ position:fixed; left:0; right:0; height:0; background:#000; z-index:6; transition:height .9s var(--ease); pointer-events:none; }
+  #letterbox-top{ top:0; } #letterbox-bottom{ bottom:0; }
+
+  #progress{ position:fixed; top:0; left:0; height:2px; width:0; background:var(--w-accent,#b9a6ff); z-index:8; transition:width .1s linear, opacity .4s; opacity:0; }
+  #stage[data-view="reader"] #progress{ opacity:1; }
+
+  #content{ position:relative; z-index:3; height:100%; }
+  .view{ position:absolute; inset:0; opacity:0; pointer-events:none; transform:scale(.99); transition:opacity .6s var(--ease), transform .8s var(--ease); }
+  .view.show{ opacity:1; pointer-events:auto; transform:scale(1); }
+  .scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; }
+
+  /* ---------- HUB ---------- */
+  #hub{ display:flex; flex-direction:column; }
+  .hub-head{ padding:clamp(20px,4vw,46px) clamp(22px,5vw,64px) 0; }
+  .hub-name{ font-family:"Fraunces",serif; font-weight:400; font-size:clamp(34px,6vw,72px); letter-spacing:-.02em; line-height:.95; color:#f4f1ea; }
+  .hub-name em{ font-style:italic; font-weight:300; opacity:.7; }
+  .hub-sub{ margin-top:14px; max-width:36ch; color:#9aa0b5; font-size:clamp(13px,1.4vw,15px); line-height:1.5; font-weight:300; }
+  .hub-start{ margin-top:18px; display:inline-flex; gap:8px; align-items:center; font-size:12.5px; letter-spacing:.04em; color:#cfd3e2; text-decoration:none; cursor:pointer; background:none; border:0; border-bottom:1px solid rgba(255,255,255,.18); padding:0 0 2px; transition:color .3s, border-color .3s, gap .3s; }
+  .hub-start:hover{ color:#fff; border-color:#fff; gap:14px; }
+  .constellation{ flex:1; position:relative; display:flex; flex-wrap:wrap; align-content:center; justify-content:center; gap:clamp(10px,2vw,30px); padding:clamp(20px,4vw,40px) clamp(22px,6vw,90px); }
+  .cat{ position:relative; cursor:pointer; background:none; border:0; color:inherit; font-family:"Fraunces",serif; line-height:.9; letter-spacing:-.02em; padding:6px 4px; opacity:0; transform:translateY(20px); animation:rise .9s var(--ease) forwards, float 7s ease-in-out infinite; transition:transform .5s var(--ease); }
+  .cat .word{ display:block; font-size:clamp(26px,4.4vw,56px); font-weight:400; color:#e9e7e0; transition:color .4s; }
+  .cat .teaser{ display:block; font-family:"Space Grotesk",sans-serif; font-weight:300; font-size:11.5px; letter-spacing:.03em; color:#7e8499; max-width:24ch; margin-top:6px; opacity:0; transform:translateY(-4px); transition:opacity .45s var(--ease), transform .45s var(--ease); line-height:1.4; }
+  .cat .glyph{ font-size:.5em; opacity:.4; vertical-align:super; margin-left:.15em; }
+  .cat:hover{ transform:translateY(-4px); }
+  .cat:hover .word{ color:#fff; }
+  .cat:hover .teaser{ opacity:1; transform:translateY(0); }
+  .cat:focus-visible{ outline:2px solid #fff; outline-offset:6px; border-radius:6px; }
+  .cat:nth-child(2){ margin-top:clamp(0px,4vw,46px); } .cat:nth-child(3){ margin-top:clamp(0px,-2vw,-22px); }
+  .cat:nth-child(4){ margin-top:clamp(0px,5vw,58px); } .cat:nth-child(6){ margin-top:clamp(0px,3vw,34px); }
+  .cat:nth-child(7){ margin-top:clamp(0px,-3vw,-30px); }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes float{ 0%,100%{ translate:0 0 } 50%{ translate:0 -10px } }
+  .hub-foot{ padding:0 clamp(22px,5vw,64px) clamp(18px,3vw,30px); display:flex; gap:20px; flex-wrap:wrap; font-size:12px; letter-spacing:.03em; color:#666c82; }
+  .hub-foot a{ text-decoration:none; transition:color .3s; } .hub-foot a:hover{ color:#cfd3e2; }
+  .hub-foot .spacer{ flex:1; }
+
+  /* ---------- shared chrome for world/notebook ---------- */
+  .pad{ padding:clamp(20px,4vw,42px) clamp(22px,6vw,80px) clamp(60px,8vw,100px); }
+  .top-back{ background:none; border:0; cursor:pointer; color:var(--w-dim); font-family:var(--w-util,"Space Grotesk"); font-size:13px; letter-spacing:.04em; display:inline-flex; align-items:center; gap:8px; padding:8px 2px; transition:color .3s, gap .3s; }
+  .top-back:hover{ color:var(--w-fg); gap:14px; }
+  .top-back:focus-visible{ outline:2px solid var(--w-accent); outline-offset:4px; border-radius:4px; }
+
+  .w-head{ margin-top:clamp(20px,6vw,64px); max-width:20ch; }
+  .w-eyebrow{ font-family:var(--w-util); font-size:12px; letter-spacing:.34em; text-transform:uppercase; color:var(--w-accent); margin-bottom:18px; }
+  .w-title{ font-family:var(--w-display); color:var(--w-fg); font-size:clamp(44px,9vw,118px); line-height:.92; font-weight:var(--w-title-weight,400); letter-spacing:var(--w-title-tracking,-.02em); }
+  .w-intro{ font-family:var(--w-body); color:var(--w-dim); font-size:clamp(16px,2.1vw,21px); line-height:1.55; max-width:46ch; margin-top:24px; font-weight:300; }
+
+  .entries{ margin-top:clamp(30px,6vw,64px); list-style:none; max-width:760px; }
+  .entry{ display:block; text-decoration:none; cursor:pointer; padding:22px 0; border-top:1px solid var(--w-line); transition:padding-left .4s var(--ease); }
+  .entries .entry:last-child{ border-bottom:1px solid var(--w-line); }
+  .entry:hover{ padding-left:18px; }
+  .entry-top{ display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .entry-title{ font-family:var(--w-body); color:var(--w-fg); font-size:clamp(19px,2.6vw,26px); line-height:1.2; font-weight:400; transition:color .3s; }
+  .entry:hover .entry-title{ color:var(--w-accent); }
+  .entry-meta{ font-family:var(--w-util); font-size:12px; letter-spacing:.05em; color:var(--w-dim); white-space:nowrap; }
+  .entry-cat{ font-family:var(--w-util); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--w-accent); border:1px solid var(--w-line); padding:3px 9px; border-radius:999px; }
+  .entry-cat.draft{ opacity:.55; }
+  .empty{ margin-top:40px; font-family:var(--w-body); color:var(--w-dim); font-size:18px; max-width:40ch; line-height:1.5; }
+  .empty a{ color:var(--w-accent); cursor:pointer; }
+
+  #stage[data-skin="terminal"] .entries{ font-family:"JetBrains Mono",monospace; }
+  #stage[data-skin="terminal"] .entry{ border:0; padding:7px 0; }
+  #stage[data-skin="terminal"] .entry::before{ content:"$ cat "; color:var(--w-accent); }
+  #stage[data-skin="terminal"] .entry-top{ display:inline-flex; }
+  #stage[data-skin="terminal"] .entry-title{ display:inline; font-size:15px; }
+  #stage[data-skin="terminal"] .entry-meta{ display:block; margin-top:2px; opacity:.6; }
+  #stage[data-skin="terminal"] .entry-cat{ display:none; }
+  #stage[data-skin="film"] .entry-title{ font-family:"Oswald",sans-serif; text-transform:uppercase; letter-spacing:.04em; font-weight:200; }
+
+  /* ---------- NOTEBOOK INDEX ---------- */
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:34px; }
+  .chip{ font-family:var(--w-util); font-size:12px; letter-spacing:.06em; text-transform:lowercase; color:var(--w-dim); background:none; border:1px solid var(--w-line); padding:6px 14px; border-radius:999px; cursor:pointer; transition:color .25s, border-color .25s, background .25s; }
+  .chip:hover{ color:var(--w-fg); }
+  .chip.active{ color:#0a0a12; background:var(--w-accent); border-color:var(--w-accent); }
+  .chip:focus-visible{ outline:2px solid var(--w-accent); outline-offset:3px; }
+
+  /* ---------- READER ---------- */
+  #reader .reader-inner{ max-width:660px; margin:0 auto; padding:clamp(24px,5vw,56px) clamp(22px,5vw,30px) clamp(80px,12vw,140px); }
+  .r-eyebrow{ font-family:var(--w-util); font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--w-accent); }
+  .r-title{ font-family:var(--w-display); color:var(--w-fg); font-size:clamp(34px,6vw,62px); line-height:1.04; font-weight:var(--w-title-weight,400); letter-spacing:var(--w-title-tracking,-.01em); margin-top:20px; }
+  .r-byline{ font-family:var(--w-util); font-size:13px; letter-spacing:.04em; color:var(--w-dim); margin-top:22px; padding-bottom:30px; border-bottom:1px solid var(--w-line); }
+  .r-body{ font-family:var(--w-body); color:var(--w-fg); font-size:clamp(17px,1.5vw,19.5px); line-height:1.75; margin-top:36px; }
+  .r-body p{ margin:0 0 1.5em; }
+  .r-body h2{ font-family:var(--w-display); font-weight:var(--w-title-weight,500); font-size:clamp(22px,3vw,30px); line-height:1.2; letter-spacing:-.01em; margin:2em 0 .7em; color:var(--w-fg); }
+  .r-body blockquote{ margin:2em 0; padding-left:22px; border-left:2px solid var(--w-accent); font-style:italic; color:var(--w-dim); font-size:1.08em; line-height:1.6; }
+  .r-body em{ font-style:italic; } .r-body strong{ font-weight:600; }
+  .r-end{ text-align:center; color:var(--w-accent); letter-spacing:1em; margin:3em 0; opacity:.7; font-size:13px; }
+  .r-foot{ display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
+  .r-foot button{ background:none; border:0; cursor:pointer; font-family:var(--w-util); font-size:13px; letter-spacing:.03em; color:var(--w-dim); display:inline-flex; align-items:center; gap:8px; padding:8px 0; transition:color .3s, gap .3s; }
+  .r-foot button:hover{ color:var(--w-accent); gap:14px; }
+
+  /* ---------- THEME TOKENS (on #stage so every view inherits) ---------- */
+  #stage[data-theme="notebook"], #stage[data-theme="hub"]{
+    --w-display:"Fraunces"; --w-body:"Spectral"; --w-util:"Space Grotesk";
+    --w-fg:#efeadf; --w-dim:#9aa0b5; --w-accent:#b9a6ff; --w-line:rgba(255,255,255,.12);
+    --w-title-weight:400;
+  }
+  #stage[data-theme="astrophysics"]{ --w-display:"Space Grotesk"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#eaf0ff; --w-dim:#8b94b8; --w-accent:#8fb4ff; --w-line:rgba(143,180,255,.16); --w-title-weight:300; --w-title-tracking:-.03em; }
+  #stage[data-theme="travel"]{ --w-display:"DM Serif Display"; --w-body:"Space Grotesk"; --w-util:"Space Grotesk"; --w-fg:#fff3e6; --w-dim:#e7b48c; --w-accent:#ff9d5c; --w-line:rgba(255,157,92,.22); }
+  #stage[data-theme="cinema"]{ --w-display:"Oswald"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#f2ede4; --w-dim:#9a8f7e; --w-accent:#e8c87a; --w-line:rgba(232,200,122,.18); --w-title-weight:200; --w-title-tracking:.01em; }
+  #stage[data-theme="coffee"]{ --w-display:"Fraunces"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#3a2417; --w-dim:#8a6f54; --w-accent:#a9603a; --w-line:rgba(110,74,46,.22); }
+  #stage[data-theme="sports"]{ --w-display:"Anton"; --w-body:"Space Grotesk"; --w-util:"Space Grotesk"; --w-fg:#f4fff4; --w-dim:#86c69a; --w-accent:#22d46f; --w-line:rgba(63,245,138,.18); --w-title-tracking:.01em; }
+  #stage[data-theme="tech"]{ --w-display:"JetBrains Mono"; --w-body:"JetBrains Mono"; --w-util:"JetBrains Mono"; --w-fg:#d7ffe6; --w-dim:#5f8f73; --w-accent:#36e27b; --w-line:rgba(54,226,123,.14); --w-title-weight:500; --w-title-tracking:-.01em; }
+  #stage[data-theme="perfumes"]{ --w-display:"Cormorant Garamond"; --w-body:"Cormorant Garamond"; --w-util:"Space Grotesk"; --w-fg:#3a2230; --w-dim:#9a7488; --w-accent:#c27aa0; --w-line:rgba(180,120,150,.22); --w-title-weight:500; }
+
+  #travel{ background:#0b0a12; }
+  #travel-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .travel-back{ position:fixed; top:18px; left:18px; z-index:9; background:rgba(10,10,18,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.16); color:#fff; cursor:pointer; font-family:"Space Grotesk",sans-serif; font-size:13px; letter-spacing:.04em; padding:9px 16px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; transition:gap .3s, background .3s; }
+  .travel-back:hover{ gap:14px; background:rgba(10,10,18,.82); }
+  .travel-back:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce){ .cat, #grain{ animation:none !important; } *{ transition-duration:.001ms !important; } }
+  @media (max-width:680px){
+    .constellation{ align-content:flex-start; padding-top:24px; gap:2px; }
+    .cat{ margin:0 !important; } .cat .teaser{ opacity:1; transform:none; }
+    .pad{ padding-left:22px; padding-right:22px; }
+  }
+</style>
+</head>
+<body data-ground="dark">
+<div id="stage" data-theme="hub" data-view="hub">
+  <div class="ground" id="ground"></div>
+  <canvas id="fx"></canvas>
+  <div id="vignette" class="overlay"></div>
+  <div id="scanlines" class="overlay"></div>
+  <div id="grain" class="overlay"></div>
+  <div id="letterbox-top"></div>
+  <div id="letterbox-bottom"></div>
+  <div id="progress"></div>
+
+  <div id="content">
+    <!-- HUB -->
+    <section id="hub" class="view show">
+      <div class="hub-head">
+        <h1 class="hub-name">Dhruv <em>Chopra</em></h1>
+        <p class="hub-sub">A thinking journal that happens to be public. Some of it fits a subject below. Some of it is just whatever I could not stop thinking about.</p>
+        <button class="hub-start" id="to-notebook">Read the notebook &nbsp;&rarr;</button>
+      </div>
+      <nav class="constellation" id="constellation" aria-label="Subjects"></nav>
+      <div class="hub-foot">
+        <a href="https://github.com/thisisdhruvchopra">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92">LinkedIn</a>
+        <a href="https://youtube.com/@dchopra92">YouTube</a>
+        <span class="spacer"></span><span>still awake</span>
+      </div>
+    </section>
+
+    <!-- WORLD (a subject) -->
+    <section id="world" class="view scroll pad" aria-live="polite">
+      <button class="top-back" data-back>&larr; the hub</button>
+      <header class="w-head">
+        <div class="w-eyebrow" id="w-eyebrow"></div>
+        <h2 class="w-title" id="w-title"></h2>
+        <p class="w-intro" id="w-intro"></p>
+      </header>
+      <ul class="entries" id="w-entries"></ul>
+    </section>
+
+    <!-- NOTEBOOK (everything) -->
+    <section id="notebook" class="view scroll pad">
+      <button class="top-back" data-back>&larr; the hub</button>
+      <header class="w-head" style="max-width:24ch">
+        <div class="w-eyebrow">The notebook</div>
+        <h2 class="w-title" style="font-size:clamp(40px,8vw,96px)">Everything</h2>
+        <p class="w-intro">Scattered on purpose, connected by curiosity. Filter by subject, or read it all as it came.</p>
+      </header>
+      <div class="chips" id="chips"></div>
+      <ul class="entries" id="n-entries" style="margin-top:34px"></ul>
+    </section>
+
+    <!-- READER -->
+    <section id="reader" class="view scroll">
+      <div class="reader-inner">
+        <article>
+          <div class="r-eyebrow" id="r-eyebrow"></div>
+          <h1 class="r-title" id="r-title"></h1>
+          <div class="r-byline" id="r-byline"></div>
+          <div class="r-body" id="r-body"></div>
+          <div class="r-end">✦ ✦ ✦</div>
+          <div class="r-foot">
+            <button data-back>&larr; back</button>
+            <button id="r-to-notebook">all writing &rarr;</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="travel" class="view">
+      <button class="travel-back" data-back>&larr; the hub</button>
+      <iframe id="travel-frame" title="Travel" loading="lazy"></iframe>
+    </section>
+  </div>
+</div>
+
+<script>
+/* ===================== THEME DATA ===================== */
+const THEMES = {
+  hub:{ ground:"radial-gradient(ellipse at 50% 38%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false },
+  notebook:{ ground:"radial-gradient(ellipse at 50% 30%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false, overlays:[] },
+  astrophysics:{ word:"Astrophysics", glyph:"\u2726", teaser:"the scale of things, and the silence after", eyebrow:"Field notes from very far away", intro:"The scale, the indifference of the cosmos, the sheer fact that we exist to ask about it.", ground:"radial-gradient(ellipse at 50% 30%, #11193a 0%, #070611 60%, #04030a 100%)", fx:"stars", skin:"", overlays:["vignette"], light:false },
+  travel:{ word:"Travel", glyph:"\u27B6", teaser:"five countries, one recurring feeling", eyebrow:"Notes from the road", intro:"I travel solo when I can. I'm convinced productive disorientation is the entire point of going.", ground:"linear-gradient(180deg,#1a2440 0%,#6b4a6b 42%,#c8654a 72%,#f0a35e 100%)", fx:"horizon", skin:"", overlays:[], light:false },
+  cinema:{ word:"Cinema", glyph:"\u274D", teaser:"I love film for the compression", eyebrow:"Reel one", intro:"I love cinema the way I love good writing: for the compression. How much a single frame can hold.", ground:"#050505", fx:"grain", skin:"film", overlays:["letterbox","grain","vignette"], light:false },
+  coffee:{ word:"Coffee", glyph:"\u2740", teaser:"too much of it. unrepentant.", eyebrow:"The morning ritual", intro:"I drink too much coffee. I've accepted this about myself.", ground:"radial-gradient(ellipse at 50% 120%, #e8d6bf 0%, #d8bd9c 45%, #b8966e 100%)", fx:"steam", skin:"", overlays:[], light:true },
+  sports:{ word:"Sports", glyph:"\u25F7", teaser:"irrational investment in results I can't control", eyebrow:"From the terraces", intro:"A footballer's irrational emotional investment in results I have no control over.", ground:"repeating-linear-gradient(90deg,#0a3d1f 0 80px,#0d4523 80px 160px)", fx:"sweep", skin:"", overlays:[], light:false },
+  tech:{ word:"Tech", glyph:"\u25AE", teaser:"how long can a lie hold a clever adversary?", eyebrow:"~/notebook/tech", intro:"How long can you keep a sophisticated adversary inside a digital fiction before they realise it isn't real?", ground:"#040806", fx:"matrix", skin:"terminal", overlays:["scanlines"], light:false },
+  perfumes:{ word:"Perfumes", glyph:"\u2756", teaser:"an astrophysicist's curiosity about scent", eyebrow:"Top, heart, base", intro:"What a molecule does to memory, and why a smell can move you before you've named it.", ground:"radial-gradient(ellipse at 30% 20%, #f3e3ec 0%, #e7cdd9 50%, #d3aabf 100%)", fx:"bloom", skin:"", overlays:[], light:true },
+};
+const ORDER = ["astrophysics","travel","cinema","coffee","sports","tech","perfumes"];
+const LABEL = { astrophysics:"Astrophysics", travel:"Travel", cinema:"Cinema", coffee:"Coffee", sports:"Sports", tech:"Tech", perfumes:"Perfumes", misc:"Misc" };
+
+/* ===================== POSTS (the mechanism) =====================
+   Add a post = add an object. cat is one of the seven, or "misc" for
+   anything that fits nothing. body is plain Markdown: ## heading,
+   > quote, *** divider, blank line between paragraphs, *italic* / **bold**. */
+const POSTS = [
+  {
+    slug:"on-scale-and-silence",
+    title:"On Scale and Silence: What the Cosmos Does to You",
+    cat:"astrophysics", date:"2025-06-20", mins:7,
+    body:`I was probably nine or ten the first time I really sat with the numbers. Not just heard them, actually sat with them, tried to make them feel real. The distance to Proxima Centauri: 4.24 light-years. The Milky Way: a hundred thousand light-years across. The observable universe: 93 billion light-years in diameter, containing roughly two trillion galaxies, each with hundreds of billions of stars.
+
+I remember the specific sensation that followed: a kind of pleasant vertigo, like the ground was further away than I'd thought. I didn't have a word for it at the time. I've been chasing it ever since.
+
+## The problem with comprehension
+
+The honest answer is that these numbers don't mean anything to human cognition. Not really. We're built to navigate at the scale of roughly one metre to maybe a hundred kilometres. Everything beyond that is mathematical abstraction wearing the costume of a number.
+
+When astrophysicists say the nearest star is 4.24 light-years away, they mean that light, which circles the entire Earth seven times in a single second, would still need more than four years of continuous travel to get there. And Proxima Centauri is the *nearest* star. Our immediate neighbour.
+
+> The universe is not indifferent to us. Indifference implies awareness. The universe is simply vast, and we are simply here, and neither of those facts has anything to say about the other.
+
+## Light as a time machine
+
+When you look at the night sky, you are not seeing the present. You're seeing a palimpsest of different pasts. The Moon as it was about 1.3 seconds ago. The Sun as it was eight minutes ago. The Andromeda Galaxy as it was 2.5 million years ago, before our species existed.
+
+Looking up is literally looking backward in time. The sky is a fossil record of light. I don't think I'll ever fully get over that.`
+  },
+  {
+    slug:"three-trips-five-countries",
+    title:"Three Trips, Five Countries, One Recurring Feeling",
+    cat:"travel", date:"2025-04-12", mins:8, draft:true,
+    body:`## Placeholder
+
+This entry is here to show the reading layout for a Travel post. When we repopulate this page, your real writing drops in as plain Markdown and renders exactly like this, themed to whichever subject the post belongs to.
+
+> Write whatever you want, whenever you want. If it fits a subject it lands there too. If it doesn't, it still lives in the notebook.`
+  },
+  {
+    slug:"why-i-started-writing",
+    title:"Why I Finally Started Writing",
+    cat:"misc", date:"2025-03-03", mins:5, draft:true,
+    body:`## A post that belongs to no subject
+
+This one is filed under *Misc*, which is where the random stuff lives. It still shows up in the notebook with everything else, it just doesn't sit under one of the seven worlds.
+
+That is the whole mechanism: a subject is optional. The notebook is the spine.`
+  },
+];
+
+/* ===================== BUILD HUB ===================== */
+const constellation = document.getElementById("constellation");
+ORDER.forEach((key,i)=>{
+  const t = THEMES[key];
+  const b = document.createElement("button");
+  b.className = "cat";
+  b.style.animationDelay = (.05 + i*.07)+"s, "+(i*.4)+"s";
+  b.innerHTML = `<span class="word">${t.word}<span class="glyph">${t.glyph}</span></span><span class="teaser">${t.teaser}</span>`;
+  b.addEventListener("click", ()=> navigate(key==="travel" ? {view:"travel"} : {view:"world", key}));
+  constellation.appendChild(b);
+});
+
+/* ===================== TINY MARKDOWN ===================== */
+function inline(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>"); }
+function md(src){
+  const lines = src.split("\n"); let html=""; let para=[]; let quote=[];
+  const flushP=()=>{ if(para.length){ html+="<p>"+inline(para.join(" "))+"</p>"; para=[]; } };
+  const flushQ=()=>{ if(quote.length){ html+="<blockquote>"+inline(quote.join(" "))+"</blockquote>"; quote=[]; } };
+  for(let raw of lines){
+    const line = raw.trim();
+    if(line===""){ flushP(); flushQ(); continue; }
+    if(line.startsWith("## ")){ flushP(); flushQ(); html+="<h2>"+inline(line.slice(3))+"</h2>"; continue; }
+    if(line==="***"||line==="---"){ flushP(); flushQ(); html+='<div class="r-end">\u2726 \u2726 \u2726</div>'; continue; }
+    if(line.startsWith("> ")){ flushP(); quote.push(line.slice(2)); continue; }
+    flushQ(); para.push(line);
+  }
+  flushP(); flushQ(); return html;
+}
+function prettyDate(iso){ const d=new Date(iso); return d.toLocaleString("en",{month:"short",year:"numeric"}); }
+
+/* ===================== VIEWS + ROUTING ===================== */
+const stage=document.getElementById("stage"), ground=document.getElementById("ground"), body=document.body;
+const views={ hub:document.getElementById("hub"), world:document.getElementById("world"), notebook:document.getElementById("notebook"), reader:document.getElementById("reader") };
+const overlayEls={ vignette:document.getElementById("vignette"), scanlines:document.getElementById("scanlines"), grain:document.getElementById("grain") };
+const lbTop=document.getElementById("letterbox-top"), lbBot=document.getElementById("letterbox-bottom");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let current={view:"hub"}; const stack=[];
+
+function setOverlays(list,view){
+  Object.values(overlayEls).forEach(el=>el.style.opacity=0);
+  lbTop.style.height="0"; lbBot.style.height="0";
+  if(view==="reader") return;
+  (list||[]).forEach(o=>{
+    if(o==="letterbox"){ const h="min(13vh,110px)"; lbTop.style.height=h; lbBot.style.height=h; }
+    else if(overlayEls[o]) overlayEls[o].style.opacity = (o==="grain"?.06:o==="scanlines"?.5:1);
+  });
+}
+function applyTheme(themeKey,view){
+  const t=THEMES[themeKey]||THEMES.notebook;
+  stage.dataset.theme=themeKey; stage.dataset.view=view;
+  stage.dataset.skin = (view==="world" && t.skin) ? t.skin : "";
+  ground.style.background=t.ground;
+  body.dataset.ground = t.light ? "light":"dark";
+  FX.set(t.fx, themeKey);
+  setOverlays(t.overlays, view);
+}
+function showView(name){ Object.entries(views).forEach(([k,el])=> el.classList.toggle("show", k===name)); }
+
+function navigate(state,{push=true}={}){ if(push && current) stack.push(current); current=state; render(state); }
+function back(){ const prev=stack.pop()||{view:"hub"}; current=prev; render(prev); }
+
+function render(state){
+  if(state.view==="hub"){ applyTheme("hub","hub"); showView("hub"); return; }
+  if(state.view==="travel"){ renderTravel(); return; }
+  if(state.view==="world"){ renderWorld(state.key); return; }
+  if(state.view==="notebook"){ renderNotebook(state.filter||"all"); return; }
+  if(state.view==="reader"){ renderReader(state.slug); return; }
+}
+function renderTravel(){
+  const f=document.getElementById("travel-frame");
+  if(!f.getAttribute("src")) f.setAttribute("src","travel.html");
+  stage.dataset.theme="travel"; stage.dataset.view="travel"; stage.dataset.skin="";
+  FX.set("hubstars","travel");
+  showView("travel");
+}
+
+function postCard(p){
+  const li=document.createElement("li");
+  const a=document.createElement("a"); a.className="entry";
+  a.innerHTML=`<span class="entry-top">
+      <span class="entry-title">${p.title}</span>
+      <span class="entry-cat ${p.draft?'draft':''}">${LABEL[p.cat]||'Misc'}</span>
+    </span>
+    <span class="entry-meta">${p.draft?'draft · ':''}${p.mins} min · ${prettyDate(p.date)}</span>`;
+  a.addEventListener("click", ()=> navigate({view:"reader", slug:p.slug}));
+  li.appendChild(a); return li;
+}
+
+function renderWorld(key){
+  const t=THEMES[key]; applyTheme(key,"world"); showView("world");
+  document.getElementById("w-eyebrow").textContent=t.eyebrow;
+  document.getElementById("w-title").textContent=t.word;
+  document.getElementById("w-intro").textContent=t.intro;
+  const ul=document.getElementById("w-entries"); ul.innerHTML="";
+  const list=POSTS.filter(p=>p.cat===key).sort((a,b)=>b.date.localeCompare(a.date));
+  if(!list.length){
+    const d=document.createElement("div"); d.className="empty";
+    d.innerHTML=`Nothing here yet. <a id="empty-nb">Read the notebook \u2192</a>`;
+    ul.appendChild(d);
+    d.querySelector("#empty-nb").addEventListener("click",()=>navigate({view:"notebook"}));
+  } else list.forEach(p=>ul.appendChild(postCard(p)));
+  views.world.scrollTop=0;
+}
+
+function renderNotebook(filter){
+  applyTheme("notebook","notebook"); showView("notebook");
+  const chips=document.getElementById("chips"); chips.innerHTML="";
+  const cats=["all",...ORDER,"misc"];
+  cats.forEach(c=>{
+    const b=document.createElement("button"); b.className="chip"+(c===filter?" active":"");
+    b.textContent = c==="all"?"all":(LABEL[c]||c).toLowerCase();
+    b.addEventListener("click",()=>{ current.filter=c; renderNotebook(c); });
+    chips.appendChild(b);
+  });
+  const ul=document.getElementById("n-entries"); ul.innerHTML="";
+  let list=[...POSTS].sort((a,b)=>b.date.localeCompare(a.date));
+  if(filter!=="all") list=list.filter(p=>p.cat===filter);
+  if(!list.length){ const d=document.createElement("div"); d.className="empty"; d.textContent="Nothing under this subject yet."; ul.appendChild(d); }
+  else list.forEach(p=>ul.appendChild(postCard(p)));
+  views.notebook.scrollTop=0;
+}
+
+function renderReader(slug){
+  const p=POSTS.find(x=>x.slug===slug); if(!p) return back();
+  const theme = (p.cat && p.cat!=="misc") ? p.cat : "notebook";
+  applyTheme(theme,"reader"); showView("reader");
+  document.getElementById("r-eyebrow").textContent = LABEL[p.cat]||"Misc";
+  document.getElementById("r-title").textContent = p.title;
+  document.getElementById("r-byline").textContent = `Dhruv Chopra · ${prettyDate(p.date)} · ${p.mins} min read`;
+  document.getElementById("r-body").innerHTML = md(p.body);
+  views.reader.scrollTop=0; updateProgress();
+}
+
+/* progress bar */
+const progress=document.getElementById("progress");
+function updateProgress(){
+  const el=views.reader; const max=el.scrollHeight-el.clientHeight;
+  progress.style.width = (max>0 ? (el.scrollTop/max*100):0)+"%";
+}
+views.reader.addEventListener("scroll", updateProgress);
+
+/* nav wiring */
+document.getElementById("to-notebook").addEventListener("click",()=>navigate({view:"notebook"}));
+document.getElementById("r-to-notebook").addEventListener("click",()=>navigate({view:"notebook"}));
+document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",back));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && current.view!=="hub") back(); });
+
+/* ===================== CANVAS FX ENGINE ===================== */
+const FX=(function(){
+  const canvas=document.getElementById("fx"), ctx=canvas.getContext("2d");
+  let W,H,dpr,mode="hubstars",themeKey=null,parts=[],mouse={x:.5,y:.5},t=0;
+  function resize(){ dpr=Math.min(devicePixelRatio||1,2); W=canvas.width=innerWidth*dpr; H=canvas.height=innerHeight*dpr; canvas.style.width=innerWidth+"px"; canvas.style.height=innerHeight+"px"; init(); }
+  addEventListener("resize",resize);
+  addEventListener("mousemove",e=>{ mouse.x=e.clientX/innerWidth; mouse.y=e.clientY/innerHeight; });
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  function steamP(){ return {x:rnd(W*.32,W*.68),y:H*rnd(.78,.98),vy:rnd(-.5,-1.1)*dpr,vx:rnd(-.15,.15)*dpr,r:rnd(18,46)*dpr,a:rnd(.02,.07),life:0,max:rnd(180,360)}; }
+  function init(){
+    parts=[];
+    if(mode==="stars"||mode==="hubstars"){ const n=Math.min(240,Math.floor(W*H/15000/dpr)); for(let i=0;i<n;i++) parts.push({x:Math.random()*W,y:Math.random()*H,z:rnd(.2,1),r:rnd(.3,1.6)*dpr,tw:rnd(0,6.28)}); }
+    else if(mode==="steam"){ for(let i=0;i<70;i++) parts.push(steamP()); }
+    else if(mode==="dust"){ for(let i=0;i<90;i++) parts.push({x:Math.random()*W,y:Math.random()*H,vx:rnd(-.05,.05)*dpr,vy:rnd(-.06,-.01)*dpr,r:rnd(.5,2)*dpr,a:rnd(.1,.5)}); }
+    else if(mode==="matrix"){ const cols=Math.floor(W/(14*dpr)); for(let i=0;i<cols;i++) parts.push({x:i*14*dpr,y:rnd(-H,0),sp:rnd(2,6)*dpr}); }
+    else if(mode==="bloom"){ parts=[]; }
+  }
+  function set(m,key){ if(m===mode&&key===themeKey) return; mode=m; themeKey=key||null; init(); }
+  const mchars="01<>{}#$/\\|=+abcdef".split("");
+  function frame(){
+    t+=.016; ctx.clearRect(0,0,W,H);
+    if(mode==="stars"||mode==="hubstars"){
+      const ox=mouse.x-.5, oy=mouse.y-.5;
+      if(mode==="stars"){ const g=ctx.createRadialGradient(W*.5,H*.32,0,W*.5,H*.32,H*.8); g.addColorStop(0,"rgba(70,90,180,.10)"); g.addColorStop(1,"rgba(0,0,0,0)"); ctx.fillStyle=g; ctx.fillRect(0,0,W,H); }
+      for(const p of parts){ const px=p.x+ox*120*p.z*dpr, py=p.y+oy*120*p.z*dpr, tw=.5+.5*Math.sin(t*2+p.tw); ctx.globalAlpha=(.25+.75*p.z)*tw; ctx.fillStyle=mode==="stars"?"#cfe0ff":"#d8dcff"; ctx.beginPath(); ctx.arc(px,py,p.r,0,6.28); ctx.fill(); }
+      ctx.globalAlpha=1;
+    } else if(mode==="steam"){
+      ctx.globalCompositeOperation="screen";
+      for(const p of parts){ p.life++; p.y+=p.vy; p.x+=p.vx+Math.sin(p.life*.03)*.3*dpr; p.r*=1.004; const fade=Math.sin(Math.min(p.life/p.max,1)*Math.PI); ctx.globalAlpha=p.a*fade; const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r); g.addColorStop(0,"rgba(255,250,240,1)"); g.addColorStop(1,"rgba(255,250,240,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); if(p.life>p.max) Object.assign(p,steamP()); }
+      ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+    } else if(mode==="dust"){
+      for(const p of parts){ p.x+=p.vx; p.y+=p.vy; if(p.y<-5){p.y=H+5;p.x=Math.random()*W;} ctx.globalAlpha=p.a; ctx.fillStyle="#6b5a38"; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); }
+      ctx.globalAlpha=1;
+    } else if(mode==="matrix"){
+      ctx.font=(12*dpr)+"px JetBrains Mono, monospace";
+      for(const c of parts){ c.y+=c.sp; if(c.y>H) c.y=rnd(-H*.5,0); for(let k=0;k<6;k++){ const yy=c.y-k*14*dpr; if(yy<0||yy>H) continue; ctx.globalAlpha=k===0?.85:.12/k; ctx.fillStyle=k===0?"#7dffb0":"#1f6b3f"; ctx.fillText(mchars[(Math.random()*mchars.length)|0],c.x,yy); } }
+      ctx.globalAlpha=1;
+    } else if(mode==="bloom"){
+      ctx.globalCompositeOperation="screen";
+      if(Math.random()<.04) parts.push({x:mouse.x*W+rnd(-60,60)*dpr,y:mouse.y*H+rnd(-60,60)*dpr,r:1,vr:rnd(.6,1.6)*dpr,a:rnd(.05,.12),hue:rnd(310,350)});
+      for(let i=parts.length-1;i>=0;i--){ const p=parts[i]; p.r+=p.vr; p.a*=.985; ctx.globalAlpha=p.a; const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r); g.addColorStop(0,`hsla(${p.hue},60%,80%,1)`); g.addColorStop(1,`hsla(${p.hue},60%,80%,0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); if(p.a<.01) parts.splice(i,1); }
+      ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+    } else if(mode==="horizon"){
+      const bands=[{y:.62,c:"rgba(40,30,70,.5)",sp:8},{y:.74,c:"rgba(150,70,80,.45)",sp:14},{y:.86,c:"rgba(220,120,70,.5)",sp:22}];
+      bands.forEach((b,i)=>{ ctx.fillStyle=b.c; ctx.beginPath(); const yB=H*b.y; ctx.moveTo(0,H); for(let x=0;x<=W;x+=10*dpr){ const y=yB+Math.sin((x/120/dpr)+(t*b.sp*.05)+i)*10*dpr; ctx.lineTo(x,y);} ctx.lineTo(W,H); ctx.closePath(); ctx.fill(); });
+      const sg=ctx.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,H*.28); sg.addColorStop(0,"rgba(255,220,150,.5)"); sg.addColorStop(1,"rgba(255,220,150,0)"); ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(W*.5,H*.5,H*.28,0,6.28); ctx.fill();
+    } else if(mode==="sweep"){
+      const x=((t*.18)%1.4-.2)*W; const g=ctx.createLinearGradient(x-200*dpr,0,x+200*dpr,0); g.addColorStop(0,"rgba(63,245,138,0)"); g.addColorStop(.5,"rgba(63,245,138,.08)"); g.addColorStop(1,"rgba(63,245,138,0)"); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  resize(); if(reduce) frame(); else requestAnimationFrame(frame);
+  return { set };
+})();
+
+/* boot */
+render({view:"hub"});
+</script>
+</body>
+</html>
