@@ -1,303 +1,540 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dhruv Chopra</title>
-  <meta name="description" content="Dhruv Chopra — astrophysics, travel, cinema, coffee, football, history, perfumes, tech. From the top of the world." />
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* ════════════════════════════════════════════════════════
-       HOME — rooftop over the concrete jungle, after midnight.
-       Looking out from the top of the world.
-       ════════════════════════════════════════════════════════ */
-    body { background:#05060d; color:#e7e7f2; font-weight:400; overflow-x:hidden; }
-    .site-nav { --nav-accent:#ff9e6b; background: rgba(6,7,14,0.5); }
-    .site-footer { --foot-accent:#ff9e6b; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhruv Chopra — the notebook</title>
+<meta name="description" content="A thinking journal that happens to be public. Astrophysics, travel, cinema, coffee, sports, tech, perfumes — and whatever else.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@300;400;500;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Oswald:wght@200;400;600&family=JetBrains+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{ --ease: cubic-bezier(.16,1,.3,1); }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{ background:#07070c; color:#eee; overflow:hidden; font-family:"Space Grotesk",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
 
-    .city {
-      position: relative;
-      min-height: 100vh;
-      overflow: hidden;
-      isolation: isolate;
-      display: flex;
-      flex-direction: column;
-    }
+  #stage{ position:fixed; inset:0; }
+  #fx{ position:fixed; inset:0; z-index:0; display:block; transition:opacity .8s var(--ease); }
+  #stage[data-view="reader"] #fx{ opacity:.2; }
+  #stage[data-view="notebook"] #fx{ opacity:.6; }
 
-    /* — the night sky with city light-pollution glow on the horizon — */
-    .city__sky {
-      position: absolute; inset: 0; z-index: -6;
-      background: linear-gradient(180deg,
-        #05060d 0%, #090c1c 28%, #161535 50%,
-        #392345 68%, #7a3a48 82%, #c9683f 93%, #f0a35a 100%);
-    }
-    /* haze bloom over the skyline */
-    .city__haze {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 55%; z-index: -5;
-      background: radial-gradient(120% 80% at 50% 100%, rgba(255,150,80,.40) 0%, rgba(255,120,90,.12) 35%, transparent 70%);
-      filter: blur(6px);
-    }
-    /* stars */
-    .city__stars { position: absolute; inset: 0 0 50% 0; z-index: -6;
-      background-image:
-        radial-gradient(1.3px 1.3px at 12% 18%, rgba(255,255,255,.9), transparent),
-        radial-gradient(1px 1px at 28% 8%, rgba(255,255,255,.6), transparent),
-        radial-gradient(1.2px 1.2px at 47% 22%, rgba(210,224,255,.8), transparent),
-        radial-gradient(1px 1px at 63% 12%, rgba(255,255,255,.6), transparent),
-        radial-gradient(1.4px 1.4px at 78% 26%, rgba(255,255,255,.7), transparent),
-        radial-gradient(1px 1px at 88% 9%, rgba(255,255,255,.5), transparent),
-        radial-gradient(1px 1px at 38% 30%, rgba(255,255,255,.5), transparent);
-      animation: starsTwinkle 7s ease-in-out infinite alternate;
-    }
-    @keyframes starsTwinkle { from{opacity:.45} to{opacity:.9} }
-    /* the moon */
-    .city__moon {
-      position: absolute; top: 11%; right: 14%; width: 80px; height: 80px; z-index: -6;
-      border-radius: 50%;
-      background: radial-gradient(circle at 38% 38%, #fdf6e3 0%, #e9dcc0 55%, #d8c69e 100%);
-      box-shadow: 0 0 60px 14px rgba(253,246,227,.25);
-    }
-    @media (prefers-reduced-motion: reduce){ .city__stars{ animation:none } }
+  .ground{ position:fixed; inset:0; z-index:0; transition:background .9s var(--ease); }
 
-    /* skyline layers (filled by JS) sit on the floor */
-    .skyline { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; z-index: -4; }
-    .skyline--far  { bottom: 14%; opacity: .55; filter: blur(.4px); z-index: -5; }
-    .skyline--mid  { bottom: 7%;  opacity: .8;  z-index: -4; }
-    .skyline--near { bottom: 0;   z-index: -3; }
+  .overlay{ position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0; transition:opacity .8s var(--ease); }
+  #vignette{ background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.85) 100%); }
+  #scanlines{ background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.18) 3px, rgba(0,0,0,0) 4px); mix-blend-mode:multiply; }
+  #grain{ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); animation:grainshift .4s steps(2) infinite; }
+  @keyframes grainshift{ 0%{transform:translate(0,0)} 50%{transform:translate(-2%,1%)} 100%{transform:translate(1%,-1%)} }
+  #letterbox-top,#letterbox-bottom{ position:fixed; left:0; right:0; height:0; background:#000; z-index:6; transition:height .9s var(--ease); pointer-events:none; }
+  #letterbox-top{ top:0; } #letterbox-bottom{ bottom:0; }
 
-    .bldg { flex: 0 0 auto; position: relative; }
-    .skyline--far .bldg  { background: #15182c; }
-    .skyline--mid .bldg  {
-      background-color:#0b0e1a;
-      background-image:
-        radial-gradient(rgba(255,200,130,.5) .8px, transparent 1.5px),
-        radial-gradient(rgba(180,205,255,.32) .8px, transparent 1.5px);
-      background-size: 11px 15px, 11px 15px;
-      background-position: 0 0, 6px 8px;
-    }
-    .skyline--near .bldg {
-      background-color:#06070e;
-      background-image:
-        radial-gradient(rgba(255,196,120,.6) .9px, transparent 1.6px),
-        radial-gradient(rgba(170,198,255,.34) .9px, transparent 1.6px);
-      background-size: 10px 14px, 10px 14px;
-      background-position: 0 0, 5px 7px;
-      box-shadow: inset 0 -40px 50px rgba(0,0,0,.7);
-    }
-    /* rooftop water-tanks / antennae for silhouette character */
-    .bldg::after {
-      content:''; position:absolute; bottom:100%; width:3px; height:0;
-      background:#06070e;
-    }
-    .bldg.antenna::after { left: 50%; height: 22px; box-shadow: 0 -2px 0 0 #ff4d4d; }
+  #progress{ position:fixed; top:0; left:0; height:2px; width:0; background:var(--w-accent,#b9a6ff); z-index:8; transition:width .1s linear, opacity .4s; opacity:0; }
+  #stage[data-view="reader"] #progress{ opacity:1; }
 
-    /* rooftop foreground you're standing on */
-    .rooftop {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 90px; z-index: -2;
-      background: linear-gradient(180deg, #04050a 0%, #020306 100%);
-      border-top: 1px solid rgba(120,140,200,.12);
-    }
-    .rooftop::before { /* parapet railing */
-      content:''; position:absolute; top:-14px; left:0; right:0; height:14px;
-      background:
-        repeating-linear-gradient(90deg, #0a0c14 0 4px, transparent 4px 46px);
-      opacity:.8;
-    }
-    .vignette { position:absolute; inset:0; z-index:-1; pointer-events:none;
-      background: radial-gradient(120% 90% at 50% 30%, transparent 55%, rgba(0,0,0,.55) 100%); }
+  #content{ position:relative; z-index:3; height:100%; }
+  .view{ position:absolute; inset:0; opacity:0; pointer-events:none; transform:scale(.99); transition:opacity .6s var(--ease), transform .8s var(--ease); }
+  .view.show{ opacity:1; pointer-events:auto; transform:scale(1); }
+  .scroll{ overflow-y:auto; -webkit-overflow-scrolling:touch; }
 
-    /* ── overlay content ── */
-    .city__content {
-      position: relative; z-index: 2;
-      max-width: var(--wide); width: 100%;
-      margin: 0 auto; padding: 5rem 1.75rem 0;
-      flex: 1; display: flex; flex-direction: column; justify-content: center;
-    }
-    .city__eyebrow {
-      font-family: var(--grotesk); font-size: .72rem; letter-spacing: .34em;
-      text-transform: uppercase; color: #ff9e6b; margin-bottom: 1.5rem;
-    }
-    .city__name {
-      font-family: var(--fancy);
-      font-size: clamp(3.4rem, 11vw, 8.5rem);
-      font-weight: 600; line-height: .88; letter-spacing: -.03em;
-      color: #fff; margin-bottom: 1.4rem;
-      text-shadow: 0 2px 40px rgba(0,0,0,.6), 0 0 70px rgba(255,158,107,.15);
-    }
-    .city__tagline {
-      font-family: var(--fancy); font-style: italic;
-      font-size: clamp(1.05rem, 2.6vw, 1.5rem); color: #cfd0e2;
-      max-width: 620px; margin-bottom: 3rem;
-      text-shadow: 0 1px 20px rgba(0,0,0,.6);
-    }
+  /* ---------- HUB ---------- */
+  #hub{ display:flex; flex-direction:column; }
+  .hub-head{ padding:clamp(20px,4vw,46px) clamp(22px,5vw,64px) 0; }
+  .hub-name{ font-family:"Fraunces",serif; font-weight:400; font-size:clamp(34px,6vw,72px); letter-spacing:-.02em; line-height:.95; color:#f4f1ea; }
+  .hub-name em{ font-style:italic; font-weight:300; opacity:.7; }
+  .hub-sub{ margin-top:14px; max-width:36ch; color:#9aa0b5; font-size:clamp(13px,1.4vw,15px); line-height:1.5; font-weight:300; }
+  .hub-start{ margin-top:18px; display:inline-flex; gap:8px; align-items:center; font-size:12.5px; letter-spacing:.04em; color:#cfd3e2; text-decoration:none; cursor:pointer; background:none; border:0; border-bottom:1px solid rgba(255,255,255,.18); padding:0 0 2px; transition:color .3s, border-color .3s, gap .3s; }
+  .hub-start:hover{ color:#fff; border-color:#fff; gap:14px; }
+  .hub-start:focus-visible{ outline:2px solid #fff; outline-offset:6px; border-radius:4px; }
+  .constellation{ flex:1; position:relative; display:flex; flex-wrap:wrap; align-content:center; justify-content:center; gap:clamp(10px,2vw,30px); padding:clamp(20px,4vw,40px) clamp(22px,6vw,90px); }
+  .cat{ position:relative; cursor:pointer; background:none; border:0; color:inherit; text-decoration:none; font-family:"Fraunces",serif; line-height:.9; letter-spacing:-.02em; padding:6px 4px; opacity:0; transform:translateY(20px); animation:rise .9s var(--ease) forwards, float 7s ease-in-out infinite; transition:transform .5s var(--ease); }
+  .cat .word{ display:block; font-size:clamp(26px,4.4vw,56px); font-weight:400; color:#e9e7e0; transition:color .4s; }
+  .cat .teaser{ display:block; font-family:"Space Grotesk",sans-serif; font-weight:300; font-size:11.5px; letter-spacing:.03em; color:#7e8499; max-width:24ch; margin-top:6px; opacity:0; transform:translateY(-4px); transition:opacity .45s var(--ease), transform .45s var(--ease); line-height:1.4; }
+  .cat .glyph{ font-size:.5em; opacity:.4; vertical-align:super; margin-left:.15em; }
+  .cat:hover{ transform:translateY(-4px); }
+  .cat:hover .word, .cat:focus-visible .word{ color:#fff; }
+  .cat:hover .teaser, .cat:focus-visible .teaser{ opacity:1; transform:translateY(0); }
+  .cat:focus-visible{ outline:2px solid #fff; outline-offset:6px; border-radius:6px; }
+  .cat:nth-child(2){ margin-top:clamp(0px,4vw,46px); } .cat:nth-child(3){ margin-top:clamp(0px,-2vw,-22px); }
+  .cat:nth-child(4){ margin-top:clamp(0px,5vw,58px); } .cat:nth-child(6){ margin-top:clamp(0px,3vw,34px); }
+  .cat:nth-child(7){ margin-top:clamp(0px,-3vw,-30px); }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes float{ 0%,100%{ translate:0 0 } 50%{ translate:0 -10px } }
+  .hub-foot{ padding:0 clamp(22px,5vw,64px) clamp(18px,3vw,30px); display:flex; gap:20px; flex-wrap:wrap; font-size:12px; letter-spacing:.03em; color:#666c82; }
+  .hub-foot a{ text-decoration:none; transition:color .3s; } .hub-foot a:hover{ color:#cfd3e2; }
+  .hub-foot a:focus-visible{ outline:2px solid #cfd3e2; outline-offset:4px; border-radius:3px; }
+  .hub-foot .spacer{ flex:1; }
 
-    /* worlds — glowing pill badges */
-    .worlds { display: flex; flex-wrap: wrap; gap: .55rem; }
-    .world {
-      font-family: var(--grotesk);
-      font-size: clamp(.8rem, 1.35vw, .95rem); font-weight: 600;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--c);
-      padding: .5rem 1.15rem;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--c) 50%, transparent);
-      background: color-mix(in srgb, var(--c) 10%, transparent);
-      backdrop-filter: blur(6px);
-      transition: background .22s ease, box-shadow .22s ease, transform .18s ease, color .18s ease;
-    }
-    .world:hover {
-      color: #fff;
-      background: color-mix(in srgb, var(--c) 26%, transparent);
-      border-color: var(--c);
-      box-shadow: 0 0 16px color-mix(in srgb, var(--c) 50%, transparent),
-                  0 3px 10px rgba(0,0,0,.45);
-      transform: translateY(-2px);
-    }
+  /* ---------- shared chrome for world/notebook ---------- */
+  .pad{ padding:clamp(20px,4vw,42px) clamp(22px,6vw,80px) clamp(60px,8vw,100px); }
+  .top-back{ background:none; border:0; cursor:pointer; color:var(--w-dim); font-family:var(--w-util,"Space Grotesk"); font-size:13px; letter-spacing:.04em; display:inline-flex; align-items:center; gap:8px; padding:8px 2px; transition:color .3s, gap .3s; text-decoration:none; }
+  .top-back:hover{ color:var(--w-fg); gap:14px; }
+  .top-back:focus-visible{ outline:2px solid var(--w-accent); outline-offset:4px; border-radius:4px; }
 
-    .city__hint {
-      font-family: var(--grotesk); font-size: .72rem; letter-spacing: .18em;
-      text-transform: uppercase; color: #6b6f86; margin: 3.5rem 0 4.5rem;
-    }
+  .w-head{ margin-top:clamp(20px,6vw,64px); max-width:20ch; }
+  .w-eyebrow{ font-family:var(--w-util); font-size:12px; letter-spacing:.34em; text-transform:uppercase; color:var(--w-accent); margin-bottom:18px; }
+  .w-title{ font-family:var(--w-display); color:var(--w-fg); font-size:clamp(44px,9vw,118px); line-height:.92; font-weight:var(--w-title-weight,400); letter-spacing:var(--w-title-tracking,-.02em); }
+  .w-intro{ font-family:var(--w-body); color:var(--w-dim); font-size:clamp(16px,2.1vw,21px); line-height:1.55; max-width:46ch; margin-top:24px; font-weight:300; }
 
-    /* ── recent writing strip ── */
-    .home-writing { background:#070810; padding: 4.5rem 0 4rem; position: relative; z-index: 2; }
-    .home-writing__head { max-width: var(--wide); margin: 0 auto 2rem; padding: 0 1.75rem; display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
-    .home-writing__head h2 { font-family: var(--fancy); font-size: clamp(1.8rem,4vw,2.6rem); font-weight:600; color:#fff; }
-    .home-writing__head a { font-family: var(--grotesk); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:#ff9e6b; border-bottom:1px solid rgba(255,158,107,.4); padding-bottom:2px; }
-    .wlist { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem; list-style: none; }
-    .wlist li { border-top: 1px solid rgba(255,255,255,.08); }
-    .wlist li:last-child { border-bottom: 1px solid rgba(255,255,255,.08); }
-    .wlist a { display:grid; grid-template-columns:1fr auto; gap:.3rem 1.5rem; padding:1.4rem 0; align-items:center; transition: padding-left .25s; }
-    .wlist a:hover { padding-left: 1rem; }
-    .wlist__title { font-family: var(--fancy); font-size:1.25rem; color:#ece9f6; transition:color .25s; }
-    .wlist a:hover .wlist__title { color:#ff9e6b; }
-    .wlist__meta { font-family: var(--grotesk); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:#7a7990; }
-    .wlist__date { font-family: var(--grotesk); font-size:.8rem; color:#7a7990; justify-self:end; }
+  .entries{ margin-top:clamp(30px,6vw,64px); list-style:none; max-width:760px; }
+  .entry{ display:block; text-decoration:none; cursor:pointer; padding:22px 0; border-top:1px solid var(--w-line); transition:padding-left .4s var(--ease); }
+  .entries .entry:last-child{ border-bottom:1px solid var(--w-line); }
+  .entry:hover{ padding-left:18px; }
+  .entry:focus-visible{ outline:2px solid var(--w-accent); outline-offset:2px; border-radius:6px; }
+  .entry-top{ display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+  .entry-title{ font-family:var(--w-body); color:var(--w-fg); font-size:clamp(19px,2.6vw,26px); line-height:1.2; font-weight:400; transition:color .3s; }
+  .entry:hover .entry-title, .entry:focus-visible .entry-title{ color:var(--w-accent); }
+  .entry-meta{ font-family:var(--w-util); font-size:12px; letter-spacing:.05em; color:var(--w-dim); white-space:nowrap; }
+  .entry-cat{ font-family:var(--w-util); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--w-accent); border:1px solid var(--w-line); padding:3px 9px; border-radius:999px; }
+  .entry-cat.draft{ opacity:.55; }
+  .empty{ margin-top:40px; font-family:var(--w-body); color:var(--w-dim); font-size:18px; max-width:40ch; line-height:1.5; }
+  .empty a{ color:var(--w-accent); cursor:pointer; text-decoration:none; border-bottom:1px solid currentColor; }
 
-    @media (max-width: 640px){
-      .city__content{ padding-top: 3.5rem; }
-      .city__moon{ width:54px; height:54px; right:10%; }
-      .worlds{ gap:.4rem; }
-    }
-  </style>
+  #stage[data-skin="terminal"] .entries{ font-family:"JetBrains Mono",monospace; }
+  #stage[data-skin="terminal"] .entry{ border:0; padding:7px 0; }
+  #stage[data-skin="terminal"] .entry::before{ content:"$ cat "; color:var(--w-accent); }
+  #stage[data-skin="terminal"] .entry-top{ display:inline-flex; }
+  #stage[data-skin="terminal"] .entry-title{ display:inline; font-size:15px; }
+  #stage[data-skin="terminal"] .entry-meta{ display:block; margin-top:2px; opacity:.6; }
+  #stage[data-skin="terminal"] .entry-cat{ display:none; }
+  #stage[data-skin="film"] .entry-title{ font-family:"Oswald",sans-serif; text-transform:uppercase; letter-spacing:.04em; font-weight:200; }
+
+  /* ---------- NOTEBOOK INDEX ---------- */
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:34px; }
+  .chip{ font-family:var(--w-util); font-size:12px; letter-spacing:.06em; text-transform:lowercase; color:var(--w-dim); background:none; border:1px solid var(--w-line); padding:6px 14px; border-radius:999px; cursor:pointer; transition:color .25s, border-color .25s, background .25s; }
+  .chip:hover{ color:var(--w-fg); }
+  .chip.active{ color:#0a0a12; background:var(--w-accent); border-color:var(--w-accent); }
+  .chip:focus-visible{ outline:2px solid var(--w-accent); outline-offset:3px; }
+
+  /* ---------- READER ---------- */
+  #reader .reader-inner{ max-width:660px; margin:0 auto; padding:clamp(24px,5vw,56px) clamp(22px,5vw,30px) clamp(80px,12vw,140px); }
+  .r-eyebrow{ font-family:var(--w-util); font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--w-accent); }
+  .r-title{ font-family:var(--w-display); color:var(--w-fg); font-size:clamp(34px,6vw,62px); line-height:1.04; font-weight:var(--w-title-weight,400); letter-spacing:var(--w-title-tracking,-.01em); margin-top:20px; }
+  .r-byline{ font-family:var(--w-util); font-size:13px; letter-spacing:.04em; color:var(--w-dim); margin-top:22px; padding-bottom:30px; border-bottom:1px solid var(--w-line); }
+  .r-body{ font-family:var(--w-body); color:var(--w-fg); font-size:clamp(17px,1.5vw,19.5px); line-height:1.75; margin-top:36px; }
+  .r-body p{ margin:0 0 1.5em; }
+  .r-body h2{ font-family:var(--w-display); font-weight:var(--w-title-weight,500); font-size:clamp(22px,3vw,30px); line-height:1.2; letter-spacing:-.01em; margin:2em 0 .7em; color:var(--w-fg); }
+  .r-body blockquote{ margin:2em 0; padding-left:22px; border-left:2px solid var(--w-accent); font-style:italic; color:var(--w-dim); font-size:1.08em; line-height:1.6; }
+  .r-body em{ font-style:italic; } .r-body strong{ font-weight:600; }
+  .r-end{ text-align:center; color:var(--w-accent); letter-spacing:1em; margin:3em 0; opacity:.7; font-size:13px; }
+  .r-foot{ display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
+  .r-foot a{ background:none; border:0; cursor:pointer; font-family:var(--w-util); font-size:13px; letter-spacing:.03em; color:var(--w-dim); display:inline-flex; align-items:center; gap:8px; padding:8px 0; transition:color .3s, gap .3s; text-decoration:none; }
+  .r-foot a:hover{ color:var(--w-accent); gap:14px; }
+  .r-foot a:focus-visible{ outline:2px solid var(--w-accent); outline-offset:3px; border-radius:4px; }
+
+  /* ---------- THEME TOKENS (on #stage so every view inherits) ---------- */
+  #stage[data-theme="notebook"], #stage[data-theme="hub"]{
+    --w-display:"Fraunces"; --w-body:"Spectral"; --w-util:"Space Grotesk";
+    --w-fg:#efeadf; --w-dim:#9aa0b5; --w-accent:#b9a6ff; --w-line:rgba(255,255,255,.12);
+    --w-title-weight:400;
+  }
+  #stage[data-theme="astrophysics"]{ --w-display:"Space Grotesk"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#eaf0ff; --w-dim:#8b94b8; --w-accent:#8fb4ff; --w-line:rgba(143,180,255,.16); --w-title-weight:300; --w-title-tracking:-.03em; }
+  #stage[data-theme="travel"]{ --w-display:"DM Serif Display"; --w-body:"Space Grotesk"; --w-util:"Space Grotesk"; --w-fg:#fff3e6; --w-dim:#e7b48c; --w-accent:#ff9d5c; --w-line:rgba(255,157,92,.22); }
+  #stage[data-theme="cinema"]{ --w-display:"Oswald"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#f2ede4; --w-dim:#9a8f7e; --w-accent:#e8c87a; --w-line:rgba(232,200,122,.18); --w-title-weight:200; --w-title-tracking:.01em; }
+  #stage[data-theme="coffee"]{ --w-display:"Fraunces"; --w-body:"Spectral"; --w-util:"Space Grotesk"; --w-fg:#3a2417; --w-dim:#8a6f54; --w-accent:#a9603a; --w-line:rgba(110,74,46,.22); }
+  #stage[data-theme="sports"]{ --w-display:"Anton"; --w-body:"Space Grotesk"; --w-util:"Space Grotesk"; --w-fg:#f4fff4; --w-dim:#86c69a; --w-accent:#22d46f; --w-line:rgba(63,245,138,.18); --w-title-tracking:.01em; }
+  #stage[data-theme="tech"]{ --w-display:"JetBrains Mono"; --w-body:"JetBrains Mono"; --w-util:"JetBrains Mono"; --w-fg:#d7ffe6; --w-dim:#5f8f73; --w-accent:#36e27b; --w-line:rgba(54,226,123,.14); --w-title-weight:500; --w-title-tracking:-.01em; }
+  #stage[data-theme="perfumes"]{ --w-display:"Cormorant Garamond"; --w-body:"Cormorant Garamond"; --w-util:"Space Grotesk"; --w-fg:#3a2230; --w-dim:#9a7488; --w-accent:#c27aa0; --w-line:rgba(180,120,150,.22); --w-title-weight:500; }
+
+  /* ---------- BESPOKE PAGE SLOT ---------- */
+  #bespoke{ background:#0b0a12; }
+  #bespoke-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .bespoke-back{ position:fixed; top:18px; left:18px; z-index:9; background:rgba(10,10,18,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.16); color:#fff; cursor:pointer; font-family:"Space Grotesk",sans-serif; font-size:13px; letter-spacing:.04em; padding:9px 16px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; transition:gap .3s, background .3s; text-decoration:none; }
+  .bespoke-back:hover{ gap:14px; background:rgba(10,10,18,.82); }
+  .bespoke-back:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+
+  @media (prefers-reduced-motion: reduce){ .cat, #grain{ animation:none !important; } *{ transition-duration:.001ms !important; } }
+  @media (max-width:680px){
+    .constellation{ align-content:flex-start; padding-top:24px; gap:2px; }
+    .cat{ margin:0 !important; } .cat .teaser{ opacity:1; transform:none; }
+    .pad{ padding-left:22px; padding-right:22px; }
+  }
+</style>
 </head>
-<body>
+<body data-ground="dark">
+<div id="stage" data-theme="hub" data-view="hub">
+  <div class="ground" id="ground"></div>
+  <canvas id="fx"></canvas>
+  <div id="vignette" class="overlay"></div>
+  <div id="scanlines" class="overlay"></div>
+  <div id="grain" class="overlay"></div>
+  <div id="letterbox-top"></div>
+  <div id="letterbox-bottom"></div>
+  <div id="progress"></div>
 
-  <nav class="site-nav">
-    <div class="site-nav__inner">
-      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
-      <ul class="site-nav__links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="blog.html">Writing</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <main>
-    <section class="city">
-      <div class="city__sky" aria-hidden="true"></div>
-      <div class="city__stars" aria-hidden="true"></div>
-      <div class="city__moon" aria-hidden="true"></div>
-      <div class="city__haze" aria-hidden="true"></div>
-
-      <div class="skyline skyline--far"  aria-hidden="true"></div>
-      <div class="skyline skyline--mid"  aria-hidden="true"></div>
-      <div class="skyline skyline--near" aria-hidden="true"></div>
-      <div class="rooftop" aria-hidden="true"></div>
-      <div class="vignette" aria-hidden="true"></div>
-
-      <div class="city__content">
-        <p class="city__eyebrow">Kanpur, India · from the top of the world</p>
-        <h1 class="city__name">Dhruv<br>Chopra</h1>
-        <p class="city__tagline">Curious about everything. Opinionated about most. This is the city of everything I can't stop thinking about — wander it.</p>
-
-        <nav class="worlds" aria-label="Explore">
-          <a class="world" href="astrophysics.html" style="--c:#8ea2ff">Astrophysics</a>
-          <a class="world" href="travel.html"       style="--c:#ffb45a">Travel</a>
-          <a class="world" href="cinema.html"        style="--c:#ff5a5a">Cinema</a>
-          <a class="world" href="coffee.html"        style="--c:#d39a5e">Coffee</a>
-          <a class="world" href="sports.html"        style="--c:#ff4d2e">Sports</a>
-          <a class="world" href="tech.html"          style="--c:#51e0c9">Tech</a>
-          <a class="world" href="perfumes.html"      style="--c:#ff8fc7">Perfumes</a>
-          <a class="world" href="history.html"       style="--c:#e3c074">History</a>
-        </nav>
-
-        <p class="city__hint">Some are essays. Some are just photos and moments.</p>
+  <div id="content">
+    <!-- HUB -->
+    <section id="hub" class="view show">
+      <div class="hub-head">
+        <h1 class="hub-name">Dhruv <em>Chopra</em></h1>
+        <p class="hub-sub">A thinking journal that happens to be public. Some of it fits a subject below. Some of it is just whatever I could not stop thinking about.</p>
+        <a class="hub-start" href="#/notebook">Read the notebook &nbsp;&rarr;</a>
+      </div>
+      <nav class="constellation" id="constellation" aria-label="Subjects"></nav>
+      <div class="hub-foot">
+        <a href="https://github.com/thisisdhruvchopra">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92">LinkedIn</a>
+        <a href="https://youtube.com/@dchopra92">YouTube</a>
+        <span class="spacer"></span><span>still awake</span>
       </div>
     </section>
 
-    <section class="home-writing">
-      <div class="home-writing__head">
-        <h2>From the notebook</h2>
-        <a href="blog.html">All writing →</a>
-      </div>
-      <ul class="wlist">
-        <li>
-          <a href="posts/on-scale-and-silence.html">
-            <span class="wlist__title">On Scale and Silence: What the Cosmos Does to You</span>
-            <span class="wlist__meta">Astrophysics · 7 min</span>
-            <span class="wlist__date">Jun 2025</span>
-          </a>
-        </li>
-        <li>
-          <a href="posts/three-trips-five-countries.html">
-            <span class="wlist__title">Three Trips, Five Countries, One Recurring Feeling</span>
-            <span class="wlist__meta">Travel · 8 min</span>
-            <span class="wlist__date">Apr 2025</span>
-          </a>
-        </li>
-        <li>
-          <a href="posts/hello-world.html">
-            <span class="wlist__title">Why I Finally Started Writing</span>
-            <span class="wlist__meta">Personal · 5 min</span>
-            <span class="wlist__date">Mar 2025</span>
-          </a>
-        </li>
-      </ul>
+    <!-- WORLD (a generic subject) -->
+    <section id="world" class="view scroll pad" aria-live="polite">
+      <a class="top-back" href="#/" data-back>&larr; the hub</a>
+      <header class="w-head">
+        <div class="w-eyebrow" id="w-eyebrow"></div>
+        <h2 class="w-title" id="w-title"></h2>
+        <p class="w-intro" id="w-intro"></p>
+      </header>
+      <ul class="entries" id="w-entries"></ul>
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <div class="site-footer__inner">
-      <p class="site-footer__copy">© 2025 Dhruv Chopra · still awake</p>
-      <div class="site-footer__links">
-        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://youtube.com/@dchopra92" target="_blank" rel="noopener">YouTube</a>
-        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+    <!-- NOTEBOOK (everything) -->
+    <section id="notebook" class="view scroll pad">
+      <a class="top-back" href="#/" data-back>&larr; the hub</a>
+      <header class="w-head" style="max-width:24ch">
+        <div class="w-eyebrow">The notebook</div>
+        <h2 class="w-title" style="font-size:clamp(40px,8vw,96px)">Everything</h2>
+        <p class="w-intro">Scattered on purpose, connected by curiosity. Filter by subject, or read it all as it came.</p>
+      </header>
+      <div class="chips" id="chips"></div>
+      <ul class="entries" id="n-entries" style="margin-top:34px"></ul>
+    </section>
+
+    <!-- READER -->
+    <section id="reader" class="view scroll">
+      <div class="reader-inner">
+        <article>
+          <div class="r-eyebrow" id="r-eyebrow"></div>
+          <h1 class="r-title" id="r-title"></h1>
+          <div class="r-byline" id="r-byline"></div>
+          <div class="r-body" id="r-body"></div>
+          <div class="r-end">&#10022; &#10022; &#10022;</div>
+          <div class="r-foot">
+            <a href="#/" data-back>&larr; back</a>
+            <a href="#/notebook">all writing &rarr;</a>
+          </div>
+        </article>
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <script>
-    /* Build a layered skyline. No animation — just a still, lit city. */
-    (function () {
-      function build(sel, count, minH, maxH, minW, maxW, antennaChance) {
-        var layer = document.querySelector(sel);
-        if (!layer) return;
-        var frag = document.createDocumentFragment();
-        for (var i = 0; i < count; i++) {
-          var b = document.createElement('div');
-          b.className = 'bldg';
-          var h = Math.round(minH + Math.random() * (maxH - minH));
-          var w = Math.round(minW + Math.random() * (maxW - minW));
-          b.style.height = h + 'px';
-          b.style.width  = w + 'px';
-          if (Math.random() < antennaChance) b.classList.add('antenna');
-          frag.appendChild(b);
-        }
-        layer.appendChild(frag);
-      }
-      var w = window.innerWidth;
-      var farN  = Math.ceil(w / 46);
-      var midN  = Math.ceil(w / 60);
-      var nearN = Math.ceil(w / 78);
-      build('.skyline--far',  farN,  60, 170, 26, 50, 0);
-      build('.skyline--mid',  midN,  90, 240, 34, 70, 0.12);
-      build('.skyline--near', nearN, 130, 330, 46, 96, 0.18);
-    })();
-  </script>
+    <!-- BESPOKE PAGE SLOT (Travel, and future immersive pages) -->
+    <section id="bespoke" class="view">
+      <a class="bespoke-back" href="#/" data-back>&larr; the hub</a>
+      <iframe id="bespoke-frame" title="Immersive page" loading="lazy"></iframe>
+    </section>
+  </div>
+</div>
 
+<script>
+/* ===================== THEME DATA ===================== */
+const THEMES = {
+  hub:{ ground:"radial-gradient(ellipse at 50% 38%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false },
+  notebook:{ ground:"radial-gradient(ellipse at 50% 30%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false, overlays:[] },
+  astrophysics:{ word:"Astrophysics", glyph:"✦", teaser:"the scale of things, and the silence after", eyebrow:"Field notes from very far away", intro:"The scale, the indifference of the cosmos, the sheer fact that we exist to ask about it.", ground:"radial-gradient(ellipse at 50% 30%, #11193a 0%, #070611 60%, #04030a 100%)", fx:"stars", skin:"", overlays:["vignette"], light:false },
+  travel:{ word:"Travel", glyph:"➶", teaser:"five countries, one recurring feeling", eyebrow:"Notes from the road", intro:"I travel solo when I can. I'm convinced productive disorientation is the entire point of going.", ground:"linear-gradient(180deg,#1a2440 0%,#6b4a6b 42%,#c8654a 72%,#f0a35e 100%)", fx:"horizon", skin:"", overlays:[], light:false },
+  cinema:{ word:"Cinema", glyph:"❍", teaser:"I love film for the compression", eyebrow:"Reel one", intro:"I love cinema the way I love good writing: for the compression. How much a single frame can hold.", ground:"#050505", fx:"grain", skin:"film", overlays:["letterbox","grain","vignette"], light:false },
+  coffee:{ word:"Coffee", glyph:"❀", teaser:"too much of it. unrepentant.", eyebrow:"The morning ritual", intro:"I drink too much coffee. I've accepted this about myself.", ground:"radial-gradient(ellipse at 50% 120%, #e8d6bf 0%, #d8bd9c 45%, #b8966e 100%)", fx:"steam", skin:"", overlays:[], light:true },
+  sports:{ word:"Sports", glyph:"◷", teaser:"irrational investment in results I can't control", eyebrow:"From the terraces", intro:"A footballer's irrational emotional investment in results I have no control over.", ground:"repeating-linear-gradient(90deg,#0a3d1f 0 80px,#0d4523 80px 160px)", fx:"sweep", skin:"", overlays:[], light:false },
+  tech:{ word:"Tech", glyph:"▮", teaser:"how long can a lie hold a clever adversary?", eyebrow:"~/notebook/tech", intro:"How long can you keep a sophisticated adversary inside a digital fiction before they realise it isn't real?", ground:"#040806", fx:"matrix", skin:"terminal", overlays:["scanlines"], light:false },
+  perfumes:{ word:"Perfumes", glyph:"❖", teaser:"an astrophysicist's curiosity about scent", eyebrow:"Top, heart, base", intro:"What a molecule does to memory, and why a smell can move you before you've named it.", ground:"radial-gradient(ellipse at 30% 20%, #f3e3ec 0%, #e7cdd9 50%, #d3aabf 100%)", fx:"bloom", skin:"", overlays:[], light:true },
+};
+const ORDER = ["astrophysics","travel","cinema","coffee","sports","tech","perfumes"];
+const LABEL = { astrophysics:"Astrophysics", travel:"Travel", cinema:"Cinema", coffee:"Coffee", sports:"Sports", tech:"Tech", perfumes:"Perfumes", misc:"Misc" };
+
+/* ===================== BESPOKE PAGE REGISTRY =====================
+   A subject with an entry here opens its dedicated immersive page in the
+   bespoke slot. Any subject NOT listed here falls back to the generic
+   notebook-filtered "world" view. Drop new pages in as: key: "file.html". */
+const BESPOKE = { travel: "travel.html" };
+
+/* ===================== POSTS (loaded from markdown) =====================
+   Add a post: drop posts/<slug>.md (frontmatter + body) and add its slug
+   to posts/manifest.json. Frontmatter: title, cat (one of the seven or
+   "misc"), date (YYYY-MM-DD), mins, draft. Body is plain Markdown:
+   ## heading, > quote, *** divider, blank line between paragraphs,
+   *italic* and **bold**. */
+let POSTS = [];
+
+function parseFrontmatter(text){
+  const m = text.match(/^﻿?---\s*\n([\s\S]*?)\n---\s*\n?/);
+  let meta = {}, body = text;
+  if(m){
+    body = text.slice(m[0].length);
+    m[1].split("\n").forEach(line=>{
+      const i = line.indexOf(":");
+      if(i>0){ meta[line.slice(0,i).trim()] = line.slice(i+1).trim().replace(/^["']|["']$/g,""); }
+    });
+  }
+  return { meta, body };
+}
+
+async function loadPosts(){
+  let slugs = [];
+  try{
+    const r = await fetch("posts/manifest.json", {cache:"no-cache"});
+    if(r.ok) slugs = await r.json();
+  }catch(e){ /* file:// or missing manifest -> empty notebook */ }
+  const loaded = await Promise.all(slugs.map(async slug=>{
+    try{
+      const r = await fetch("posts/"+slug+".md", {cache:"no-cache"});
+      if(!r.ok) return null;
+      const { meta, body } = parseFrontmatter(await r.text());
+      return {
+        slug,
+        title: meta.title || slug,
+        cat: meta.cat || "misc",
+        date: meta.date || "",
+        mins: parseInt(meta.mins,10) || 1,
+        draft: meta.draft === "true" || meta.draft === true,
+        body
+      };
+    }catch(e){ return null; }
+  }));
+  POSTS = loaded.filter(Boolean).sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+}
+
+/* ===================== TINY MARKDOWN ===================== */
+function inline(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>"); }
+function md(src){
+  const lines = src.split("\n"); let html=""; let para=[]; let quote=[];
+  const flushP=()=>{ if(para.length){ html+="<p>"+inline(para.join(" "))+"</p>"; para=[]; } };
+  const flushQ=()=>{ if(quote.length){ html+="<blockquote>"+inline(quote.join(" "))+"</blockquote>"; quote=[]; } };
+  for(let raw of lines){
+    const line = raw.trim();
+    if(line===""){ flushP(); flushQ(); continue; }
+    if(line.startsWith("## ")){ flushP(); flushQ(); html+="<h2>"+inline(line.slice(3))+"</h2>"; continue; }
+    if(line==="***"||line==="---"){ flushP(); flushQ(); html+='<div class="r-end">✦ ✦ ✦</div>'; continue; }
+    if(line.startsWith("> ")){ flushP(); quote.push(line.slice(2)); continue; }
+    flushQ(); para.push(line);
+  }
+  flushP(); flushQ(); return html;
+}
+function prettyDate(iso){ if(!iso) return ""; const d=new Date(iso); return isNaN(d)? iso : d.toLocaleString("en",{month:"short",year:"numeric"}); }
+
+/* ===================== ELEMENTS ===================== */
+const stage=document.getElementById("stage"), ground=document.getElementById("ground"), bodyEl=document.body;
+const views={ hub:document.getElementById("hub"), world:document.getElementById("world"), notebook:document.getElementById("notebook"), reader:document.getElementById("reader"), bespoke:document.getElementById("bespoke") };
+const overlayEls={ vignette:document.getElementById("vignette"), scanlines:document.getElementById("scanlines"), grain:document.getElementById("grain") };
+const lbTop=document.getElementById("letterbox-top"), lbBot=document.getElementById("letterbox-bottom");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let current = { view:"hub" };
+
+/* ===================== BUILD HUB ===================== */
+const constellation = document.getElementById("constellation");
+ORDER.forEach((key,i)=>{
+  const t = THEMES[key];
+  const a = document.createElement("a");
+  a.className = "cat";
+  a.href = hashFor(BESPOKE[key] ? {view:"bespoke",key} : {view:"world",key});
+  a.style.animationDelay = (.05 + i*.07)+"s, "+(i*.4)+"s";
+  a.innerHTML = `<span class="word">${t.word}<span class="glyph">${t.glyph}</span></span><span class="teaser">${t.teaser}</span>`;
+  constellation.appendChild(a);
+});
+
+/* ===================== THEME / OVERLAYS ===================== */
+function setOverlays(list,view){
+  Object.values(overlayEls).forEach(el=>el.style.opacity=0);
+  lbTop.style.height="0"; lbBot.style.height="0";
+  if(view==="reader") return;
+  (list||[]).forEach(o=>{
+    if(o==="letterbox"){ const h="min(13vh,110px)"; lbTop.style.height=h; lbBot.style.height=h; }
+    else if(overlayEls[o]) overlayEls[o].style.opacity = (o==="grain"?.06:o==="scanlines"?.5:1);
+  });
+}
+function applyTheme(themeKey,view){
+  const t=THEMES[themeKey]||THEMES.notebook;
+  stage.dataset.theme=themeKey; stage.dataset.view=view;
+  stage.dataset.skin = (view==="world" && t.skin) ? t.skin : "";
+  ground.style.background=t.ground;
+  bodyEl.dataset.ground = t.light ? "light":"dark";
+  FX.set(t.fx, themeKey);
+  setOverlays(t.overlays, view);
+}
+function showView(name){ Object.entries(views).forEach(([k,el])=> el.classList.toggle("show", k===name)); }
+
+/* ===================== HASH ROUTING ===================== */
+function hashFor(state){
+  if(!state || state.view==="hub") return "#/";
+  if(state.view==="notebook") return "#/notebook"+(state.filter && state.filter!=="all" ? "/"+state.filter : "");
+  if(state.view==="reader") return "#/post/"+state.slug;
+  if(state.view==="world" || state.view==="bespoke") return "#/"+state.key;
+  return "#/";
+}
+function parseHash(){
+  const h = location.hash.replace(/^#\/?/,"");
+  if(!h) return {view:"hub"};
+  const seg = h.split("/");
+  if(seg[0]==="notebook") return {view:"notebook", filter:seg[1]||"all"};
+  if(seg[0]==="post") return {view:"reader", slug:seg[1]};
+  const key = seg[0];
+  if(THEMES[key] && key!=="hub" && key!=="notebook") return BESPOKE[key] ? {view:"bespoke",key} : {view:"world",key};
+  return {view:"hub"};
+}
+function navigate(state){
+  const h = hashFor(state);
+  if(location.hash === h) route();      // same hash -> re-render (e.g. filter change to "all")
+  else location.hash = h;               // triggers hashchange -> route()
+}
+function back(){
+  if(history.length > 1) history.back();
+  else navigate({view:"hub"});
+}
+addEventListener("hashchange", route);
+function route(){ render(parseHash()); }
+
+/* ===================== RENDER ===================== */
+function render(state){
+  current = state;
+  if(state.view==="hub"){ applyTheme("hub","hub"); showView("hub"); return; }
+  if(state.view==="bespoke"){ renderBespoke(state.key); return; }
+  if(state.view==="world"){ renderWorld(state.key); return; }
+  if(state.view==="notebook"){ renderNotebook(state.filter||"all"); return; }
+  if(state.view==="reader"){ renderReader(state.slug); return; }
+}
+
+function renderBespoke(key){
+  const src = BESPOKE[key]; if(!src){ navigate({view:"world",key}); return; }
+  const f=document.getElementById("bespoke-frame");
+  if(f.getAttribute("src")!==src) f.setAttribute("src",src);
+  f.setAttribute("title", LABEL[key]||key);
+  stage.dataset.theme=key; stage.dataset.view="bespoke"; stage.dataset.skin="";
+  ground.style.background=(THEMES[key]||THEMES.notebook).ground;
+  FX.set("hubstars",key);
+  setOverlays([], "bespoke");
+  showView("bespoke");
+}
+
+function postCard(p){
+  const li=document.createElement("li");
+  const a=document.createElement("a"); a.className="entry"; a.href=hashFor({view:"reader",slug:p.slug});
+  a.innerHTML=`<span class="entry-top">
+      <span class="entry-title">${p.title}</span>
+      <span class="entry-cat ${p.draft?'draft':''}">${LABEL[p.cat]||'Misc'}</span>
+    </span>
+    <span class="entry-meta">${p.draft?'in the notebook · ':''}${p.mins} min · ${prettyDate(p.date)}</span>`;
+  li.appendChild(a); return li;
+}
+
+function renderWorld(key){
+  const t=THEMES[key]; if(!t){ navigate({view:"hub"}); return; }
+  applyTheme(key,"world"); showView("world");
+  document.getElementById("w-eyebrow").textContent=t.eyebrow;
+  document.getElementById("w-title").textContent=t.word;
+  document.getElementById("w-intro").textContent=t.intro;
+  const ul=document.getElementById("w-entries"); ul.innerHTML="";
+  const list=POSTS.filter(p=>p.cat===key);
+  if(!list.length){
+    const d=document.createElement("div"); d.className="empty";
+    d.innerHTML=`Nothing here yet. <a href="#/notebook">Read the notebook →</a>`;
+    ul.appendChild(d);
+  } else list.forEach(p=>ul.appendChild(postCard(p)));
+  views.world.scrollTop=0;
+}
+
+function renderNotebook(filter){
+  applyTheme("notebook","notebook"); showView("notebook");
+  const chips=document.getElementById("chips"); chips.innerHTML="";
+  const cats=["all",...ORDER,"misc"];
+  cats.forEach(c=>{
+    const b=document.createElement("button"); b.className="chip"+(c===filter?" active":"");
+    b.textContent = c==="all"?"all":(LABEL[c]||c).toLowerCase();
+    b.addEventListener("click",()=> navigate({view:"notebook", filter:c}));
+    chips.appendChild(b);
+  });
+  const ul=document.getElementById("n-entries"); ul.innerHTML="";
+  let list=[...POSTS];
+  if(filter!=="all") list=list.filter(p=>p.cat===filter);
+  if(!list.length){ const d=document.createElement("div"); d.className="empty"; d.textContent="Nothing under this subject yet."; ul.appendChild(d); }
+  else list.forEach(p=>ul.appendChild(postCard(p)));
+  views.notebook.scrollTop=0;
+}
+
+function renderReader(slug){
+  const p=POSTS.find(x=>x.slug===slug); if(!p) return back();
+  const theme = (p.cat && p.cat!=="misc" && THEMES[p.cat]) ? p.cat : "notebook";
+  applyTheme(theme,"reader"); showView("reader");
+  document.getElementById("r-eyebrow").textContent = LABEL[p.cat]||"Misc";
+  document.getElementById("r-title").textContent = p.title;
+  document.getElementById("r-byline").textContent = `Dhruv Chopra · ${p.draft?"in the notebook · ":""}${prettyDate(p.date)} · ${p.mins} min read`;
+  document.getElementById("r-body").innerHTML = md(p.body);
+  views.reader.scrollTop=0; updateProgress();
+}
+
+/* progress bar */
+const progress=document.getElementById("progress");
+function updateProgress(){
+  const el=views.reader; const max=el.scrollHeight-el.clientHeight;
+  progress.style.width = (max>0 ? (el.scrollTop/max*100):0)+"%";
+}
+views.reader.addEventListener("scroll", updateProgress);
+
+/* nav wiring: data-back controls step back through history */
+document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",e=>{ e.preventDefault(); back(); }));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape" && current.view!=="hub") back(); });
+
+/* ===================== CANVAS FX ENGINE ===================== */
+const FX=(function(){
+  const canvas=document.getElementById("fx"), ctx=canvas.getContext("2d");
+  let W,H,dpr,mode="hubstars",themeKey=null,parts=[],mouse={x:.5,y:.5},t=0;
+  function resize(){ dpr=Math.min(devicePixelRatio||1,2); W=canvas.width=innerWidth*dpr; H=canvas.height=innerHeight*dpr; canvas.style.width=innerWidth+"px"; canvas.style.height=innerHeight+"px"; init(); }
+  addEventListener("resize",resize);
+  addEventListener("mousemove",e=>{ mouse.x=e.clientX/innerWidth; mouse.y=e.clientY/innerHeight; });
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  function steamP(){ return {x:rnd(W*.32,W*.68),y:H*rnd(.78,.98),vy:rnd(-.5,-1.1)*dpr,vx:rnd(-.15,.15)*dpr,r:rnd(18,46)*dpr,a:rnd(.02,.07),life:0,max:rnd(180,360)}; }
+  function init(){
+    parts=[];
+    if(mode==="stars"||mode==="hubstars"){ const n=Math.min(240,Math.floor(W*H/15000/dpr)); for(let i=0;i<n;i++) parts.push({x:Math.random()*W,y:Math.random()*H,z:rnd(.2,1),r:rnd(.3,1.6)*dpr,tw:rnd(0,6.28)}); }
+    else if(mode==="steam"){ for(let i=0;i<70;i++) parts.push(steamP()); }
+    else if(mode==="dust"){ for(let i=0;i<90;i++) parts.push({x:Math.random()*W,y:Math.random()*H,vx:rnd(-.05,.05)*dpr,vy:rnd(-.06,-.01)*dpr,r:rnd(.5,2)*dpr,a:rnd(.1,.5)}); }
+    else if(mode==="matrix"){ const cols=Math.floor(W/(14*dpr)); for(let i=0;i<cols;i++) parts.push({x:i*14*dpr,y:rnd(-H,0),sp:rnd(2,6)*dpr}); }
+    else if(mode==="bloom"){ parts=[]; }
+  }
+  function set(m,key){ if(m===mode&&key===themeKey) return; mode=m; themeKey=key||null; init(); }
+  const mchars="01<>{}#$/\\|=+abcdef".split("");
+  function frame(){
+    t+=.016; ctx.clearRect(0,0,W,H);
+    if(mode==="stars"||mode==="hubstars"){
+      const ox=mouse.x-.5, oy=mouse.y-.5;
+      if(mode==="stars"){ const g=ctx.createRadialGradient(W*.5,H*.32,0,W*.5,H*.32,H*.8); g.addColorStop(0,"rgba(70,90,180,.10)"); g.addColorStop(1,"rgba(0,0,0,0)"); ctx.fillStyle=g; ctx.fillRect(0,0,W,H); }
+      for(const p of parts){ const px=p.x+ox*120*p.z*dpr, py=p.y+oy*120*p.z*dpr, tw=.5+.5*Math.sin(t*2+p.tw); ctx.globalAlpha=(.25+.75*p.z)*tw; ctx.fillStyle=mode==="stars"?"#cfe0ff":"#d8dcff"; ctx.beginPath(); ctx.arc(px,py,p.r,0,6.28); ctx.fill(); }
+      ctx.globalAlpha=1;
+    } else if(mode==="steam"){
+      ctx.globalCompositeOperation="screen";
+      for(const p of parts){ p.life++; p.y+=p.vy; p.x+=p.vx+Math.sin(p.life*.03)*.3*dpr; p.r*=1.004; const fade=Math.sin(Math.min(p.life/p.max,1)*Math.PI); ctx.globalAlpha=p.a*fade; const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r); g.addColorStop(0,"rgba(255,250,240,1)"); g.addColorStop(1,"rgba(255,250,240,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); if(p.life>p.max) Object.assign(p,steamP()); }
+      ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+    } else if(mode==="dust"){
+      for(const p of parts){ p.x+=p.vx; p.y+=p.vy; if(p.y<-5){p.y=H+5;p.x=Math.random()*W;} ctx.globalAlpha=p.a; ctx.fillStyle="#6b5a38"; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); }
+      ctx.globalAlpha=1;
+    } else if(mode==="matrix"){
+      ctx.font=(12*dpr)+"px JetBrains Mono, monospace";
+      for(const c of parts){ c.y+=c.sp; if(c.y>H) c.y=rnd(-H*.5,0); for(let k=0;k<6;k++){ const yy=c.y-k*14*dpr; if(yy<0||yy>H) continue; ctx.globalAlpha=k===0?.85:.12/k; ctx.fillStyle=k===0?"#7dffb0":"#1f6b3f"; ctx.fillText(mchars[(Math.random()*mchars.length)|0],c.x,yy); } }
+      ctx.globalAlpha=1;
+    } else if(mode==="bloom"){
+      ctx.globalCompositeOperation="screen";
+      if(Math.random()<.04) parts.push({x:mouse.x*W+rnd(-60,60)*dpr,y:mouse.y*H+rnd(-60,60)*dpr,r:1,vr:rnd(.6,1.6)*dpr,a:rnd(.05,.12),hue:rnd(310,350)});
+      for(let i=parts.length-1;i>=0;i--){ const p=parts[i]; p.r+=p.vr; p.a*=.985; ctx.globalAlpha=p.a; const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r); g.addColorStop(0,`hsla(${p.hue},60%,80%,1)`); g.addColorStop(1,`hsla(${p.hue},60%,80%,0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fill(); if(p.a<.01) parts.splice(i,1); }
+      ctx.globalCompositeOperation="source-over"; ctx.globalAlpha=1;
+    } else if(mode==="horizon"){
+      const bands=[{y:.62,c:"rgba(40,30,70,.5)",sp:8},{y:.74,c:"rgba(150,70,80,.45)",sp:14},{y:.86,c:"rgba(220,120,70,.5)",sp:22}];
+      bands.forEach((b,i)=>{ ctx.fillStyle=b.c; ctx.beginPath(); const yB=H*b.y; ctx.moveTo(0,H); for(let x=0;x<=W;x+=10*dpr){ const y=yB+Math.sin((x/120/dpr)+(t*b.sp*.05)+i)*10*dpr; ctx.lineTo(x,y);} ctx.lineTo(W,H); ctx.closePath(); ctx.fill(); });
+      const sg=ctx.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,H*.28); sg.addColorStop(0,"rgba(255,220,150,.5)"); sg.addColorStop(1,"rgba(255,220,150,0)"); ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(W*.5,H*.5,H*.28,0,6.28); ctx.fill();
+    } else if(mode==="sweep"){
+      const x=((t*.18)%1.4-.2)*W; const g=ctx.createLinearGradient(x-200*dpr,0,x+200*dpr,0); g.addColorStop(0,"rgba(63,245,138,0)"); g.addColorStop(.5,"rgba(63,245,138,.08)"); g.addColorStop(1,"rgba(63,245,138,0)"); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  resize(); if(reduce) frame(); else requestAnimationFrame(frame);
+  return { set };
+})();
+
+/* ===================== BOOT ===================== */
+(async function(){
+  await loadPosts();
+  route();                 // render whatever the current hash points to
+})();
+</script>
 </body>
 </html>

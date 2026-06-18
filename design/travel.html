@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel — Dhruv Chopra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ease:cubic-bezier(.16,1,.3,1);
+    --bg:#161d3a; --surf:#1e2647; --fg:#fff3e6; --accent:#ff9d5c; --ink:#ff9d5c;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Space Grotesk",system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+    transition:background 1.1s var(--ease), color 1.1s var(--ease);
+    overflow-x:hidden;
+  }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 clamp(20px,5vw,56px); }
+  .mono{ font-family:"JetBrains Mono",monospace; }
+  a{ color:inherit; }
+
+  /* ---------- HERO ---------- */
+  .hero{ min-height:88vh; display:flex; flex-direction:column; justify-content:center; position:relative;
+    background:linear-gradient(180deg,#1a2440 0%,#6b4a6b 46%,#c8654a 76%,#f0a35e 100%); }
+  .hero .sun{ position:absolute; inset:0; background:radial-gradient(circle at 50% 64%, rgba(255,221,150,.5), transparent 42%); pointer-events:none; }
+  .hero-inner{ position:relative; }
+  .eyebrow{ font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.34em; text-transform:uppercase; color:#ffd9a8; margin-bottom:22px; }
+  .hero h1{ font-family:"DM Serif Display",serif; font-size:clamp(56px,13vw,168px); line-height:.86; color:#fff6ea; letter-spacing:-.02em; }
+  .hero h1 em{ font-style:italic; opacity:.85; }
+  .lede{ margin-top:26px; max-width:40ch; font-size:clamp(16px,2vw,20px); line-height:1.55; color:#ffe7cf; font-weight:300; }
+  .stats{ display:flex; gap:clamp(20px,4vw,48px); margin-top:38px; flex-wrap:wrap; }
+  .stat b{ font-family:"DM Serif Display",serif; font-size:clamp(30px,4vw,46px); display:block; line-height:1; color:#fff6ea; }
+  .stat span{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#ffd9a8; }
+  .scrollcue{ position:absolute; bottom:26px; left:50%; transform:translateX(-50%); font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em; color:#ffe7cf; opacity:.8; animation:bob 2.4s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translate(-50%,0) } 50%{ transform:translate(-50%,7px) } }
+
+  /* ---------- SECTION SHELL ---------- */
+  .sec{ padding:clamp(70px,12vw,140px) 0; }
+  .sec-label{ font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); margin-bottom:30px; }
+  h2.big{ font-family:"DM Serif Display",serif; font-size:clamp(34px,6vw,68px); line-height:1; letter-spacing:-.02em; }
+
+  /* ---------- PASSPORT ---------- */
+  .passport-sec{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .passport-sec p.sub{ max-width:44ch; color:var(--fg); opacity:.72; line-height:1.55; margin:14px auto 0; font-weight:300; }
+  .passport-stage{ perspective:1800px; margin-top:54px; width:min(640px,92vw); }
+  .passport{ position:relative; width:100%; aspect-ratio:1.46/1; transform-style:preserve-3d; }
+  .pp-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:14px; overflow:hidden; }
+  /* cover */
+  .pp-cover{ z-index:3; background:
+      radial-gradient(120% 140% at 30% 20%, #243365 0%, #16224a 55%, #0f1838 100%);
+      box-shadow:0 40px 90px -30px rgba(0,0,0,.7), inset 0 0 0 1px rgba(201,168,74,.25);
+      transition:transform 1s var(--ease); transform-origin:left center; cursor:pointer; }
+  .passport.open .pp-cover{ transform:rotateY(-162deg); box-shadow:0 30px 70px -30px rgba(0,0,0,.6); }
+  .pp-cover .gold{ color:#cbb472; }
+  .pp-emblem{ width:84px; height:84px; margin:0 auto 20px; border:2px solid #c9a84a; border-radius:50%; display:grid; place-items:center; }
+  .pp-cover .ct{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; }
+  .pp-cover .top{ font-family:"JetBrains Mono",monospace; letter-spacing:.42em; font-size:12px; color:#cbb472; }
+  .pp-cover .word{ font-family:"DM Serif Display",serif; font-size:clamp(26px,4.4vw,40px); letter-spacing:.12em; color:#e7d59a; margin-top:auto; }
+  .pp-cover .hint{ position:absolute; bottom:18px; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em; color:#9fb0d8; opacity:.8; }
+  /* inside */
+  .pp-inside{ z-index:1; background:linear-gradient(120deg,#efe7d2,#e7dcc2); display:grid; grid-template-columns:1fr 1fr; }
+  .pp-page{ position:relative; padding:18px; }
+  .pp-page.left{ border-right:1px dashed rgba(120,90,50,.35); }
+  .pp-page h4{ font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.22em; text-transform:uppercase; color:#7a6033; opacity:.7; }
+  .stamps{ position:absolute; inset:0; }
+  .stamp{ position:absolute; cursor:pointer; transition:transform .3s var(--ease); transform-origin:center; }
+  .stamp:hover{ transform:scale(1.08) rotate(0deg) !important; }
+  .stamp svg{ display:block; }
+
+  /* ---------- TIMELINE ---------- */
+  .tl{ position:relative; margin-top:60px; overflow-x:auto; padding-bottom:14px; }
+  .tl-line{ position:relative; min-width:860px; height:150px; }
+  .tl-rail{ position:absolute; top:74px; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:.5; }
+  .tl-node{ position:absolute; top:0; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; cursor:pointer; width:96px; }
+  .tl-node .flag{ width:36px; height:24px; border-radius:3px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,.3); transition:transform .3s var(--ease); }
+  .tl-node:hover .flag{ transform:translateY(-4px) scale(1.06); }
+  .tl-dot{ width:11px; height:11px; border-radius:50%; background:var(--accent); margin:14px 0; box-shadow:0 0 0 4px var(--bg); }
+  .tl-node.fam .tl-dot{ background:transparent; border:2px solid var(--accent); }
+  .tl-yr{ font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; }
+  .tl-cn{ font-size:11px; opacity:.7; margin-top:2px; text-align:center; line-height:1.2; }
+  .tl-type{ font-family:"JetBrains Mono",monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-top:3px; }
+
+  /* ---------- TRIP ---------- */
+  .trip{ padding:clamp(80px,14vw,150px) 0; border-top:1px solid rgba(255,255,255,.06); }
+  .trip-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,5vw,64px); align-items:center; }
+  .trip-head .flag-lg{ width:120px; height:80px; border-radius:6px; overflow:hidden; box-shadow:0 16px 40px -12px rgba(0,0,0,.55); margin-bottom:26px; }
+  .trip-head .yr{ font-family:"JetBrains Mono",monospace; font-size:13px; letter-spacing:.2em; color:var(--accent); }
+  .trip-head h3{ font-family:"DM Serif Display",serif; font-size:clamp(40px,7vw,86px); line-height:.92; letter-spacing:-.02em; margin:8px 0 6px; }
+  .trip-head .city{ font-size:15px; opacity:.7; letter-spacing:.02em; }
+  .trip-head .tag{ display:inline-block; margin-top:18px; font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; padding:5px 12px; border:1px solid var(--accent); border-radius:999px; color:var(--accent); }
+  .trip-head .note{ margin-top:18px; max-width:36ch; font-size:15px; line-height:1.55; opacity:.78; font-weight:300; }
+
+  /* boarding pass */
+  .bp{ background:var(--surf); border-radius:12px; overflow:hidden; box-shadow:0 24px 60px -24px rgba(0,0,0,.6); font-family:"JetBrains Mono",monospace; opacity:0; transform:translateY(26px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .trip.in .bp{ opacity:1; transform:none; }
+  .bp-top{ display:flex; }
+  .bp-main{ flex:1; padding:20px 22px; }
+  .bp-stub{ width:108px; border-left:2px dashed rgba(255,255,255,.25); padding:20px 14px; display:flex; flex-direction:column; justify-content:space-between; position:relative; }
+  .bp-stub::before,.bp-stub::after{ content:""; position:absolute; left:-9px; width:16px; height:16px; border-radius:50%; background:var(--bg); }
+  .bp-stub::before{ top:-8px; } .bp-stub::after{ bottom:-8px; }
+  .bp h5{ font-size:9px; letter-spacing:.28em; color:var(--accent); margin-bottom:16px; }
+  .bp-route{ display:flex; align-items:center; gap:14px; }
+  .bp-code{ font-size:clamp(26px,4vw,38px); font-weight:700; letter-spacing:.02em; }
+  .bp-arc{ flex:1; height:30px; }
+  .bp-row{ display:flex; gap:22px; margin-top:18px; flex-wrap:wrap; }
+  .bp-row div span{ display:block; font-size:8.5px; letter-spacing:.16em; opacity:.55; }
+  .bp-row div b{ font-size:13px; font-weight:500; }
+  .bp-stub .barcode{ height:46px; display:flex; gap:2px; align-items:stretch; }
+  .bp-stub .barcode i{ flex:1; background:currentColor; opacity:.85; }
+  .bp-seat{ font-size:11px; }
+
+  /* photos */
+  .photos{ display:flex; gap:18px; margin-top:46px; flex-wrap:wrap; }
+  .photo{ flex:1; min-width:150px; background:#fff; padding:10px 10px 34px; border-radius:3px; box-shadow:0 18px 40px -16px rgba(0,0,0,.5); transition:transform .4s var(--ease); }
+  .photo:nth-child(1){ transform:rotate(-2.5deg); } .photo:nth-child(2){ transform:rotate(1.5deg); } .photo:nth-child(3){ transform:rotate(-1deg); }
+  .photo:hover{ transform:rotate(0) translateY(-6px); z-index:2; }
+  .photo .frame{ aspect-ratio:4/5; background:repeating-linear-gradient(45deg,#ece6da,#ece6da 12px,#e3dccd 12px,#e3dccd 24px); border-radius:2px; display:grid; place-items:center; color:#a99; overflow:hidden; }
+  .photo .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo .ph{ text-align:center; color:#b3a894; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; }
+  .photo .ph b{ display:block; font-size:22px; font-weight:400; margin-bottom:4px; }
+  .photo .cap{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; color:#776; text-align:center; margin-top:12px; }
+
+  .reel{ display:inline-flex; align-items:center; gap:10px; margin-top:40px; padding:13px 22px; border-radius:999px;
+    background:var(--accent); color:#16110a; text-decoration:none; font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; font-weight:700; transition:transform .3s var(--ease), filter .3s; }
+  .reel:hover{ transform:translateY(-2px); filter:brightness(1.08); }
+  .noreel{ display:inline-block; margin-top:40px; font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.1em; opacity:.6; }
+
+  footer{ padding:80px 0 70px; text-align:center; font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.06em; opacity:.6; border-top:1px solid rgba(255,255,255,.08); }
+  footer a{ text-decoration:none; border-bottom:1px solid currentColor; }
+
+  @media (max-width:760px){
+    .trip-grid{ grid-template-columns:1fr; }
+    .hero h1{ font-size:clamp(54px,18vw,90px); }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; scroll-behavior:auto; } .bp{ opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="sun"></div>
+    <div class="wrap hero-inner">
+      <div class="eyebrow">From the road</div>
+      <h1>Stamps &amp; <em>departures</em></h1>
+      <p class="lede">Five countries, four of them alone. Productive disorientation is the entire point of going. Here is the passport, the flights, and what each place actually felt like.</p>
+      <div class="stats">
+        <div class="stat"><b>5</b><span>countries</span></div>
+        <div class="stat"><b>6</b><span>trips abroad</span></div>
+        <div class="stat"><b>4</b><span>solo</span></div>
+        <div class="stat"><b>1</b><span>Goa, no reason needed</span></div>
+      </div>
+    </div>
+    <div class="scrollcue">scroll to enter ↓</div>
+  </header>
+
+  <!-- PASSPORT -->
+  <section class="sec" id="passport">
+    <div class="wrap passport-sec">
+      <div class="sec-label">The passport</div>
+      <h2 class="big">Every stamp so far</h2>
+      <p class="sub">One booklet, filling up slowly. Tap to open it, then tap any stamp to jump to that trip.</p>
+      <div class="passport-stage">
+        <div class="passport" id="passport-book">
+          <div class="pp-face pp-inside">
+            <div class="pp-page left"><h4>Visas &amp; entries</h4><div class="stamps" id="stamps-left"></div></div>
+            <div class="pp-page right"><h4>Republic of India · P</h4><div class="stamps" id="stamps-right"></div></div>
+          </div>
+          <div class="pp-face pp-cover">
+            <div class="ct">
+              <div class="top">PASSPORT</div>
+              <div class="pp-emblem"><svg width="48" height="48" viewBox="0 0 48 48" id="emblem-slot"></svg></div>
+              <div class="word">DHRUV CHOPRA</div>
+              <div style="font-family:'JetBrains Mono',monospace;letter-spacing:.3em;font-size:11px;color:#cbb472;margin-top:10px">REPUBLIC OF INDIA</div>
+              <div class="hint">tap to open ▸</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="sec" id="timeline">
+    <div class="wrap">
+      <div class="sec-label">The timeline</div>
+      <h2 class="big">2013 → 2025</h2>
+      <div class="tl"><div class="tl-line" id="tl-line"><div class="tl-rail"></div></div></div>
+    </div>
+  </section>
+
+  <!-- TRIPS -->
+  <main id="trips"></main>
+
+  <footer class="wrap">
+    More at <a href="https://instagram.com/thisisntdhruv" target="_blank">@thisisntdhruv</a> · still wandering
+  </footer>
+
+<script>
+/* ============== DATA ==============
+   Add photos by putting URLs in photos:[...]. Add reels in reel:"https://...".
+   Airport origins/codes/dates are editable. type: solo | family | friends. */
+const TRIPS = [
+  { key:"singapore", country:"Singapore", city:"Singapore", flag:"singapore", code:"SIN", origin:"DEL",
+    year:2013, type:"family", reel:null, ink:"#d81f33",
+    theme:{bg:"#2a0e12", surf:"#3b151b", fg:"#ffe9ea", accent:"#ff5566"},
+    note:"The first one. 2013, family in tow, before any of this was a habit. No reel exists from a trip this old.",
+    photos:[null,null,null] },
+
+  { key:"uae", country:"United Arab Emirates", city:"Dubai", flag:"uae", code:"DXB", origin:"DEL",
+    year:2022, type:"solo", reel:"#", ink:"#0a7d4b",
+    theme:{bg:"#1a1407", surf:"#2a2110", fg:"#fdf3df", accent:"#d8b25a"},
+    note:"First solo trip. The one that proved I could just go.",
+    photos:[null,null,null] },
+
+  { key:"turkey", country:"Türkiye", city:"Istanbul", flag:"turkey", code:"IST", origin:"DEL",
+    year:2023, type:"solo", reel:"#", ink:"#E30A17",
+    theme:{bg:"#2a0a0c", surf:"#3b1012", fg:"#ffe7e8", accent:"#ff5560"},
+    note:"Two continents in one city. Solo again, and hooked for good.",
+    photos:[null,null,null] },
+
+  { key:"thailand24", country:"Thailand", city:"Bangkok", flag:"thailand", code:"BKK", origin:"DEL",
+    year:2024, type:"family", reel:"#", ink:"#2D2A4A",
+    theme:{bg:"#0e1330", surf:"#171e45", fg:"#eaf0ff", accent:"#7f7bd6"},
+    note:"Back with family. Same passport, very different pace.",
+    photos:[null,null,null] },
+
+  { key:"vietnam", country:"Vietnam", city:"Ho Chi Minh City", flag:"vietnam", code:"SGN", origin:"DEL",
+    year:2024, type:"solo", reel:"#", ink:"#DA251D",
+    theme:{bg:"#2a0809", surf:"#3b0e10", fg:"#fff0d6", accent:"#ffcd00"},
+    note:"Solo, loud, and the best food of any trip on this list.",
+    photos:[null,null,null] },
+
+  { key:"thailand25", country:"Thailand", city:"Bangkok", flag:"thailand", code:"BKK", origin:"DEL",
+    year:2025, type:"solo", reel:"#", ink:"#2D2A4A",
+    theme:{bg:"#0e1330", surf:"#171e45", fg:"#eaf0ff", accent:"#7f7bd6"},
+    note:"Returned alone this time. The city reads differently when nobody is waiting on you.",
+    photos:[null,null,null] },
+
+  { key:"goa", country:"Goa", city:"India", flag:"india", code:"GOI", origin:"DEL",
+    year:2024, type:"friends", domestic:true, reel:"#", ink:"#138808",
+    theme:{bg:"#14210e", surf:"#1d2e15", fg:"#eafbe0", accent:"#ff9933"},
+    note:"Childhood friends, college timing, a Dil Chahta Hai kind of trip. No passport needed, no reason needed.",
+    photos:[null,null,null] },
+];
+const TYPE_LABEL = { solo:"solo", family:"with family", friends:"with friends" };
+
+/* ============== FLAG SVGS ============== */
+function starPath(cx,cy,r,rotDeg){
+  rotDeg = rotDeg==null? -90 : rotDeg;
+  let d=""; for(let i=0;i<10;i++){ const a=(Math.PI/5)*i + rotDeg*Math.PI/180; const rad=(i%2)?r*0.4:r;
+    d+=(i?"L":"M")+(cx+rad*Math.cos(a)).toFixed(2)+" "+(cy+rad*Math.sin(a)).toFixed(2)+" "; } return d+"Z";
+}
+function chakra(cx,cy,r){
+  let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#0a0a6e" stroke-width=".5"/>`;
+  s+=`<circle cx="${cx}" cy="${cy}" r=".7" fill="#0a0a6e"/>`;
+  for(let i=0;i<24;i++){ const a=i*15*Math.PI/180; s+=`<line x1="${cx}" y1="${cy}" x2="${(cx+r*Math.cos(a)).toFixed(2)}" y2="${(cy+r*Math.sin(a)).toFixed(2)}" stroke="#0a0a6e" stroke-width=".35"/>`; }
+  return s;
+}
+const FLAGS = {
+  singapore:()=>`<rect width="36" height="24" fill="#fff"/><rect width="36" height="12" fill="#ee2536"/>
+    <circle cx="9" cy="6" r="4" fill="#fff"/><circle cx="10.7" cy="6" r="3.3" fill="#ee2536"/>
+    ${[[14,4.2],[12.3,5.3],[15.7,5.3],[12.9,7.2],[15.1,7.2]].map(p=>`<path d="${starPath(p[0],p[1],0.95)}" fill="#fff"/>`).join("")}`,
+  uae:()=>`<rect width="36" height="24" fill="#fff"/>
+    <rect x="9" width="27" height="8" fill="#00732f"/><rect x="9" y="16" width="27" height="8" fill="#000"/>
+    <rect width="9" height="24" fill="#ff0000"/>`,
+  turkey:()=>`<rect width="36" height="24" fill="#e30a17"/>
+    <circle cx="14" cy="12" r="5" fill="#fff"/><circle cx="15.7" cy="12" r="4" fill="#e30a17"/>
+    <path d="${starPath(21,12,2.4)}" fill="#fff"/>`,
+  thailand:()=>`<rect width="36" height="24" fill="#a51931"/><rect y="4" width="36" height="4" fill="#f4f5f8"/>
+    <rect y="8" width="36" height="8" fill="#2d2a4a"/><rect y="16" width="36" height="4" fill="#f4f5f8"/>`,
+  vietnam:()=>`<rect width="36" height="24" fill="#da251d"/><path d="${starPath(18,12,6)}" fill="#ff0"/>`,
+  india:()=>`<rect width="36" height="8" fill="#ff9933"/><rect y="8" width="36" height="8" fill="#fff"/>
+    <rect y="16" width="36" height="8" fill="#138808"/>${chakra(18,12,3.1)}`,
+};
+function flagSVG(key, cls){ return `<svg viewBox="0 0 36 24" class="${cls||""}" preserveAspectRatio="none" style="width:100%;height:100%">${FLAGS[key]()}</svg>`; }
+document.getElementById("emblem-slot").innerHTML =
+  `<g fill="none" stroke="#cbb472" stroke-width="1.4"><circle cx="24" cy="24" r="15"/><path d="${starPath(24,24,9)}"/></g>`;
+
+/* ============== STAMP SVG ============== */
+function stampSVG(t){
+  const ink = t.ink, yr = t.year || "—";
+  const cc = (t.code||"").toUpperCase();
+  return `<svg width="116" height="116" viewBox="0 0 116 116" style="color:${ink}">
+    <g fill="none" stroke="${ink}" stroke-width="2" opacity=".85">
+      <circle cx="58" cy="58" r="50"/><circle cx="58" cy="58" r="42" stroke-dasharray="2 3"/>
+    </g>
+    <g fill="${ink}" opacity=".9" text-anchor="middle" font-family="JetBrains Mono, monospace">
+      <text x="58" y="40" font-size="10.5" letter-spacing="1.5" font-weight="700">${(t.country||"").toUpperCase().slice(0,14)}</text>
+      <text x="58" y="58" font-size="9" letter-spacing="1">${(t.city||"").toUpperCase()}</text>
+      <text x="58" y="74" font-size="15" font-weight="700" letter-spacing="2">${yr}</text>
+      <text x="58" y="90" font-size="7.5" letter-spacing="2">${cc} · ${(TYPE_LABEL[t.type]||"").toUpperCase()}</text>
+      <path d="${starPath(58,104,3)}"/>
+    </g>
+  </svg>`;
+}
+
+/* ============== BOARDING PASS ============== */
+function flightNo(t){ const n = (t.key.charCodeAt(0)*7 + (t.year||2020)) % 900 + 100; return "DC "+n; }
+function seat(t){ const rows=[12,7,21,4,18,9,15]; const i=Math.abs(t.key.length+(t.year||0))%rows.length; return rows[i]+["A","C","F"][i%3]; }
+function boardingPass(t){
+  const arc = `<svg class="bp-arc" viewBox="0 0 120 30" preserveAspectRatio="none"><path d="M2 26 Q60 -8 118 26" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="2" cy="26" r="2.4" fill="var(--accent)"/><circle cx="118" cy="26" r="2.4" fill="var(--accent)"/><path d="M58 8 l6 3 l-6 3 l1.5 -3 z" fill="var(--accent)"/></svg>`;
+  return `<div class="bp">
+    <div class="bp-top">
+      <div class="bp-main">
+        <h5>BOARDING PASS</h5>
+        <div class="bp-route"><span class="bp-code">${t.origin}</span>${arc}<span class="bp-code">${t.code}</span></div>
+        <div class="bp-row">
+          <div><span>PASSENGER</span><b>CHOPRA / DHRUV</b></div>
+          <div><span>FLIGHT</span><b>${flightNo(t)}</b></div>
+          <div><span>DATE</span><b>${t.year||"—"}</b></div>
+          <div><span>CLASS</span><b>${t.type==="solo"?"SOLO":t.type==="family"?"FAM":"GRP"}</b></div>
+        </div>
+      </div>
+      <div class="bp-stub" style="color:${t.theme.fg}">
+        <div><div style="font-size:8px;letter-spacing:.16em;opacity:.55">SEAT</div><div class="bp-seat" style="font-size:18px;font-weight:700">${seat(t)}</div></div>
+        <div class="barcode">${Array.from({length:18}).map(()=>`<i style="flex:${1+(Math.random()*2|0)}"></i>`).join("")}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ============== RENDER TRIPS ============== */
+const main = document.getElementById("trips");
+TRIPS.forEach(t=>{
+  const sec = document.createElement("section");
+  sec.className = "trip"; sec.id = t.key;
+  sec.dataset.bg=t.theme.bg; sec.dataset.surf=t.theme.surf; sec.dataset.fg=t.theme.fg; sec.dataset.accent=t.theme.accent;
+  const photos = t.photos.map((src,i)=>`
+    <div class="photo">
+      <div class="frame">${src?`<img src="${src}" alt="">`:`<div class="ph"><b>+</b>photo ${i+1}</div>`}</div>
+      <div class="cap">${t.city.toUpperCase()} · ${String(i+1).padStart(2,"0")}</div>
+    </div>`).join("");
+  const reel = t.reel
+    ? `<a class="reel" href="${t.reel}" target="_blank" rel="noopener">▶ &nbsp;Watch the reel</a>`
+    : `<div class="noreel">2013 · before reels existed</div>`;
+  sec.innerHTML = `
+    <div class="wrap">
+      <div class="trip-grid">
+        <div class="trip-head">
+          <div class="flag-lg">${flagSVG(t.flag)}</div>
+          <div class="yr">${t.yearLabel || t.year}${t.domestic?" · domestic":""}</div>
+          <h3>${t.country}</h3>
+          <div class="city">${t.city}${t.domestic?"":" · "+t.code}</div>
+          <div class="tag">${TYPE_LABEL[t.type]}</div>
+          <p class="note">${t.note}</p>
+          ${reel}
+        </div>
+        <div>${boardingPass(t)}</div>
+      </div>
+      <div class="photos">${photos}</div>
+    </div>`;
+  main.appendChild(sec);
+});
+
+/* ============== STAMPS INTO PASSPORT ============== */
+const seedRot = k=>{ let h=0; for(const c of k) h=(h*31+c.charCodeAt(0))%97; return (h%24)-12; };
+function placeStamps(){
+  const L=document.getElementById("stamps-left"), R=document.getElementById("stamps-right");
+  const slotsL=[[8,6],[52,30],[20,58],[58,72]], slotsR=[[14,12],[54,8],[24,48],[58,56]];
+  TRIPS.forEach((t,i)=>{
+    const page = i%2 ? R : L; const slots = i%2 ? slotsR : slotsL;
+    const s = slots[(i>>1)%slots.length];
+    const el=document.createElement("div"); el.className="stamp";
+    el.style.left=s[0]+"%"; el.style.top=s[1]+"%"; el.style.transform=`rotate(${seedRot(t.key)}deg)`;
+    el.style.width="42%";
+    el.innerHTML=stampSVG(t);
+    el.addEventListener("click",e=>{ e.stopPropagation(); document.getElementById(t.key).scrollIntoView({behavior:"smooth"}); });
+    page.appendChild(el);
+  });
+}
+placeStamps();
+
+/* passport open/close */
+const book=document.getElementById("passport-book");
+book.addEventListener("click",()=> book.classList.toggle("open"));
+
+/* ============== TIMELINE ============== */
+function buildTimeline(){
+  const line=document.getElementById("tl-line");
+  const sorted=[...TRIPS].map((t,i)=>({t,i})).sort((a,b)=>(a.t.year-b.t.year)||(a.i-b.i)).map(o=>o.t);
+  const n=sorted.length;
+  sorted.forEach((t,i)=>{
+    const node=document.createElement("div");
+    node.className="tl-node"+(t.type==="family"?" fam":"");
+    node.style.left=(6 + i*(88/(n-1)))+"%";
+    node.innerHTML=`<div class="flag">${flagSVG(t.flag)}</div><div class="tl-dot"></div>
+      <div class="tl-yr">${t.year}</div>
+      <div class="tl-cn">${t.country.replace("United Arab Emirates","UAE")}</div>
+      <div class="tl-type">${t.type}</div>`;
+    node.addEventListener("click",()=>document.getElementById(t.key).scrollIntoView({behavior:"smooth"}));
+    line.appendChild(node);
+  });
+}
+buildTimeline();
+
+/* ============== SCROLL THEMING ============== */
+const root=document.documentElement;
+const NEUTRAL={bg:"#161d3a",surf:"#1e2647",fg:"#fff3e6",accent:"#ff9d5c"};
+function setTheme(o){ root.style.setProperty("--bg",o.bg); root.style.setProperty("--surf",o.surf); root.style.setProperty("--fg",o.fg); root.style.setProperty("--accent",o.accent); root.style.setProperty("--ink",o.accent); }
+const io=new IntersectionObserver((ents)=>{
+  ents.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add("in");
+      const d=e.target.dataset;
+      if(d.bg) setTheme({bg:d.bg,surf:d.surf,fg:d.fg,accent:d.accent});
+    }
+  });
+},{threshold:.45});
+document.querySelectorAll(".trip").forEach(s=>io.observe(s));
+// revert to neutral when passport/timeline in view
+const neutralIO=new IntersectionObserver((ents)=>{ ents.forEach(e=>{ if(e.isIntersecting) setTheme(NEUTRAL); }); },{threshold:.5});
+neutralIO.observe(document.getElementById("passport"));
+neutralIO.observe(document.getElementById("timeline"));
+</script>
+</body>
+</html>
