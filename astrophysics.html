@@ -11,79 +11,173 @@
        ASTROPHYSICS — the whole page is deep space. No white.
        ════════════════════════════════════════════════════════ */
     body { background:#06070d; color:#cdd2e8; font-weight:400; overflow-x:hidden; }
-    .site-nav { --nav-accent:#8ea2ff; background: rgba(6,7,13,0.55); }
+    .site-nav { --nav-accent:#8ea2ff; background: rgba(6,7,13,0.6); }
     .site-footer { --foot-accent:#8ea2ff; background:#06070d; }
 
-    /* full-page starfield + nebula behind everything */
+    /* full-page starfield + nebula */
     #starfield { position: fixed; inset: 0; z-index: -3; pointer-events: none; }
-    .nebula { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -2; pointer-events: none; opacity:.5; }
-    .nebula--1 { width: 520px; height: 420px; top: -8%;  left: 8%;  background: rgba(90,70,200,.5);  animation: neb 16s ease-in-out infinite; }
-    .nebula--2 { width: 460px; height: 380px; top: 30%;  right: -6%; background: rgba(30,110,180,.4); animation: neb 21s ease-in-out 3s infinite; }
-    .nebula--3 { width: 420px; height: 360px; bottom: 5%; left: 30%; background: rgba(170,40,90,.3);  animation: neb 19s ease-in-out 1s infinite; }
-    @keyframes neb { 0%,100%{transform:scale(1);opacity:.4} 50%{transform:scale(1.18);opacity:.65} }
-    @media (prefers-reduced-motion: reduce){ .nebula{animation:none} }
+    .nebula { position: fixed; border-radius: 50%; filter: blur(90px); z-index: -2; pointer-events: none; }
+    .nebula--1 { width: 560px; height: 440px; top:-10%; left:5%; background: rgba(80,60,200,.45); animation: neb 17s ease-in-out infinite; }
+    .nebula--2 { width: 480px; height: 400px; top:28%; right:-8%; background: rgba(25,100,180,.38); animation: neb 22s ease-in-out 3s infinite; }
+    .nebula--3 { width: 440px; height: 380px; bottom:3%; left:28%; background: rgba(160,35,85,.28); animation: neb 20s ease-in-out 1s infinite; }
+    @keyframes neb { 0%,100%{transform:scale(1);opacity:.38} 50%{transform:scale(1.2);opacity:.62} }
+    @media (prefers-reduced-motion:reduce){ .nebula{animation:none} }
 
     .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem; position: relative; z-index: 1; }
 
-    /* hero */
-    .astro-hero { padding: 6rem 0 4rem; }
-    .astro-hero__eyebrow { font-family: var(--grotesk); font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:#8ea2ff; margin-bottom:1.4rem; }
-    .astro-hero__title {
-      font-family: var(--fancy); font-size: clamp(2.8rem,8vw,5.6rem); font-weight:600;
-      line-height:.96; letter-spacing:-.02em; color:#fff; margin-bottom:1.5rem;
-      text-shadow: 0 0 60px rgba(142,162,255,.3);
+    /* Hero */
+    .astro-hero { padding: 6.5rem 0 4.5rem; }
+    .astro-hero__eyebrow {
+      font-family: var(--grotesk); font-size:.66rem; letter-spacing:.32em;
+      text-transform:uppercase; color:#8ea2ff; margin-bottom:1.5rem;
     }
-    .astro-hero__sub { font-size: 1.1rem; max-width: 560px; color:#a9afcd; line-height:1.8; }
+    .astro-hero__title {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(3rem,9vw,6rem); font-weight:500;
+      line-height:.92; letter-spacing:-.03em; color:#fff; margin-bottom:1.6rem;
+      text-shadow: 0 0 80px rgba(142,162,255,.22);
+    }
+    .astro-hero__sub { font-size: 1.06rem; max-width: 540px; color:#909abd; line-height:1.85; }
 
-    /* scale strip */
-    .scale-strip { display:flex; flex-wrap:wrap; margin-top:3rem; border:1px solid rgba(142,162,255,.18); border-radius:14px; overflow:hidden; background: rgba(142,162,255,.03); }
-    .scale-item { flex:1; min-width:140px; padding:1.4rem 1.6rem; border-right:1px solid rgba(142,162,255,.12); }
+    /* Scale strip — no more 1px gap boxy dividers */
+    .scale-strip {
+      display:flex; flex-wrap:wrap; margin-top:3rem;
+      border: 1px solid rgba(142,162,255,.14);
+      background: rgba(142,162,255,.03);
+    }
+    .scale-item {
+      flex:1; min-width:140px; padding:1.5rem 1.6rem;
+      border-right:1px solid rgba(142,162,255,.1);
+    }
     .scale-item:last-child { border-right:none; }
-    .scale-item__n { display:block; font-family: var(--fancy); font-style:italic; font-size:1.8rem; color:#bcd0ff; line-height:1; margin-bottom:.4rem; }
-    .scale-item__l { font-family: var(--grotesk); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:#7e84a6; }
+    .scale-item__n {
+      display:block; font-family: var(--fancy); font-style:italic;
+      font-size:2rem; color:#bcd0ff; line-height:1; margin-bottom:.4rem;
+    }
+    .scale-item__l {
+      font-family: var(--grotesk); font-size:.62rem;
+      letter-spacing:.12em; text-transform:uppercase; color:#6a7094;
+    }
 
-    /* section heading */
-    .astro-head { display:flex; align-items:center; gap:1rem; margin:4.5rem 0 2rem; }
-    .astro-head h2 { font-family: var(--fancy); font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight:600; color:#fff; white-space:nowrap; }
-    .astro-head::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, rgba(142,162,255,.4), transparent); }
+    /* Section heading */
+    .astro-head { display:flex; align-items:center; gap:1rem; margin:5rem 0 2rem; }
+    .astro-head h2 {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(1.6rem,3.5vw,2.5rem); font-weight:500;
+      color:#fff; white-space:nowrap; letter-spacing:-.02em;
+    }
+    .astro-head::after {
+      content:''; flex:1; height:1px;
+      background: linear-gradient(90deg, rgba(142,162,255,.3), transparent);
+    }
 
-    /* constellation */
+    /* Constellation */
     .constellation { display:block; margin: 0 auto 1rem; max-width: 540px; width:100%; overflow: visible; }
     .c-star { fill:#fffbf0; }
     .c-star--cool { fill:#c8d8ff; }
     .c-star--warm { fill:#ffd8a8; }
-    .c-line { stroke: rgba(200,216,255,.25); stroke-width:1; fill:none; }
-    .const-caption { text-align:center; font-family: var(--grotesk); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:#6b7193; margin-bottom: 2rem; }
+    .c-line { stroke: rgba(200,216,255,.2); stroke-width:1; fill:none; }
+    .const-caption {
+      text-align:center; font-family: var(--grotesk); font-size:.64rem;
+      letter-spacing:.2em; text-transform:uppercase; color:#5a6082; margin-bottom: 2rem;
+    }
 
-    /* facts as constellation cards */
-    .facts { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:1px; background: rgba(142,162,255,.14); border:1px solid rgba(142,162,255,.14); border-radius:14px; overflow:hidden; }
-    .fact { background:#080a14; padding:1.6rem 1.5rem; transition: background .25s; }
-    .fact:hover { background:#0c0f1d; }
-    .fact__h { font-family: var(--fancy); font-size:1.1rem; color:#eaeefc; margin-bottom:.5rem; }
-    .fact__b { font-size:.92rem; line-height:1.65; color:#a4abca; }
-    .fact__m { display:block; margin-top:.7rem; font-family: var(--grotesk); font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; color:#6b7193; }
+    /* Facts — proper gap instead of 1px dividers */
+    .facts {
+      display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      gap:.85rem;
+    }
+    .fact {
+      background: rgba(142,162,255,.04);
+      border: 1px solid rgba(142,162,255,.13);
+      padding:1.7rem 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .25s, background .25s;
+    }
+    .fact::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+      background:#8ea2ff;
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .32s cubic-bezier(.22,0,0,1);
+    }
+    .fact:hover { background: rgba(142,162,255,.08); border-color:rgba(142,162,255,.3); }
+    .fact:hover::before { transform:scaleY(1); }
+    .fact__h { font-family: var(--fancy); font-size:1.12rem; color:#eaeefc; margin-bottom:.55rem; }
+    .fact__b { font-size:.92rem; line-height:1.68; color:#8e94b8; }
+    .fact__m {
+      display:block; margin-top:.75rem;
+      font-family: var(--grotesk); font-size:.62rem;
+      letter-spacing:.08em; text-transform:uppercase; color:#555a7a;
+    }
 
-    /* reading list */
-    .reading { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:1rem; }
-    .book { padding:1.5rem 1.4rem; border:1px solid rgba(142,162,255,.16); border-radius:12px; background: rgba(142,162,255,.03); transition: transform .25s, border-color .25s; }
-    .book:hover { transform: translateY(-4px); border-color: rgba(142,162,255,.5); }
-    .book__t { font-family: var(--fancy); font-size:1.05rem; color:#fff; margin-bottom:.25rem; }
-    .book__a { font-family: var(--grotesk); font-size:.72rem; letter-spacing:.04em; color:#8089ab; margin-bottom:.7rem; }
-    .book__n { font-size:.85rem; line-height:1.55; color:#9aa0c0; }
+    /* Reading list — editorial horizontal strips */
+    .reading { display:flex; flex-direction:column; border-top:1px solid rgba(142,162,255,.12); }
+    .book {
+      display:grid; grid-template-columns:1fr 2.5fr;
+      gap:0 1.5rem; align-items:start;
+      padding:1.4rem 0;
+      border-bottom:1px solid rgba(142,162,255,.12);
+      position:relative; overflow:hidden;
+      transition: padding-left .3s cubic-bezier(.22,0,0,1);
+    }
+    .book::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+      background:#8ea2ff;
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .32s cubic-bezier(.22,0,0,1);
+    }
+    .book:hover { padding-left:.9rem; }
+    .book:hover::before { transform:scaleY(1); }
+    .book__t {
+      font-family: var(--fancy); font-size:1.08rem;
+      color:#e0e4fc; padding-top:.1rem;
+      transition: color .22s;
+    }
+    .book:hover .book__t { color:#8ea2ff; }
+    .book__a {
+      font-family: var(--grotesk); font-size:.62rem;
+      letter-spacing:.06em; color:#6a7094; margin-top:.2rem;
+    }
+    .book__n { font-size:.9rem; line-height:1.6; color:#8e94b8; }
 
-    /* writing list */
+    /* Writing list */
     .alist { list-style:none; }
-    .alist li { border-top:1px solid rgba(142,162,255,.14); }
-    .alist li:last-child { border-bottom:1px solid rgba(142,162,255,.14); }
-    .alist a { display:grid; grid-template-columns:1fr auto; gap:.3rem 1.5rem; padding:1.4rem 0; align-items:center; transition: padding-left .25s; }
+    .alist li { border-top:1px solid rgba(142,162,255,.12); position: relative; }
+    .alist li:last-child { border-bottom:1px solid rgba(142,162,255,.12); }
+    .alist a {
+      display:grid; grid-template-columns:1fr auto; gap:.3rem 1.8rem;
+      padding:1.5rem 0; align-items:center;
+      transition: padding-left .3s cubic-bezier(.22,0,0,1);
+    }
+    .alist li::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+      background:#8ea2ff;
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .32s cubic-bezier(.22,0,0,1);
+    }
+    .alist li:hover::before { transform:scaleY(1); }
     .alist a:hover { padding-left:1rem; }
-    .alist__t { font-family: var(--fancy); font-size:1.25rem; color:#eaeefc; transition:color .25s; }
-    .alist a:hover .alist__t { color:#8ea2ff; }
-    .alist__m { font-family: var(--grotesk); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:#7e84a6; }
-    .alist__d { font-family: var(--grotesk); font-size:.8rem; color:#7e84a6; justify-self:end; }
+    .alist__t { font-family: var(--fancy); font-size:1.3rem; color:#eaeefc; transition:color .22s; }
+    .alist li:hover .alist__t { color:#8ea2ff; }
+    .alist__m { font-family: var(--grotesk); font-size:.63rem; letter-spacing:.13em; text-transform:uppercase; color:#6a7094; }
+    .alist__d { font-family: var(--grotesk); font-size:.76rem; color:#6a7094; justify-self:end; letter-spacing:.04em; }
+
+    /* Coming soon */
+    .astro-soon {
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(142,162,255,.12);
+      border-bottom: 1px solid rgba(142,162,255,.12);
+    }
+    .astro-soon__text {
+      font-family: var(--fancy); font-style: italic;
+      font-size: 1.15rem; color: rgba(142,162,255,.28); margin: 0;
+    }
 
     .astro-foot-space { height: 5rem; }
-    @media (max-width:640px){ .scale-item{ min-width:50%; } }
+    @media (max-width:640px){
+      .scale-item{ min-width:50%; }
+      .book { grid-template-columns:1fr; gap:.4rem; }
+    }
   </style>
 </head>
 <body>
@@ -177,15 +271,9 @@
       </div>
 
       <div class="astro-head"><h2>Writing on the cosmos</h2></div>
-      <ul class="alist">
-        <li>
-          <a href="posts/on-scale-and-silence.html">
-            <span class="alist__t">On Scale and Silence: What the Cosmos Does to You</span>
-            <span class="alist__m">Astrophysics · 7 min</span>
-            <span class="alist__d">Jun 2025</span>
-          </a>
-        </li>
-      </ul>
+      <div class="astro-soon">
+        <p class="astro-soon__text">Essays coming — the words are forming.</p>
+      </div>
 
       <div class="astro-foot-space"></div>
     </div>

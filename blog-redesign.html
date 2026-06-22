@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dhruv Chopra — the notebook</title>
-<meta name="description" content="A thinking journal that happens to be public. Astrophysics, travel, cinema, coffee, sports, tech, perfumes — and whatever else.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@300;400;500;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=Oswald:wght@200;400;600&family=JetBrains+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Anton&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -46,15 +45,14 @@
   .hub-sub{ margin-top:14px; max-width:36ch; color:#9aa0b5; font-size:clamp(13px,1.4vw,15px); line-height:1.5; font-weight:300; }
   .hub-start{ margin-top:18px; display:inline-flex; gap:8px; align-items:center; font-size:12.5px; letter-spacing:.04em; color:#cfd3e2; text-decoration:none; cursor:pointer; background:none; border:0; border-bottom:1px solid rgba(255,255,255,.18); padding:0 0 2px; transition:color .3s, border-color .3s, gap .3s; }
   .hub-start:hover{ color:#fff; border-color:#fff; gap:14px; }
-  .hub-start:focus-visible{ outline:2px solid #fff; outline-offset:6px; border-radius:4px; }
   .constellation{ flex:1; position:relative; display:flex; flex-wrap:wrap; align-content:center; justify-content:center; gap:clamp(10px,2vw,30px); padding:clamp(20px,4vw,40px) clamp(22px,6vw,90px); }
-  .cat{ position:relative; cursor:pointer; background:none; border:0; color:inherit; text-decoration:none; font-family:"Fraunces",serif; line-height:.9; letter-spacing:-.02em; padding:6px 4px; opacity:0; transform:translateY(20px); animation:rise .9s var(--ease) forwards, float 7s ease-in-out infinite; transition:transform .5s var(--ease); }
+  .cat{ position:relative; cursor:pointer; background:none; border:0; color:inherit; font-family:"Fraunces",serif; line-height:.9; letter-spacing:-.02em; padding:6px 4px; opacity:0; transform:translateY(20px); animation:rise .9s var(--ease) forwards, float 7s ease-in-out infinite; transition:transform .5s var(--ease); }
   .cat .word{ display:block; font-size:clamp(26px,4.4vw,56px); font-weight:400; color:#e9e7e0; transition:color .4s; }
   .cat .teaser{ display:block; font-family:"Space Grotesk",sans-serif; font-weight:300; font-size:11.5px; letter-spacing:.03em; color:#7e8499; max-width:24ch; margin-top:6px; opacity:0; transform:translateY(-4px); transition:opacity .45s var(--ease), transform .45s var(--ease); line-height:1.4; }
   .cat .glyph{ font-size:.5em; opacity:.4; vertical-align:super; margin-left:.15em; }
   .cat:hover{ transform:translateY(-4px); }
-  .cat:hover .word, .cat:focus-visible .word{ color:#fff; }
-  .cat:hover .teaser, .cat:focus-visible .teaser{ opacity:1; transform:translateY(0); }
+  .cat:hover .word{ color:#fff; }
+  .cat:hover .teaser{ opacity:1; transform:translateY(0); }
   .cat:focus-visible{ outline:2px solid #fff; outline-offset:6px; border-radius:6px; }
   .cat:nth-child(2){ margin-top:clamp(0px,4vw,46px); } .cat:nth-child(3){ margin-top:clamp(0px,-2vw,-22px); }
   .cat:nth-child(4){ margin-top:clamp(0px,5vw,58px); } .cat:nth-child(6){ margin-top:clamp(0px,3vw,34px); }
@@ -63,12 +61,11 @@
   @keyframes float{ 0%,100%{ translate:0 0 } 50%{ translate:0 -10px } }
   .hub-foot{ padding:0 clamp(22px,5vw,64px) clamp(18px,3vw,30px); display:flex; gap:20px; flex-wrap:wrap; font-size:12px; letter-spacing:.03em; color:#666c82; }
   .hub-foot a{ text-decoration:none; transition:color .3s; } .hub-foot a:hover{ color:#cfd3e2; }
-  .hub-foot a:focus-visible{ outline:2px solid #cfd3e2; outline-offset:4px; border-radius:3px; }
   .hub-foot .spacer{ flex:1; }
 
   /* ---------- shared chrome for world/notebook ---------- */
   .pad{ padding:clamp(20px,4vw,42px) clamp(22px,6vw,80px) clamp(60px,8vw,100px); }
-  .top-back{ background:none; border:0; cursor:pointer; color:var(--w-dim); font-family:var(--w-util,"Space Grotesk"); font-size:13px; letter-spacing:.04em; display:inline-flex; align-items:center; gap:8px; padding:8px 2px; transition:color .3s, gap .3s; text-decoration:none; }
+  .top-back{ background:none; border:0; cursor:pointer; color:var(--w-dim); font-family:var(--w-util,"Space Grotesk"); font-size:13px; letter-spacing:.04em; display:inline-flex; align-items:center; gap:8px; padding:8px 2px; transition:color .3s, gap .3s; }
   .top-back:hover{ color:var(--w-fg); gap:14px; }
   .top-back:focus-visible{ outline:2px solid var(--w-accent); outline-offset:4px; border-radius:4px; }
 
@@ -81,15 +78,14 @@
   .entry{ display:block; text-decoration:none; cursor:pointer; padding:22px 0; border-top:1px solid var(--w-line); transition:padding-left .4s var(--ease); }
   .entries .entry:last-child{ border-bottom:1px solid var(--w-line); }
   .entry:hover{ padding-left:18px; }
-  .entry:focus-visible{ outline:2px solid var(--w-accent); outline-offset:2px; border-radius:6px; }
   .entry-top{ display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
   .entry-title{ font-family:var(--w-body); color:var(--w-fg); font-size:clamp(19px,2.6vw,26px); line-height:1.2; font-weight:400; transition:color .3s; }
-  .entry:hover .entry-title, .entry:focus-visible .entry-title{ color:var(--w-accent); }
+  .entry:hover .entry-title{ color:var(--w-accent); }
   .entry-meta{ font-family:var(--w-util); font-size:12px; letter-spacing:.05em; color:var(--w-dim); white-space:nowrap; }
   .entry-cat{ font-family:var(--w-util); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--w-accent); border:1px solid var(--w-line); padding:3px 9px; border-radius:999px; }
   .entry-cat.draft{ opacity:.55; }
   .empty{ margin-top:40px; font-family:var(--w-body); color:var(--w-dim); font-size:18px; max-width:40ch; line-height:1.5; }
-  .empty a{ color:var(--w-accent); cursor:pointer; text-decoration:none; border-bottom:1px solid currentColor; }
+  .empty a{ color:var(--w-accent); cursor:pointer; }
 
   #stage[data-skin="terminal"] .entries{ font-family:"JetBrains Mono",monospace; }
   #stage[data-skin="terminal"] .entry{ border:0; padding:7px 0; }
@@ -119,9 +115,8 @@
   .r-body em{ font-style:italic; } .r-body strong{ font-weight:600; }
   .r-end{ text-align:center; color:var(--w-accent); letter-spacing:1em; margin:3em 0; opacity:.7; font-size:13px; }
   .r-foot{ display:flex; gap:18px; flex-wrap:wrap; margin-top:10px; }
-  .r-foot a{ background:none; border:0; cursor:pointer; font-family:var(--w-util); font-size:13px; letter-spacing:.03em; color:var(--w-dim); display:inline-flex; align-items:center; gap:8px; padding:8px 0; transition:color .3s, gap .3s; text-decoration:none; }
-  .r-foot a:hover{ color:var(--w-accent); gap:14px; }
-  .r-foot a:focus-visible{ outline:2px solid var(--w-accent); outline-offset:3px; border-radius:4px; }
+  .r-foot button{ background:none; border:0; cursor:pointer; font-family:var(--w-util); font-size:13px; letter-spacing:.03em; color:var(--w-dim); display:inline-flex; align-items:center; gap:8px; padding:8px 0; transition:color .3s, gap .3s; }
+  .r-foot button:hover{ color:var(--w-accent); gap:14px; }
 
   /* ---------- THEME TOKENS (on #stage so every view inherits) ---------- */
   #stage[data-theme="notebook"], #stage[data-theme="hub"]{
@@ -137,13 +132,11 @@
   #stage[data-theme="tech"]{ --w-display:"JetBrains Mono"; --w-body:"JetBrains Mono"; --w-util:"JetBrains Mono"; --w-fg:#d7ffe6; --w-dim:#5f8f73; --w-accent:#36e27b; --w-line:rgba(54,226,123,.14); --w-title-weight:500; --w-title-tracking:-.01em; }
   #stage[data-theme="perfumes"]{ --w-display:"Cormorant Garamond"; --w-body:"Cormorant Garamond"; --w-util:"Space Grotesk"; --w-fg:#3a2230; --w-dim:#9a7488; --w-accent:#c27aa0; --w-line:rgba(180,120,150,.22); --w-title-weight:500; }
 
-  /* ---------- BESPOKE PAGE SLOT ---------- */
-  #bespoke{ background:#0b0a12; }
-  #bespoke-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; }
-  .bespoke-back{ position:fixed; top:18px; left:18px; z-index:9; background:rgba(10,10,18,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.16); color:#fff; cursor:pointer; font-family:"Space Grotesk",sans-serif; font-size:13px; letter-spacing:.04em; padding:9px 16px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; transition:gap .3s, background .3s; text-decoration:none; }
-  .bespoke-back:hover{ gap:14px; background:rgba(10,10,18,.82); }
-  .bespoke-back:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
-
+  #travel{ background:#0b0a12; }
+  #travel-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .travel-back{ position:fixed; top:18px; left:18px; z-index:9; background:rgba(10,10,18,.55); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.16); color:#fff; cursor:pointer; font-family:"Space Grotesk",sans-serif; font-size:13px; letter-spacing:.04em; padding:9px 16px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; transition:gap .3s, background .3s; }
+  .travel-back:hover{ gap:14px; background:rgba(10,10,18,.82); }
+  .travel-back:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
   @media (prefers-reduced-motion: reduce){ .cat, #grain{ animation:none !important; } *{ transition-duration:.001ms !important; } }
   @media (max-width:680px){
     .constellation{ align-content:flex-start; padding-top:24px; gap:2px; }
@@ -169,7 +162,7 @@
       <div class="hub-head">
         <h1 class="hub-name">Dhruv <em>Chopra</em></h1>
         <p class="hub-sub">A thinking journal that happens to be public. Some of it fits a subject below. Some of it is just whatever I could not stop thinking about.</p>
-        <a class="hub-start" href="#/notebook">Read the notebook &nbsp;&rarr;</a>
+        <button class="hub-start" id="to-notebook">Read the notebook &nbsp;&rarr;</button>
       </div>
       <nav class="constellation" id="constellation" aria-label="Subjects"></nav>
       <div class="hub-foot">
@@ -180,9 +173,9 @@
       </div>
     </section>
 
-    <!-- WORLD (a generic subject) -->
+    <!-- WORLD (a subject) -->
     <section id="world" class="view scroll pad" aria-live="polite">
-      <a class="top-back" href="#/" data-back>&larr; the hub</a>
+      <button class="top-back" data-back>&larr; the hub</button>
       <header class="w-head">
         <div class="w-eyebrow" id="w-eyebrow"></div>
         <h2 class="w-title" id="w-title"></h2>
@@ -193,7 +186,7 @@
 
     <!-- NOTEBOOK (everything) -->
     <section id="notebook" class="view scroll pad">
-      <a class="top-back" href="#/" data-back>&larr; the hub</a>
+      <button class="top-back" data-back>&larr; the hub</button>
       <header class="w-head" style="max-width:24ch">
         <div class="w-eyebrow">The notebook</div>
         <h2 class="w-title" style="font-size:clamp(40px,8vw,96px)">Everything</h2>
@@ -211,19 +204,18 @@
           <h1 class="r-title" id="r-title"></h1>
           <div class="r-byline" id="r-byline"></div>
           <div class="r-body" id="r-body"></div>
-          <div class="r-end">&#10022; &#10022; &#10022;</div>
+          <div class="r-end">✦ ✦ ✦</div>
           <div class="r-foot">
-            <a href="#/" data-back>&larr; back</a>
-            <a href="#/notebook">all writing &rarr;</a>
+            <button data-back>&larr; back</button>
+            <button id="r-to-notebook">all writing &rarr;</button>
           </div>
         </article>
       </div>
     </section>
 
-    <!-- BESPOKE PAGE SLOT (Travel, and future immersive pages) -->
-    <section id="bespoke" class="view">
-      <a class="bespoke-back" href="#/" data-back>&larr; the hub</a>
-      <iframe id="bespoke-frame" title="Immersive page" loading="lazy"></iframe>
+    <section id="travel" class="view">
+      <button class="travel-back" data-back>&larr; the hub</button>
+      <iframe id="travel-frame" title="Travel" loading="lazy"></iframe>
     </section>
   </div>
 </div>
@@ -233,68 +225,77 @@
 const THEMES = {
   hub:{ ground:"radial-gradient(ellipse at 50% 38%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false },
   notebook:{ ground:"radial-gradient(ellipse at 50% 30%, #14142c 0%, #07070c 70%)", fx:"hubstars", light:false, overlays:[] },
-  astrophysics:{ word:"Astrophysics", glyph:"✦", teaser:"the scale of things, and the silence after", eyebrow:"Field notes from very far away", intro:"The scale, the indifference of the cosmos, the sheer fact that we exist to ask about it.", ground:"radial-gradient(ellipse at 50% 30%, #11193a 0%, #070611 60%, #04030a 100%)", fx:"stars", skin:"", overlays:["vignette"], light:false },
-  travel:{ word:"Travel", glyph:"➶", teaser:"five countries, one recurring feeling", eyebrow:"Notes from the road", intro:"I travel solo when I can. I'm convinced productive disorientation is the entire point of going.", ground:"linear-gradient(180deg,#1a2440 0%,#6b4a6b 42%,#c8654a 72%,#f0a35e 100%)", fx:"horizon", skin:"", overlays:[], light:false },
-  cinema:{ word:"Cinema", glyph:"❍", teaser:"I love film for the compression", eyebrow:"Reel one", intro:"I love cinema the way I love good writing: for the compression. How much a single frame can hold.", ground:"#050505", fx:"grain", skin:"film", overlays:["letterbox","grain","vignette"], light:false },
-  coffee:{ word:"Coffee", glyph:"❀", teaser:"too much of it. unrepentant.", eyebrow:"The morning ritual", intro:"I drink too much coffee. I've accepted this about myself.", ground:"radial-gradient(ellipse at 50% 120%, #e8d6bf 0%, #d8bd9c 45%, #b8966e 100%)", fx:"steam", skin:"", overlays:[], light:true },
-  sports:{ word:"Sports", glyph:"◷", teaser:"irrational investment in results I can't control", eyebrow:"From the terraces", intro:"A footballer's irrational emotional investment in results I have no control over.", ground:"repeating-linear-gradient(90deg,#0a3d1f 0 80px,#0d4523 80px 160px)", fx:"sweep", skin:"", overlays:[], light:false },
-  tech:{ word:"Tech", glyph:"▮", teaser:"how long can a lie hold a clever adversary?", eyebrow:"~/notebook/tech", intro:"How long can you keep a sophisticated adversary inside a digital fiction before they realise it isn't real?", ground:"#040806", fx:"matrix", skin:"terminal", overlays:["scanlines"], light:false },
-  perfumes:{ word:"Perfumes", glyph:"❖", teaser:"an astrophysicist's curiosity about scent", eyebrow:"Top, heart, base", intro:"What a molecule does to memory, and why a smell can move you before you've named it.", ground:"radial-gradient(ellipse at 30% 20%, #f3e3ec 0%, #e7cdd9 50%, #d3aabf 100%)", fx:"bloom", skin:"", overlays:[], light:true },
+  astrophysics:{ word:"Astrophysics", glyph:"\u2726", teaser:"the scale of things, and the silence after", eyebrow:"Field notes from very far away", intro:"The scale, the indifference of the cosmos, the sheer fact that we exist to ask about it.", ground:"radial-gradient(ellipse at 50% 30%, #11193a 0%, #070611 60%, #04030a 100%)", fx:"stars", skin:"", overlays:["vignette"], light:false },
+  travel:{ word:"Travel", glyph:"\u27B6", teaser:"five countries, one recurring feeling", eyebrow:"Notes from the road", intro:"I travel solo when I can. I'm convinced productive disorientation is the entire point of going.", ground:"linear-gradient(180deg,#1a2440 0%,#6b4a6b 42%,#c8654a 72%,#f0a35e 100%)", fx:"horizon", skin:"", overlays:[], light:false },
+  cinema:{ word:"Cinema", glyph:"\u274D", teaser:"I love film for the compression", eyebrow:"Reel one", intro:"I love cinema the way I love good writing: for the compression. How much a single frame can hold.", ground:"#050505", fx:"grain", skin:"film", overlays:["letterbox","grain","vignette"], light:false },
+  coffee:{ word:"Coffee", glyph:"\u2740", teaser:"too much of it. unrepentant.", eyebrow:"The morning ritual", intro:"I drink too much coffee. I've accepted this about myself.", ground:"radial-gradient(ellipse at 50% 120%, #e8d6bf 0%, #d8bd9c 45%, #b8966e 100%)", fx:"steam", skin:"", overlays:[], light:true },
+  sports:{ word:"Sports", glyph:"\u25F7", teaser:"irrational investment in results I can't control", eyebrow:"From the terraces", intro:"A footballer's irrational emotional investment in results I have no control over.", ground:"repeating-linear-gradient(90deg,#0a3d1f 0 80px,#0d4523 80px 160px)", fx:"sweep", skin:"", overlays:[], light:false },
+  tech:{ word:"Tech", glyph:"\u25AE", teaser:"how long can a lie hold a clever adversary?", eyebrow:"~/notebook/tech", intro:"How long can you keep a sophisticated adversary inside a digital fiction before they realise it isn't real?", ground:"#040806", fx:"matrix", skin:"terminal", overlays:["scanlines"], light:false },
+  perfumes:{ word:"Perfumes", glyph:"\u2756", teaser:"an astrophysicist's curiosity about scent", eyebrow:"Top, heart, base", intro:"What a molecule does to memory, and why a smell can move you before you've named it.", ground:"radial-gradient(ellipse at 30% 20%, #f3e3ec 0%, #e7cdd9 50%, #d3aabf 100%)", fx:"bloom", skin:"", overlays:[], light:true },
 };
 const ORDER = ["astrophysics","travel","cinema","coffee","sports","tech","perfumes"];
 const LABEL = { astrophysics:"Astrophysics", travel:"Travel", cinema:"Cinema", coffee:"Coffee", sports:"Sports", tech:"Tech", perfumes:"Perfumes", misc:"Misc" };
 
-/* ===================== BESPOKE PAGE REGISTRY =====================
-   A subject with an entry here opens its dedicated immersive page in the
-   bespoke slot. Any subject NOT listed here falls back to the generic
-   notebook-filtered "world" view. Drop new pages in as: key: "file.html". */
-const BESPOKE = { travel: "travel.html" };
+/* ===================== POSTS (the mechanism) =====================
+   Add a post = add an object. cat is one of the seven, or "misc" for
+   anything that fits nothing. body is plain Markdown: ## heading,
+   > quote, *** divider, blank line between paragraphs, *italic* / **bold**. */
+const POSTS = [
+  {
+    slug:"on-scale-and-silence",
+    title:"On Scale and Silence: What the Cosmos Does to You",
+    cat:"astrophysics", date:"2025-06-20", mins:7,
+    body:`I was probably nine or ten the first time I really sat with the numbers. Not just heard them, actually sat with them, tried to make them feel real. The distance to Proxima Centauri: 4.24 light-years. The Milky Way: a hundred thousand light-years across. The observable universe: 93 billion light-years in diameter, containing roughly two trillion galaxies, each with hundreds of billions of stars.
 
-/* ===================== POSTS (loaded from markdown) =====================
-   Add a post: drop posts/<slug>.md (frontmatter + body) and add its slug
-   to posts/manifest.json. Frontmatter: title, cat (one of the seven or
-   "misc"), date (YYYY-MM-DD), mins, draft. Body is plain Markdown:
-   ## heading, > quote, *** divider, blank line between paragraphs,
-   *italic* and **bold**. */
-let POSTS = [];
+I remember the specific sensation that followed: a kind of pleasant vertigo, like the ground was further away than I'd thought. I didn't have a word for it at the time. I've been chasing it ever since.
 
-function parseFrontmatter(text){
-  const m = text.match(/^﻿?---\s*\n([\s\S]*?)\n---\s*\n?/);
-  let meta = {}, body = text;
-  if(m){
-    body = text.slice(m[0].length);
-    m[1].split("\n").forEach(line=>{
-      const i = line.indexOf(":");
-      if(i>0){ meta[line.slice(0,i).trim()] = line.slice(i+1).trim().replace(/^["']|["']$/g,""); }
-    });
-  }
-  return { meta, body };
-}
+## The problem with comprehension
 
-async function loadPosts(){
-  let slugs = [];
-  try{
-    const r = await fetch("posts/manifest.json", {cache:"no-cache"});
-    if(r.ok) slugs = await r.json();
-  }catch(e){ /* file:// or missing manifest -> empty notebook */ }
-  const loaded = await Promise.all(slugs.map(async slug=>{
-    try{
-      const r = await fetch("posts/"+slug+".md", {cache:"no-cache"});
-      if(!r.ok) return null;
-      const { meta, body } = parseFrontmatter(await r.text());
-      return {
-        slug,
-        title: meta.title || slug,
-        cat: meta.cat || "misc",
-        date: meta.date || "",
-        mins: parseInt(meta.mins,10) || 1,
-        draft: meta.draft === "true" || meta.draft === true,
-        body
-      };
-    }catch(e){ return null; }
-  }));
-  POSTS = loaded.filter(Boolean).sort((a,b)=> (b.date||"").localeCompare(a.date||""));
-}
+The honest answer is that these numbers don't mean anything to human cognition. Not really. We're built to navigate at the scale of roughly one metre to maybe a hundred kilometres. Everything beyond that is mathematical abstraction wearing the costume of a number.
+
+When astrophysicists say the nearest star is 4.24 light-years away, they mean that light, which circles the entire Earth seven times in a single second, would still need more than four years of continuous travel to get there. And Proxima Centauri is the *nearest* star. Our immediate neighbour.
+
+> The universe is not indifferent to us. Indifference implies awareness. The universe is simply vast, and we are simply here, and neither of those facts has anything to say about the other.
+
+## Light as a time machine
+
+When you look at the night sky, you are not seeing the present. You're seeing a palimpsest of different pasts. The Moon as it was about 1.3 seconds ago. The Sun as it was eight minutes ago. The Andromeda Galaxy as it was 2.5 million years ago, before our species existed.
+
+Looking up is literally looking backward in time. The sky is a fossil record of light. I don't think I'll ever fully get over that.`
+  },
+  {
+    slug:"three-trips-five-countries",
+    title:"Three Trips, Five Countries, One Recurring Feeling",
+    cat:"travel", date:"2025-04-12", mins:8, draft:true,
+    body:`## Placeholder
+
+This entry is here to show the reading layout for a Travel post. When we repopulate this page, your real writing drops in as plain Markdown and renders exactly like this, themed to whichever subject the post belongs to.
+
+> Write whatever you want, whenever you want. If it fits a subject it lands there too. If it doesn't, it still lives in the notebook.`
+  },
+  {
+    slug:"why-i-started-writing",
+    title:"Why I Finally Started Writing",
+    cat:"misc", date:"2025-03-03", mins:5, draft:true,
+    body:`## A post that belongs to no subject
+
+This one is filed under *Misc*, which is where the random stuff lives. It still shows up in the notebook with everything else, it just doesn't sit under one of the seven worlds.
+
+That is the whole mechanism: a subject is optional. The notebook is the spine.`
+  },
+];
+
+/* ===================== BUILD HUB ===================== */
+const constellation = document.getElementById("constellation");
+ORDER.forEach((key,i)=>{
+  const t = THEMES[key];
+  const b = document.createElement("button");
+  b.className = "cat";
+  b.style.animationDelay = (.05 + i*.07)+"s, "+(i*.4)+"s";
+  b.innerHTML = `<span class="word">${t.word}<span class="glyph">${t.glyph}</span></span><span class="teaser">${t.teaser}</span>`;
+  b.addEventListener("click", ()=> navigate(key==="travel" ? {view:"travel"} : {view:"world", key}));
+  constellation.appendChild(b);
+});
 
 /* ===================== TINY MARKDOWN ===================== */
 function inline(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>"); }
@@ -306,35 +307,22 @@ function md(src){
     const line = raw.trim();
     if(line===""){ flushP(); flushQ(); continue; }
     if(line.startsWith("## ")){ flushP(); flushQ(); html+="<h2>"+inline(line.slice(3))+"</h2>"; continue; }
-    if(line==="***"||line==="---"){ flushP(); flushQ(); html+='<div class="r-end">✦ ✦ ✦</div>'; continue; }
+    if(line==="***"||line==="---"){ flushP(); flushQ(); html+='<div class="r-end">\u2726 \u2726 \u2726</div>'; continue; }
     if(line.startsWith("> ")){ flushP(); quote.push(line.slice(2)); continue; }
     flushQ(); para.push(line);
   }
   flushP(); flushQ(); return html;
 }
-function prettyDate(iso){ if(!iso) return ""; const d=new Date(iso); return isNaN(d)? iso : d.toLocaleString("en",{month:"short",year:"numeric"}); }
+function prettyDate(iso){ const d=new Date(iso); return d.toLocaleString("en",{month:"short",year:"numeric"}); }
 
-/* ===================== ELEMENTS ===================== */
-const stage=document.getElementById("stage"), ground=document.getElementById("ground"), bodyEl=document.body;
-const views={ hub:document.getElementById("hub"), world:document.getElementById("world"), notebook:document.getElementById("notebook"), reader:document.getElementById("reader"), bespoke:document.getElementById("bespoke") };
+/* ===================== VIEWS + ROUTING ===================== */
+const stage=document.getElementById("stage"), ground=document.getElementById("ground"), body=document.body;
+const views={ hub:document.getElementById("hub"), world:document.getElementById("world"), notebook:document.getElementById("notebook"), reader:document.getElementById("reader") };
 const overlayEls={ vignette:document.getElementById("vignette"), scanlines:document.getElementById("scanlines"), grain:document.getElementById("grain") };
 const lbTop=document.getElementById("letterbox-top"), lbBot=document.getElementById("letterbox-bottom");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-let current = { view:"hub" };
+let current={view:"hub"}; const stack=[];
 
-/* ===================== BUILD HUB ===================== */
-const constellation = document.getElementById("constellation");
-ORDER.forEach((key,i)=>{
-  const t = THEMES[key];
-  const a = document.createElement("a");
-  a.className = "cat";
-  a.href = hashFor(BESPOKE[key] ? {view:"bespoke",key} : {view:"world",key});
-  a.style.animationDelay = (.05 + i*.07)+"s, "+(i*.4)+"s";
-  a.innerHTML = `<span class="word">${t.word}<span class="glyph">${t.glyph}</span></span><span class="teaser">${t.teaser}</span>`;
-  constellation.appendChild(a);
-});
-
-/* ===================== THEME / OVERLAYS ===================== */
 function setOverlays(list,view){
   Object.values(overlayEls).forEach(el=>el.style.opacity=0);
   lbTop.style.height="0"; lbBot.style.height="0";
@@ -349,87 +337,54 @@ function applyTheme(themeKey,view){
   stage.dataset.theme=themeKey; stage.dataset.view=view;
   stage.dataset.skin = (view==="world" && t.skin) ? t.skin : "";
   ground.style.background=t.ground;
-  bodyEl.dataset.ground = t.light ? "light":"dark";
+  body.dataset.ground = t.light ? "light":"dark";
   FX.set(t.fx, themeKey);
   setOverlays(t.overlays, view);
 }
 function showView(name){ Object.entries(views).forEach(([k,el])=> el.classList.toggle("show", k===name)); }
 
-/* ===================== HASH ROUTING ===================== */
-function hashFor(state){
-  if(!state || state.view==="hub") return "#/";
-  if(state.view==="notebook") return "#/notebook"+(state.filter && state.filter!=="all" ? "/"+state.filter : "");
-  if(state.view==="reader") return "#/post/"+state.slug;
-  if(state.view==="world" || state.view==="bespoke") return "#/"+state.key;
-  return "#/";
-}
-function parseHash(){
-  const h = location.hash.replace(/^#\/?/,"");
-  if(!h) return {view:"hub"};
-  const seg = h.split("/");
-  if(seg[0]==="notebook") return {view:"notebook", filter:seg[1]||"all"};
-  if(seg[0]==="post") return {view:"reader", slug:seg[1]};
-  const key = seg[0];
-  if(THEMES[key] && key!=="hub" && key!=="notebook") return BESPOKE[key] ? {view:"bespoke",key} : {view:"world",key};
-  return {view:"hub"};
-}
-function navigate(state){
-  const h = hashFor(state);
-  if(location.hash === h) route();      // same hash -> re-render (e.g. filter change to "all")
-  else location.hash = h;               // triggers hashchange -> route()
-}
-function back(){
-  if(history.length > 1) history.back();
-  else navigate({view:"hub"});
-}
-addEventListener("hashchange", route);
-function route(){ render(parseHash()); }
+function navigate(state,{push=true}={}){ if(push && current) stack.push(current); current=state; render(state); }
+function back(){ const prev=stack.pop()||{view:"hub"}; current=prev; render(prev); }
 
-/* ===================== RENDER ===================== */
 function render(state){
-  current = state;
   if(state.view==="hub"){ applyTheme("hub","hub"); showView("hub"); return; }
-  if(state.view==="bespoke"){ renderBespoke(state.key); return; }
+  if(state.view==="travel"){ renderTravel(); return; }
   if(state.view==="world"){ renderWorld(state.key); return; }
   if(state.view==="notebook"){ renderNotebook(state.filter||"all"); return; }
   if(state.view==="reader"){ renderReader(state.slug); return; }
 }
-
-function renderBespoke(key){
-  const src = BESPOKE[key]; if(!src){ navigate({view:"world",key}); return; }
-  const f=document.getElementById("bespoke-frame");
-  if(f.getAttribute("src")!==src) f.setAttribute("src",src);
-  f.setAttribute("title", LABEL[key]||key);
-  stage.dataset.theme=key; stage.dataset.view="bespoke"; stage.dataset.skin="";
-  ground.style.background=(THEMES[key]||THEMES.notebook).ground;
-  FX.set("hubstars",key);
-  setOverlays([], "bespoke");
-  showView("bespoke");
+function renderTravel(){
+  const f=document.getElementById("travel-frame");
+  if(!f.getAttribute("src")) f.setAttribute("src","travel.html");
+  stage.dataset.theme="travel"; stage.dataset.view="travel"; stage.dataset.skin="";
+  FX.set("hubstars","travel");
+  showView("travel");
 }
 
 function postCard(p){
   const li=document.createElement("li");
-  const a=document.createElement("a"); a.className="entry"; a.href=hashFor({view:"reader",slug:p.slug});
+  const a=document.createElement("a"); a.className="entry";
   a.innerHTML=`<span class="entry-top">
       <span class="entry-title">${p.title}</span>
       <span class="entry-cat ${p.draft?'draft':''}">${LABEL[p.cat]||'Misc'}</span>
     </span>
-    <span class="entry-meta">${p.draft?'in the notebook · ':''}${p.mins} min · ${prettyDate(p.date)}</span>`;
+    <span class="entry-meta">${p.draft?'draft · ':''}${p.mins} min · ${prettyDate(p.date)}</span>`;
+  a.addEventListener("click", ()=> navigate({view:"reader", slug:p.slug}));
   li.appendChild(a); return li;
 }
 
 function renderWorld(key){
-  const t=THEMES[key]; if(!t){ navigate({view:"hub"}); return; }
-  applyTheme(key,"world"); showView("world");
+  const t=THEMES[key]; applyTheme(key,"world"); showView("world");
   document.getElementById("w-eyebrow").textContent=t.eyebrow;
   document.getElementById("w-title").textContent=t.word;
   document.getElementById("w-intro").textContent=t.intro;
   const ul=document.getElementById("w-entries"); ul.innerHTML="";
-  const list=POSTS.filter(p=>p.cat===key);
+  const list=POSTS.filter(p=>p.cat===key).sort((a,b)=>b.date.localeCompare(a.date));
   if(!list.length){
     const d=document.createElement("div"); d.className="empty";
-    d.innerHTML=`Nothing here yet. <a href="#/notebook">Read the notebook →</a>`;
+    d.innerHTML=`Nothing here yet. <a id="empty-nb">Read the notebook \u2192</a>`;
     ul.appendChild(d);
+    d.querySelector("#empty-nb").addEventListener("click",()=>navigate({view:"notebook"}));
   } else list.forEach(p=>ul.appendChild(postCard(p)));
   views.world.scrollTop=0;
 }
@@ -441,11 +396,11 @@ function renderNotebook(filter){
   cats.forEach(c=>{
     const b=document.createElement("button"); b.className="chip"+(c===filter?" active":"");
     b.textContent = c==="all"?"all":(LABEL[c]||c).toLowerCase();
-    b.addEventListener("click",()=> navigate({view:"notebook", filter:c}));
+    b.addEventListener("click",()=>{ current.filter=c; renderNotebook(c); });
     chips.appendChild(b);
   });
   const ul=document.getElementById("n-entries"); ul.innerHTML="";
-  let list=[...POSTS];
+  let list=[...POSTS].sort((a,b)=>b.date.localeCompare(a.date));
   if(filter!=="all") list=list.filter(p=>p.cat===filter);
   if(!list.length){ const d=document.createElement("div"); d.className="empty"; d.textContent="Nothing under this subject yet."; ul.appendChild(d); }
   else list.forEach(p=>ul.appendChild(postCard(p)));
@@ -454,11 +409,11 @@ function renderNotebook(filter){
 
 function renderReader(slug){
   const p=POSTS.find(x=>x.slug===slug); if(!p) return back();
-  const theme = (p.cat && p.cat!=="misc" && THEMES[p.cat]) ? p.cat : "notebook";
+  const theme = (p.cat && p.cat!=="misc") ? p.cat : "notebook";
   applyTheme(theme,"reader"); showView("reader");
   document.getElementById("r-eyebrow").textContent = LABEL[p.cat]||"Misc";
   document.getElementById("r-title").textContent = p.title;
-  document.getElementById("r-byline").textContent = `Dhruv Chopra · ${p.draft?"in the notebook · ":""}${prettyDate(p.date)} · ${p.mins} min read`;
+  document.getElementById("r-byline").textContent = `Dhruv Chopra · ${prettyDate(p.date)} · ${p.mins} min read`;
   document.getElementById("r-body").innerHTML = md(p.body);
   views.reader.scrollTop=0; updateProgress();
 }
@@ -471,8 +426,10 @@ function updateProgress(){
 }
 views.reader.addEventListener("scroll", updateProgress);
 
-/* nav wiring: data-back controls step back through history */
-document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",e=>{ e.preventDefault(); back(); }));
+/* nav wiring */
+document.getElementById("to-notebook").addEventListener("click",()=>navigate({view:"notebook"}));
+document.getElementById("r-to-notebook").addEventListener("click",()=>navigate({view:"notebook"}));
+document.querySelectorAll("[data-back]").forEach(b=>b.addEventListener("click",back));
 document.addEventListener("keydown",e=>{ if(e.key==="Escape" && current.view!=="hub") back(); });
 
 /* ===================== CANVAS FX ENGINE ===================== */
@@ -530,11 +487,8 @@ const FX=(function(){
   return { set };
 })();
 
-/* ===================== BOOT ===================== */
-(async function(){
-  await loadPosts();
-  route();                 // render whatever the current hash points to
-})();
+/* boot */
+render({view:"hub"});
 </script>
 </body>
 </html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music — Dhruv Chopra</title>
+  <meta name="description" content="Dhruv Chopra on music — what he listens to, what moves him." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ════════════════════════════════════════════════════════
+       MUSIC — the late-night listening session
+       ════════════════════════════════════════════════════════ */
+    body { background: #08070e; color: #ccc9e0; font-weight: 400; overflow-x: hidden; }
+    .site-nav { --nav-accent: #a78bfa; }
+    .site-footer { --foot-accent: #a78bfa; }
+
+    /* Ambient gradient glow */
+    .music-bg {
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 10% 5%, rgba(167,139,250,.09) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 92% 70%, rgba(251,191,36,.05) 0%, transparent 55%);
+    }
+
+    .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem; position: relative; z-index: 1; }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    .music-hero { padding: 6.5rem 0 4.5rem; }
+    .music-hero__eyebrow {
+      font-family: var(--grotesk); font-size: .66rem; letter-spacing: .32em;
+      text-transform: uppercase; color: #a78bfa; margin-bottom: 1.5rem;
+    }
+    .music-hero__title {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(3rem,9vw,6rem); font-weight: 500;
+      line-height: .9; letter-spacing: -.03em; color: #fff; margin-bottom: 1.6rem;
+    }
+    .music-hero__sub {
+      font-size: 1.06rem; max-width: 540px; color: #7e7a9a; line-height: 1.88;
+    }
+
+    /* ── Section heading ─────────────────────────────────── */
+    .music-head { display: flex; align-items: center; gap: 1rem; margin: 5rem 0 2rem; }
+    .music-head h2 {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(1.5rem,3vw,2.2rem); font-weight: 500;
+      color: #fff; white-space: nowrap; letter-spacing: -.02em;
+    }
+    .music-head::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(167,139,250,.28), transparent);
+    }
+
+    /* ── Genres — horizontal editorial strips ─────────────── */
+    .genres { display: flex; flex-direction: column; border-top: 1px solid rgba(167,139,250,.1); }
+    .genre {
+      display: flex; align-items: center; gap: 1.6rem;
+      padding: 1.1rem 0; border-bottom: 1px solid rgba(167,139,250,.1);
+    }
+    .genre__icon { font-size: 1.15rem; flex-shrink: 0; width: 1.8rem; text-align: center; }
+    .genre__name {
+      font-family: var(--grotesk); font-size: .74rem; letter-spacing: .13em;
+      text-transform: uppercase; color: #c0bcd6; font-weight: 500; flex: 1;
+    }
+    .genre__artists { font-size: .88rem; color: #55527a; }
+
+    /* ── Albums — editorial strips ────────────────────────── */
+    .albums { display: flex; flex-direction: column; border-top: 1px solid rgba(167,139,250,.1); }
+    .album {
+      display: grid; grid-template-columns: 1fr 1.8fr;
+      gap: 0 2rem; align-items: center;
+      padding: 1.5rem 0; border-bottom: 1px solid rgba(167,139,250,.1);
+      position: relative;
+    }
+    .album::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+      background: #a78bfa;
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform .32s cubic-bezier(.22,0,0,1);
+    }
+    .album:hover { padding-left: .9rem; }
+    .album:hover::before { transform: scaleY(1); }
+    .album__title { font-family: var(--fancy); font-size: 1.1rem; color: #ddd9f5; transition: color .22s; }
+    .album:hover .album__title { color: #a78bfa; }
+    .album__by { font-family: var(--grotesk); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: #55527a; margin-top: .2rem; }
+    .album__note { font-size: .92rem; color: #7e7a9a; line-height: 1.65; }
+
+    /* ── Rotation — numbered track list ──────────────────── */
+    .rotation { list-style: none; border-top: 1px solid rgba(167,139,250,.1); }
+    .rotation li {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1rem 0; border-bottom: 1px solid rgba(167,139,250,.1);
+    }
+    .rotation__n {
+      font-family: var(--fancy); font-style: italic;
+      font-size: 2rem; color: rgba(167,139,250,.15); line-height: 1;
+      flex-shrink: 0; width: 2.2rem; text-align: right;
+    }
+    .rotation__track { font-family: var(--fancy); font-size: 1.05rem; color: #d4d0e8; }
+    .rotation__artist { font-family: var(--grotesk); font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; color: #45426a; margin-top: .15rem; }
+    .rotation__tag {
+      margin-left: auto; flex-shrink: 0;
+      font-family: var(--grotesk); font-size: .58rem; letter-spacing: .14em; text-transform: uppercase;
+      color: #a78bfa; border: 1px solid rgba(167,139,250,.28);
+      padding: .18rem .55rem;
+    }
+
+    /* ── Coming soon ──────────────────────────────────────── */
+    .coming-soon {
+      padding: 2.5rem 0;
+      border-top: 1px solid rgba(167,139,250,.1);
+      border-bottom: 1px solid rgba(167,139,250,.1);
+    }
+    .coming-soon__text {
+      font-family: var(--fancy); font-style: italic;
+      font-size: 1.15rem; color: rgba(167,139,250,.28); margin: 0;
+    }
+
+    .foot-space { height: 5rem; }
+
+    @media (max-width: 640px) {
+      .genre__artists { display: none; }
+      .album { grid-template-columns: 1fr; gap: .5rem 0; padding-left: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="music-bg" aria-hidden="true"></div>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
+      <ul class="site-nav__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Writing</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <section class="music-hero">
+        <p class="music-hero__eyebrow">Dhruv Chopra · Music</p>
+        <h1 class="music-hero__title">Sound is<br>where I<br>go quiet.</h1>
+        <p class="music-hero__sub">
+          I don't have a single genre. I have moods. Some nights it's Kishore Kumar at 2am, some mornings it's Max Richter before anyone else is awake. Music is the one thing I consume entirely without wanting to explain it.
+        </p>
+      </section>
+
+      <div class="music-head"><h2>Genres I live in</h2></div>
+      <div class="genres">
+        <div class="genre">
+          <span class="genre__icon">🎹</span>
+          <span class="genre__name">Neo-Classical · Ambient</span>
+          <span class="genre__artists">Max Richter, Nils Frahm, Ólafur Arnalds</span>
+        </div>
+        <div class="genre">
+          <span class="genre__icon">🎷</span>
+          <span class="genre__name">Jazz</span>
+          <span class="genre__artists">Miles Davis, Bill Evans, Kamasi Washington</span>
+        </div>
+        <div class="genre">
+          <span class="genre__icon">🎶</span>
+          <span class="genre__name">Hindi Film · Retro</span>
+          <span class="genre__artists">Kishore Kumar, R.D. Burman, Lata Mangeshkar</span>
+        </div>
+        <div class="genre">
+          <span class="genre__icon">🎸</span>
+          <span class="genre__name">Alternative · Indie</span>
+          <span class="genre__artists">Radiohead, Bon Iver, Nick Drake</span>
+        </div>
+        <div class="genre">
+          <span class="genre__icon">🎼</span>
+          <span class="genre__name">Film Scores</span>
+          <span class="genre__artists">Hans Zimmer, Jonny Greenwood, Ennio Morricone</span>
+        </div>
+      </div>
+
+      <div class="music-head"><h2>Albums that stayed</h2></div>
+      <div class="albums">
+        <div class="album">
+          <div>
+            <p class="album__title">Kind of Blue</p>
+            <p class="album__by">Miles Davis · 1959</p>
+          </div>
+          <p class="album__note">Six musicians making decisions in real time. Modal jazz that still doesn't sound like it was recorded sixty-five years ago.</p>
+        </div>
+        <div class="album">
+          <div>
+            <p class="album__title">On the Nature of Daylight</p>
+            <p class="album__by">Max Richter · 2004</p>
+          </div>
+          <p class="album__note">The track I've put on more times than I can count when the world feels too loud. Six minutes of pure, still composition.</p>
+        </div>
+        <div class="album">
+          <div>
+            <p class="album__title">In Rainbows</p>
+            <p class="album__by">Radiohead · 2007</p>
+          </div>
+          <p class="album__note">The record that made me understand what it means for an album to have a feeling rather than just songs.</p>
+        </div>
+        <div class="album">
+          <div>
+            <p class="album__title">Golden Era Hindi Film</p>
+            <p class="album__by">Various · 1950s–80s</p>
+          </div>
+          <p class="album__note">R.D. Burman understood rhythm in a way most Western producers still don't. This entire era is an education in feel.</p>
+        </div>
+        <div class="album">
+          <div>
+            <p class="album__title">Reminiscence</p>
+            <p class="album__by">Nils Frahm · 2021</p>
+          </div>
+          <p class="album__note">Piano music that sounds like thinking. Perfect for late nights with a screen.</p>
+        </div>
+      </div>
+
+      <div class="music-head"><h2>What's on rotation</h2></div>
+      <ul class="rotation">
+        <li>
+          <span class="rotation__n">01</span>
+          <div>
+            <p class="rotation__track">Experience</p>
+            <p class="rotation__artist">Ludovico Einaudi</p>
+          </div>
+          <span class="rotation__tag">Always</span>
+        </li>
+        <li>
+          <span class="rotation__n">02</span>
+          <div>
+            <p class="rotation__track">Pyramid Song</p>
+            <p class="rotation__artist">Radiohead</p>
+          </div>
+          <span class="rotation__tag">Late nights</span>
+        </li>
+        <li>
+          <span class="rotation__n">03</span>
+          <div>
+            <p class="rotation__track">Blue in Green</p>
+            <p class="rotation__artist">Miles Davis</p>
+          </div>
+          <span class="rotation__tag">Morning</span>
+        </li>
+        <li>
+          <span class="rotation__n">04</span>
+          <div>
+            <p class="rotation__track">Roop Tera Mastana</p>
+            <p class="rotation__artist">Kishore Kumar</p>
+          </div>
+          <span class="rotation__tag">Always</span>
+        </li>
+        <li>
+          <span class="rotation__n">05</span>
+          <div>
+            <p class="rotation__track">Interstellar OST</p>
+            <p class="rotation__artist">Hans Zimmer</p>
+          </div>
+          <span class="rotation__tag">Focus</span>
+        </li>
+      </ul>
+
+      <div class="music-head"><h2>Writing on music</h2></div>
+      <div class="coming-soon">
+        <p class="coming-soon__text">Essays coming — haven't figured out what I want to say yet.</p>
+      </div>
+
+      <div class="foot-space"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p class="site-footer__copy">© 2025 Dhruv Chopra · still awake</p>
+      <div class="site-footer__links">
+        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -4,156 +4,148 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Perfumes — Dhruv Chopra</title>
-  <meta name="description" content="Dhruv Chopra on perfumes — memory, chemistry, and scent as language." />
+  <meta name="description" content="Dhruv Chopra on perfumes — top fragrances by occasion." />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* ── Perfumes Theme ────────────────────────────────────── */
-    :root {
-      --amber:    #c4843a;
-      --oud:      #2a1a0a;
-      --rose-dry: #8b3a52;
-      --musk:     #d4c4b0;
-      --iris:     #6b5b7b;
-      --parchm:   #faf8f4;
-    }
+    /* ════════ PERFUMES — the olfactive cabinet ════════ */
+    body { background: #0d0a07; color: #e4ddd4; font-weight: 400; }
+    .site-nav  { --nav-accent: #ff8fc7; }
+    .site-footer { --foot-accent: #ff8fc7; }
 
-    body { background: var(--parchm); }
-
+    /* Hero */
     .perf-hero {
       position: relative; overflow: hidden;
-      padding: 5rem 0 4rem;
-      border-bottom: 1px solid #e8ddd0;
-      margin-bottom: 3.5rem;
-      background: var(--oud); color: var(--white);
+      padding: 5.5rem 1.75rem 4.5rem;
+    }
+    .perf-hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(60% 70% at 90% -5%, rgba(255,143,199,.1) 0%, transparent 60%),
+        radial-gradient(50% 60% at -5% 80%, rgba(196,132,58,.12) 0%, transparent 55%);
     }
 
-    /* Scent trail particles — floating dots of varying opacity */
+    /* Scent trail particles */
     .scent-trail {
-      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
     }
     .scent-particle {
       position: absolute; border-radius: 50%;
       animation: driftUp linear infinite;
     }
-
     @keyframes driftUp {
-      0%   { transform: translateY(0) translateX(0)   scale(1);   opacity: 0; }
-      10%  { opacity: .6; }
-      50%  { transform: translateY(-180px) translateX(30px)  scale(1.3); opacity: .3; }
-      100% { transform: translateY(-380px) translateX(-20px) scale(.6);   opacity: 0; }
+      0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+      10%  { opacity: .5; }
+      50%  { transform: translateY(-180px) translateX(30px) scale(1.3); opacity: .2; }
+      100% { transform: translateY(-380px) translateX(-20px) scale(.6); opacity: 0; }
     }
 
-    /* Amber light glow in top-right */
-    .amber-glow {
-      position: absolute; top: -60px; right: -60px;
-      width: 400px; height: 400px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(196,132,58,.25) 0%, transparent 70%);
-      animation: amberBreath 6s ease-in-out infinite;
-    }
-    @keyframes amberBreath {
-      0%,100% { transform: scale(1); }
-      50%      { transform: scale(1.15); }
-    }
-
-    .perf-hero__content { position: relative; z-index: 2; }
+    .perf-hero__inner { max-width: var(--wide); margin: 0 auto; position: relative; z-index: 1; }
     .perf-hero__eyebrow {
-      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(255,255,255,.35); margin-bottom: 1rem;
+      font-family: var(--grotesk); font-size: .66rem; letter-spacing: .28em;
+      text-transform: uppercase; color: #ff8fc7; margin-bottom: 1.4rem;
     }
-    .perf-hero__title {
-      font-family: var(--serif);
-      font-size: clamp(2.5rem,5.5vw,4.5rem);
-      line-height: .95; letter-spacing: -.02em;
-      margin-bottom: 1.25rem; color: var(--white);
+    .perf-hero h1 {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 500; color: #fff; line-height: .9; letter-spacing: -.03em;
+      margin-bottom: 1.4rem;
     }
-    .perf-hero__sub {
-      font-size: 1rem; max-width: 480px;
-      color: rgba(255,255,255,.6); line-height: 1.75;
-    }
-    .perf-hero__quote {
-      display: inline-block; margin-top: 2rem;
-      font-family: var(--serif); font-style: italic;
-      font-size: .95rem; color: rgba(255,255,255,.45);
-      border-left: 1px solid rgba(255,255,255,.2);
-      padding-left: 1rem;
+    .perf-hero p {
+      font-family: var(--sans); font-weight: 300;
+      color: rgba(228,221,212,.5); max-width: 48ch; font-size: 1rem;
+      line-height: 1.75; letter-spacing: .005em;
     }
 
-    /* Olfactive pyramid */
-    .pyramid-section {
-      background: var(--parchm);
-      border-bottom: 1px solid #e8ddd0;
-      padding: 3rem 0; margin-bottom: 3rem;
-    }
-    .pyramid-wrap { max-width: 480px; }
+    .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.75rem 5rem; }
 
-    .pyramid-tier {
-      display: flex; align-items: stretch; margin-bottom: 1px;
+    /* Occasion section */
+    .occasion {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
     }
-    .pyramid-tier__label {
-      width: 80px; flex-shrink: 0;
-      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--muted); display: flex; align-items: center; padding-right: 1rem;
-      font-family: var(--sans);
+    .occasion__header {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin-bottom: 1.6rem;
     }
-    .pyramid-tier__bar {
-      flex: 1; display: flex; gap: .5rem; align-items: center;
-      padding: .85rem 1rem; flex-wrap: wrap;
+    .occasion__num {
+      font-family: var(--grotesk); font-size: .58rem; letter-spacing: .2em;
+      text-transform: uppercase; color: #3a3830; flex-shrink: 0;
     }
-    .pyramid-tier--top    .pyramid-tier__bar { background: rgba(107,91,123,.15); }
-    .pyramid-tier--heart  .pyramid-tier__bar { background: rgba(196,132,58,.15); }
-    .pyramid-tier--base   .pyramid-tier__bar { background: rgba(42,26,10,.1); }
-
-    .note-pill {
-      font-size: .72rem; padding: .25rem .65rem;
-      border: 1px solid currentColor; border-radius: 999px;
+    .occasion__when {
+      font-family: var(--grotesk); font-size: .6rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--c, #ff8fc7); opacity: .75;
     }
-    .note-pill--top   { color: var(--iris); }
-    .note-pill--heart { color: var(--amber); }
-    .note-pill--base  { color: var(--oud); opacity: .7; }
-
-    .pyramid-duration {
-      font-size: .65rem; color: var(--muted); margin-left: auto;
-      white-space: nowrap; align-self: center;
+    .occasion__rule {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,.07), transparent);
+    }
+    .occasion__name {
+      font-family: var(--fancy); font-style: italic;
+      font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 500;
+      color: rgba(255,255,255,.05); line-height: 1; letter-spacing: -.025em;
+      margin-bottom: 1.4rem; user-select: none;
     }
 
-    /* Bottle grid */
-    .bottle-grid {
+    /* Fragrance row */
+    .frag-list { display: flex; flex-direction: column; }
+    .frag {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
-      gap: 1px; background: #e8ddd0; border: 1px solid #e8ddd0;
-      margin-bottom: 3rem;
+      grid-template-columns: 120px 1fr auto;
+      grid-template-rows: auto auto;
+      gap: .2rem 1.8rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      position: relative; overflow: hidden;
+      transition: padding-left .3s cubic-bezier(.22,0,0,1);
     }
-    .bottle-card {
-      background: var(--parchm); padding: 1.5rem 1.25rem;
-      display: flex; flex-direction: column; gap: .35rem;
-      transition: background .2s;
+    .frag:last-child { border-bottom: 1px solid rgba(255,255,255,.06); }
+    .frag::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1.5px;
+      background: var(--c, #ff8fc7);
+      transform: scaleY(0); transform-origin: bottom;
+      transition: transform .32s cubic-bezier(.22,0,0,1);
     }
-    .bottle-card:hover { background: var(--white); }
-    .bottle-card__house {
-      font-size: .62rem; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .bottle-card__name { font-family: var(--serif); font-size: 1rem; color: var(--text); }
-    .bottle-card__family { font-size: .72rem; color: var(--amber); }
-    .bottle-card__note { font-size: .78rem; color: var(--secondary); line-height: 1.4; margin-top: .25rem; }
+    .frag:hover { padding-left: 1rem; }
+    .frag:hover::before { transform: scaleY(1); }
 
-    /* Memory notes */
-    .memory-list { list-style: none; margin-bottom: 3rem; }
-    .memory-list li {
-      padding: 1.25rem 0; border-bottom: 1px solid #e8ddd0;
-      font-size: .93rem; line-height: 1.65;
-      display: flex; gap: 1.25rem; align-items: flex-start;
+    .frag__house {
+      font-family: var(--grotesk); font-size: .58rem; letter-spacing: .15em;
+      text-transform: uppercase; color: #55526e;
+      grid-column: 1; grid-row: 1; align-self: end;
     }
-    .memory-list li:first-child { border-top: 1px solid #e8ddd0; }
-    .memory-list__icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; margin-top: .1rem; }
-    .memory-list__body strong {
-      font-family: var(--serif); font-size: 1rem; font-weight: 500;
-      display: block; margin-bottom: .2rem;
+    .frag__name {
+      font-family: var(--fancy); font-style: italic;
+      font-size: 1.5rem; font-weight: 400; color: #e4ddd4;
+      grid-column: 2; grid-row: 1;
+      letter-spacing: -.01em;
+      transition: color .22s;
+    }
+    .frag:hover .frag__name { color: var(--c, #ff8fc7); }
+    .frag__family {
+      font-family: var(--grotesk); font-size: .58rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--c, #ff8fc7); opacity: .55;
+      grid-column: 1; grid-row: 2; align-self: start;
+    }
+    .frag__note {
+      font-family: var(--sans); font-size: .85rem; line-height: 1.6;
+      color: rgba(228,221,212,.45);
+      grid-column: 2; grid-row: 2;
+    }
+    .frag__rank {
+      font-family: var(--fancy); font-style: italic;
+      font-size: 3.2rem; font-weight: 700; line-height: 1;
+      color: rgba(255,255,255,.04);
+      grid-column: 3; grid-row: 1 / 3; align-self: center;
+      user-select: none; letter-spacing: -.03em;
     }
 
-    @media (max-width: 640px) {
-      .amber-glow { display: none; }
-      .pyramid-tier__label { width: 56px; font-size: .58rem; }
+    @media (max-width: 600px) {
+      .frag { grid-template-columns: 1fr; }
+      .frag__house  { grid-column: 1; grid-row: 1; }
+      .frag__name   { grid-column: 1; grid-row: 2; }
+      .frag__family { grid-column: 1; grid-row: 3; }
+      .frag__note   { grid-column: 1; grid-row: 4; }
+      .frag__rank   { display: none; }
     }
   </style>
 </head>
@@ -171,150 +163,113 @@
   </nav>
 
   <main>
-    <section class="perf-hero">
-      <div class="amber-glow" aria-hidden="true"></div>
+    <header class="perf-hero">
       <div class="scent-trail" id="scent-trail" aria-hidden="true"></div>
-      <div class="container--wide perf-hero__content">
+      <div class="perf-hero__inner">
         <p class="perf-hero__eyebrow">Dhruv Chopra · Perfumes</p>
-        <h1 class="perf-hero__title">Scent<br>is memory<br>made chemical.</h1>
-        <p class="perf-hero__sub">
-          The olfactory bulb has a direct line to the hippocampus — there's no filter, no translation. A smell doesn't remind you of a memory. It is the memory. That's why perfume is the most intimate art form nobody talks about.
-        </p>
-        <p class="perf-hero__quote">It's definitely gone too far.</p>
+        <h1>Scent is<br>memory made<br>chemical.</h1>
+        <p>Top picks by occasion — because the right fragrance isn't the best one in the world, it's the right one for the room you're about to walk into.</p>
       </div>
-    </section>
+    </header>
 
-    <!-- Olfactive pyramid -->
-    <div class="pyramid-section">
-      <div class="container--wide">
-        <div class="section-head">
-          <h2>How I think about fragrance structure</h2>
-          <span class="section-head__rule"></span>
-        </div>
-        <div class="pyramid-wrap">
-          <div class="pyramid-tier pyramid-tier--top">
-            <span class="pyramid-tier__label">Top</span>
-            <div class="pyramid-tier__bar">
-              <span class="note-pill note-pill--top">Bergamot</span>
-              <span class="note-pill note-pill--top">Pink pepper</span>
-              <span class="note-pill note-pill--top">Grapefruit</span>
-              <span class="note-pill note-pill--top">Cardamom</span>
-              <span class="pyramid-duration">0–15 min</span>
-            </div>
-          </div>
-          <div class="pyramid-tier pyramid-tier--heart">
-            <span class="pyramid-tier__label">Heart</span>
-            <div class="pyramid-tier__bar">
-              <span class="note-pill note-pill--heart">Rose</span>
-              <span class="note-pill note-pill--heart">Oud</span>
-              <span class="note-pill note-pill--heart">Iris</span>
-              <span class="note-pill note-pill--heart">Geranium</span>
-              <span class="note-pill note-pill--heart">Vetiver</span>
-              <span class="pyramid-duration">15 min–4 hr</span>
-            </div>
-          </div>
-          <div class="pyramid-tier pyramid-tier--base">
-            <span class="pyramid-tier__label">Base</span>
-            <div class="pyramid-tier__bar">
-              <span class="note-pill note-pill--base">Ambergris</span>
-              <span class="note-pill note-pill--base">Sandalwood</span>
-              <span class="note-pill note-pill--base">Musk</span>
-              <span class="note-pill note-pill--base">Benzoin</span>
-              <span class="pyramid-duration">4+ hr</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="wrap">
 
-    <div class="container--wide">
+      <!-- Office -->
+      <section class="occasion" style="--c:#ffcf8a;">
+        <div class="occasion__header">
+          <span class="occasion__num">01</span>
+          <span class="occasion__when">Mon – Fri · 9 to 6</span>
+          <span class="occasion__rule"></span>
+        </div>
+        <p class="occasion__name">Office</p>
+        <div class="frag-list">
+          <div class="frag">
+            <span class="frag__house">Dior</span>
+            <span class="frag__name">Sauvage EDP</span>
+            <span class="frag__family">Woody · Aromatic</span>
+            <span class="frag__note">Safe in the best sense — professional, confident, never distracting. Bergamot opens, ambroxan stays all day. Every meeting I've walked into wearing this has gone fine.</span>
+            <span class="frag__rank" aria-hidden="true">01</span>
+          </div>
+        </div>
+      </section>
 
-      <!-- Rotation -->
-      <div class="section-head">
-        <h2>Current rotation</h2>
-        <span class="section-head__rule"></span>
-      </div>
-      <div class="bottle-grid">
-        <div class="bottle-card">
-          <span class="bottle-card__house">Dior</span>
-          <span class="bottle-card__name">Sauvage EDP</span>
-          <span class="bottle-card__family">Woody · Aromatic</span>
-          <span class="bottle-card__note">The go-to for any occasion. An easy opener into quality fragrance.</span>
+      <!-- Date Night -->
+      <section class="occasion" style="--c:#ff8fc7;">
+        <div class="occasion__header">
+          <span class="occasion__num">02</span>
+          <span class="occasion__when">Evenings · after dark</span>
+          <span class="occasion__rule"></span>
         </div>
-        <div class="bottle-card">
-          <span class="bottle-card__house">Tom Ford</span>
-          <span class="bottle-card__name">Oud Wood</span>
-          <span class="bottle-card__family">Oriental · Woody</span>
-          <span class="bottle-card__note">Rosewood, cardamom, oud. The most lived-in smell I know.</span>
+        <p class="occasion__name">Date Night</p>
+        <div class="frag-list">
+          <div class="frag">
+            <span class="frag__house">Tom Ford</span>
+            <span class="frag__name">Oud Wood</span>
+            <span class="frag__family">Oriental · Woody</span>
+            <span class="frag__note">Rosewood, cardamom, rare oud. Rich and intimate without being loud — the most lived-in smell I know. Wear it when you want to be remembered.</span>
+            <span class="frag__rank" aria-hidden="true">01</span>
+          </div>
+          <div class="frag">
+            <span class="frag__house">Frederic Malle</span>
+            <span class="frag__name">Portrait of a Lady</span>
+            <span class="frag__family">Floral · Oriental</span>
+            <span class="frag__note">Turkish rose, patchouli, incense. Technically a feminine fragrance. I don't care. It stops conversations and starts better ones.</span>
+            <span class="frag__rank" aria-hidden="true">02</span>
+          </div>
         </div>
-        <div class="bottle-card">
-          <span class="bottle-card__house">Maison Margiela</span>
-          <span class="bottle-card__name">Replica Jazz Club</span>
-          <span class="bottle-card__family">Woody · Aromatic</span>
-          <span class="bottle-card__note">Rum, pink pepper, vetiver. Smells exactly like the name.</span>
-        </div>
-        <div class="bottle-card">
-          <span class="bottle-card__house">Byredo</span>
-          <span class="bottle-card__name">Bal d'Afrique</span>
-          <span class="bottle-card__family">Floral · Woody</span>
-          <span class="bottle-card__note">African marigold, musk, cedar. The warm-weather signature.</span>
-        </div>
-        <div class="bottle-card">
-          <span class="bottle-card__house">Amouage</span>
-          <span class="bottle-card__name">Reflection Man</span>
-          <span class="bottle-card__family">Aromatic · Floral</span>
-          <span class="bottle-card__note">Neroli, iris, sandalwood. Quietly the most elegant thing I own.</span>
-        </div>
-        <div class="bottle-card">
-          <span class="bottle-card__house">Frederic Malle</span>
-          <span class="bottle-card__name">Portrait of a Lady</span>
-          <span class="bottle-card__family">Floral · Oriental</span>
-          <span class="bottle-card__note">Turkish rose, patchouli, incense. Boundary-crossing in the best way.</span>
-        </div>
-      </div>
+      </section>
 
-      <!-- Why it matters -->
-      <div class="section-head">
-        <h2>Why it matters</h2>
-        <span class="section-head__rule"></span>
-      </div>
-      <ul class="memory-list">
-        <li>
-          <span class="memory-list__icon">🧠</span>
-          <div class="memory-list__body">
-            <strong>The neuroscience is real.</strong>
-            Olfaction is the only sense that bypasses the thalamus. Smell goes straight to the amygdala and hippocampus — the emotion and memory centres. This is why a specific scent can collapse a decade into a single instant.
+      <!-- Casual / Weekend -->
+      <section class="occasion" style="--c:#a78bfa;">
+        <div class="occasion__header">
+          <span class="occasion__num">03</span>
+          <span class="occasion__when">Weekends · no agenda</span>
+          <span class="occasion__rule"></span>
+        </div>
+        <p class="occasion__name">Casual</p>
+        <div class="frag-list">
+          <div class="frag">
+            <span class="frag__house">Maison Margiela</span>
+            <span class="frag__name">Replica Jazz Club</span>
+            <span class="frag__family">Woody · Aromatic</span>
+            <span class="frag__note">Rum, pink pepper, vetiver. Smells exactly like what it's named after — a late-night bar, warm and unhurried. The only fragrance that makes you want to slow down.</span>
+            <span class="frag__rank" aria-hidden="true">01</span>
           </div>
-        </li>
-        <li>
-          <span class="memory-list__icon">🌍</span>
-          <div class="memory-list__body">
-            <strong>Fragrance is geography.</strong>
-            Oud from the Gulf. Neroli from Morocco. Hinoki from Japan. Vetiver from Haiti. A good fragrance is a place. A great one is a memory of being there.
+          <div class="frag">
+            <span class="frag__house">Byredo</span>
+            <span class="frag__name">Bal d'Afrique</span>
+            <span class="frag__family">Floral · Woody</span>
+            <span class="frag__note">African marigold, musk, cedar. Warm and golden — wears like sunshine. The summer pick. Gets better as the day heats up.</span>
+            <span class="frag__rank" aria-hidden="true">02</span>
           </div>
-        </li>
-        <li>
-          <span class="memory-list__icon">⏳</span>
-          <div class="memory-list__body">
-            <strong>It's the only invisible art form.</strong>
-            You can photograph a painting, record music, film a dance. You cannot capture a smell. It exists only in real time, only in proximity, only in the moment. That's a kind of purity no other medium has.
+        </div>
+      </section>
+
+      <!-- Formal / Special -->
+      <section class="occasion" style="--c:#8ea2ff;">
+        <div class="occasion__header">
+          <span class="occasion__num">04</span>
+          <span class="occasion__when">Events · weddings · dinners</span>
+          <span class="occasion__rule"></span>
+        </div>
+        <p class="occasion__name">Formal</p>
+        <div class="frag-list">
+          <div class="frag">
+            <span class="frag__house">Amouage</span>
+            <span class="frag__name">Reflection Man</span>
+            <span class="frag__family">Aromatic · Floral</span>
+            <span class="frag__note">Neroli, iris, sandalwood. Quietly the most elegant thing I own. Nothing announces itself — it just reveals itself, slowly, to people who get close enough to notice.</span>
+            <span class="frag__rank" aria-hidden="true">01</span>
           </div>
-        </li>
-        <li>
-          <span class="memory-list__icon">💰</span>
-          <div class="memory-list__body">
-            <strong>Yes, some of these are expensive. Yes, I stand by it.</strong>
-            A bottle you wear for two years is cheaper per use than most daily habits. I've done the maths. The maths is fine.
-          </div>
-        </li>
-      </ul>
+        </div>
+      </section>
 
     </div>
   </main>
 
   <footer class="site-footer" style="--foot-accent:#ff8fc7;">
     <div class="site-footer__inner">
-      <p class="site-footer__copy">© 2025 Dhruv Chopra</p>
+      <p class="site-footer__copy">© 2025 Dhruv Chopra · still awake</p>
       <div class="site-footer__links">
         <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
         <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
@@ -324,15 +279,14 @@
   </footer>
 
   <script>
-    // Generate floating scent particles
     (function () {
       const container = document.getElementById('scent-trail');
       if (!container) return;
       const colors = [
+        'rgba(255,143,199,',
         'rgba(196,132,58,',
-        'rgba(139,58,82,',
-        'rgba(107,91,123,',
-        'rgba(212,169,106,',
+        'rgba(167,139,250,',
+        'rgba(255,207,138,',
         'rgba(255,255,255,',
       ];
       for (let i = 0; i < 28; i++) {
@@ -340,7 +294,7 @@
         el.classList.add('scent-particle');
         const size = Math.random() * 8 + 3;
         const color = colors[Math.floor(Math.random() * colors.length)];
-        const opacity = Math.random() * .4 + .1;
+        const opacity = Math.random() * .35 + .08;
         el.style.cssText = [
           'width:'  + size + 'px',
           'height:' + size + 'px',

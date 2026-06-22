@@ -1,737 +1,340 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sports — Dhruv Chopra</title>
-  <meta name="description" content="Dhruv Chopra on sports — six disciplines, six competitions, zero chill." />
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* ════════════════════════════════════════════════════════
-       SPORTS — stadium at night, floodlights on, no apologies.
-       ════════════════════════════════════════════════════════ */
-    body { background: #07080e; color: #f0f0f8; overflow-x: hidden; }
-    .site-nav { --nav-accent: #ff3d2e; background: rgba(5,6,12,0.72); border-bottom-color: rgba(255,61,46,.15); }
-    .site-footer { --foot-accent: #ff3d2e; background: #05060c; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports — Dhruv Chopra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --ease:cubic-bezier(.16,1,.3,1); --bg:#120607; --surf:#1d0a0c; --fg:#ffe9ea; --accent:#ff2d46; --accent2:#ff6a3d; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); color:var(--fg); font-family:"Space Grotesk",system-ui,sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  .wrap{ max-width:1140px; margin:0 auto; padding:0 clamp(20px,5vw,56px); }
+  a{ color:inherit; }
+  .anton{ font-family:"Anton",sans-serif; text-transform:uppercase; }
 
-    /* ── HERO ──────────────────────────────────────────────── */
-    .sports-hero {
-      position: relative; overflow: hidden;
-      min-height: 94vh;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 0 6rem;
-    }
+  /* HERO */
+  .hero{ position:relative; min-height:96vh; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+  .pitch{ position:absolute; inset:0; z-index:0; background:radial-gradient(120% 80% at 50% -10%, rgba(255,45,70,.18), transparent 60%), repeating-linear-gradient(90deg, #150709 0 60px, #1a0a0d 60px 120px); }
+  .pitch::before{ content:""; position:absolute; left:50%; top:50%; width:340px; height:340px; transform:translate(-50%,-50%); border:2px solid rgba(255,255,255,.06); border-radius:50%; }
+  .pitch::after{ content:""; position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:rgba(255,255,255,.06); }
+  .flood{ position:absolute; top:-10%; width:60%; height:80%; background:radial-gradient(ellipse at top, rgba(255,106,61,.16), transparent 60%); filter:blur(8px); z-index:0; animation:flick 6s ease-in-out infinite; }
+  .flood.l{ left:-14%; } .flood.r{ right:-14%; animation-delay:1.5s; }
+  @keyframes flick{ 0%,100%{ opacity:.8 } 48%{ opacity:.95 } 50%{ opacity:.6 } 52%{ opacity:.92 } }
+  .sweep{ position:absolute; inset:0; z-index:0; background:linear-gradient(105deg, transparent 30%, rgba(255,45,70,.10) 48%, transparent 66%); transform:translateX(-30%); animation:sweep 7s linear infinite; }
+  @keyframes sweep{ to{ transform:translateX(60%); } }
+  .hero-inner{ position:relative; z-index:2; }
+  .kicker{ font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.34em; text-transform:uppercase; color:var(--accent); margin-bottom:24px; display:inline-flex; align-items:center; gap:10px; }
+  .kicker .live{ width:8px; height:8px; border-radius:50%; background:#fff; box-shadow:0 0 0 0 rgba(255,255,255,.6); animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(255,255,255,.6) } 100%{ box-shadow:0 0 0 12px rgba(255,255,255,0) } }
+  .hero h1{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:clamp(64px,15vw,210px); line-height:.82; }
+  .hero h1 .stroke{ -webkit-text-stroke:2px var(--accent); color:transparent; }
+  .hero h1 em{ font-style:normal; color:var(--accent); }
+  .lede{ margin-top:30px; max-width:46ch; font-size:clamp(16px,2vw,20px); line-height:1.55; color:#f4cdd0; font-weight:300; }
+  .scoreline{ display:flex; margin-top:42px; border:1px solid rgba(255,255,255,.12); border-radius:10px; overflow:hidden; width:fit-content; background:rgba(0,0,0,.35); }
+  .scoreline .cell{ padding:16px 26px; border-right:1px solid rgba(255,255,255,.1); text-align:center; }
+  .scoreline .cell:last-child{ border-right:0; }
+  .scoreline b{ font-family:"JetBrains Mono",monospace; font-weight:800; font-size:clamp(26px,4vw,40px); color:var(--accent); display:block; line-height:1; }
+  .scoreline span{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; opacity:.6; margin-top:6px; display:block; }
+  .ticker{ position:absolute; bottom:0; left:0; right:0; z-index:2; background:var(--accent); color:#1a0405; overflow:hidden; white-space:nowrap; }
+  .ticker .run{ display:inline-block; padding:11px 0; font-family:"JetBrains Mono",monospace; font-weight:700; font-size:12px; letter-spacing:.14em; text-transform:uppercase; animation:run 30s linear infinite; }
+  .ticker .run span{ padding:0 26px; } .ticker .run .dot{ opacity:.5; padding:0; }
+  @keyframes run{ to{ transform:translateX(-50%); } }
 
-    /* Stadium backdrop: deep dark + twin floodlight spills */
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background: #07080e;
-    }
-    .hero-bg::before {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse 65% 55% at 15% -5%,  rgba(255,61,46,.14)  0%, transparent 65%),
-        radial-gradient(ellipse 55% 45% at 88% -8%,  rgba(255,130,30,.10) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 35% at 50% 110%, rgba(255,61,46,.08)  0%, transparent 55%);
-    }
+  /* SECTION */
+  .sec{ padding:clamp(70px,11vw,130px) 0; position:relative; }
+  .sec-h{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:50px; flex-wrap:wrap; }
+  .sec-h .num{ font-family:"JetBrains Mono",monospace; font-size:13px; letter-spacing:.2em; color:var(--accent); }
+  .sec-h h2{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:clamp(38px,7vw,82px); line-height:.9; }
+  .sec-h p{ font-size:14px; opacity:.6; max-width:30ch; }
 
-    /* Subtle field grid — like looking down at a lit pitch */
-    .hero-grid {
-      position: absolute; inset: 0; z-index: 1;
-      background-image:
-        linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
-      background-size: 80px 80px;
-    }
-    /* centre circle echo */
-    .hero-grid::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: min(60vw, 520px); height: min(60vw, 520px);
-      transform: translate(-50%, -50%);
-      border: 1px solid rgba(255,255,255,.04);
-      border-radius: 50%;
-    }
+  /* FANDOM BLOCK */
+  .fblock{ padding:42px 0; border-top:1px solid rgba(255,255,255,.08); }
+  .fhead{ display:flex; align-items:baseline; gap:16px; margin-bottom:30px; flex-wrap:wrap; }
+  .fhead .st{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:clamp(26px,4vw,46px); }
+  .fhead .ss{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+  .fgrid{ display:grid; grid-template-columns:minmax(220px,280px) 1fr; gap:34px; align-items:center; }
+  .kits{ display:flex; gap:22px; flex-wrap:wrap; }
+  @media (max-width:720px){ .fgrid{ grid-template-columns:1fr; } }
 
-    /* Vignette overlay */
-    .hero-vignette {
-      position: absolute; inset: 0; z-index: 2; pointer-events: none;
-      background: radial-gradient(130% 100% at 50% 40%, transparent 40%, rgba(7,8,14,.75) 100%);
-    }
+  /* KIT CARD */
+  .club{ --c:#ff2d46; text-align:center; width:190px; padding:24px 18px; border-radius:18px; background:var(--surf); border:1px solid rgba(255,255,255,.08); position:relative; overflow:hidden; transition:transform .4s var(--ease); }
+  .club:hover{ transform:translateY(-8px); }
+  .club::before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--c) 30%, transparent), transparent 62%); pointer-events:none; }
+  .jersey{ width:130px; height:140px; margin:0 auto 14px; }
+  .club .name{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:20px; line-height:.95; }
+  .club .since{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--c); margin-top:7px; }
+  .club .league{ display:inline-block; margin-top:9px; font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; border:1px solid color-mix(in srgb, var(--c) 50%, transparent); color:var(--c); padding:3px 9px; border-radius:999px; }
 
-    .hero-content {
-      position: relative; z-index: 10;
-      max-width: var(--wide); width: 100%;
-      margin: 0 auto; padding: 0 1.75rem;
-    }
+  /* PLAYER CARD */
+  .pcard{ --c:#ff2d46; position:relative; border-radius:20px; padding:20px; width:100%; max-width:280px; aspect-ratio:3/4.2; transform-style:preserve-3d; transition:transform .15s ease-out; cursor:pointer; overflow:hidden; background:linear-gradient(160deg, color-mix(in srgb, var(--c) 32%, #1a0a0c), #120608 72%); border:1px solid color-mix(in srgb, var(--c) 48%, transparent); }
+  .pcard .foil{ position:absolute; inset:0; background:linear-gradient(115deg, transparent 30%, color-mix(in srgb, var(--c) 38%, transparent) 45%, transparent 60%); mix-blend-mode:screen; opacity:.7; pointer-events:none; transition:background-position .1s; background-size:300% 300%; }
+  .pcard .raterow{ display:flex; justify-content:space-between; align-items:flex-start; }
+  .pcard .rate{ font-family:"Anton",sans-serif; font-size:34px; line-height:.82; color:var(--c); }
+  .pcard .pos{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em; opacity:.8; margin-top:6px; }
+  .pcard .num{ font-family:"Anton",sans-serif; font-size:30px; color:var(--c); opacity:.85; }
+  .pcard .photo{ flex:1; margin:8px 0 12px; border-radius:12px; background:repeating-linear-gradient(45deg,#1d0a0c,#1d0a0c 10px,#220c0f 10px,#220c0f 20px); display:grid; place-items:center; aspect-ratio:1/1; overflow:hidden; }
+  .pcard .photo img{ width:100%; height:100%; object-fit:cover; }
+  .pcard .photo .ph{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; color:#7d5f63; text-align:center; }
+  .pcard .photo .ph b{ display:block; font-size:24px; margin-bottom:4px; }
+  .pcard .pname{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:24px; line-height:.9; }
+  .pcard .club-line{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; opacity:.6; margin-top:4px; }
+  .pcard .stats{ display:flex; margin-top:12px; border-top:1px solid rgba(255,255,255,.14); padding-top:10px; }
+  .pcard .stats div{ flex:1; text-align:center; font-family:"JetBrains Mono",monospace; }
+  .pcard .stats b{ font-size:15px; font-weight:800; display:block; }
+  .pcard .stats span{ font-size:8px; letter-spacing:.08em; opacity:.55; }
 
-    .hero-eyebrow {
-      font-family: var(--grotesk);
-      font-size: .68rem; letter-spacing: .32em; text-transform: uppercase;
-      color: #ff3d2e; margin-bottom: 1.6rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: #ff3d2e; flex-shrink: 0; }
+  /* F1 MODULE (aggressive) */
+  .f1{ position:relative; margin-top:30px; border-radius:20px; overflow:hidden; background:linear-gradient(120deg,#0a1430 0%, #0e1c45 55%, #1a1030 100%); border:1px solid rgba(255,200,0,.25); padding:clamp(30px,5vw,60px); }
+  .f1::before{ content:""; position:absolute; inset:0; background:repeating-linear-gradient(115deg, transparent 0 38px, rgba(255,45,70,.10) 38px 42px, transparent 42px 46px, rgba(255,200,0,.10) 46px 50px); animation:f1streak 1.6s linear infinite; }
+  @keyframes f1streak{ to{ background-position:200px 0; } }
+  .f1-grid{ position:relative; z-index:2; display:grid; grid-template-columns:1.2fr 1fr; gap:30px; align-items:center; }
+  .f1 .team{ font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:#ffd23f; }
+  .f1 .vname{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:clamp(48px,8vw,104px); line-height:.82; transform:skewX(-8deg); margin:10px 0; }
+  .f1 .vname .red{ color:#ff2d46; }
+  .f1 .vsub{ font-family:"Space Grotesk",sans-serif; font-size:15px; line-height:1.5; color:#cfd6ef; max-width:34ch; font-weight:300; }
+  .f1 .bignum{ font-family:"Anton",sans-serif; font-size:clamp(140px,22vw,260px); line-height:.7; color:transparent; -webkit-text-stroke:3px #ffd23f; text-align:center; transform:skewX(-8deg); }
+  .f1 .tele{ display:flex; gap:0; margin-top:24px; border:1px solid rgba(255,255,255,.16); border-radius:10px; overflow:hidden; width:fit-content; }
+  .f1 .tele div{ padding:14px 20px; border-right:1px solid rgba(255,255,255,.14); text-align:center; font-family:"JetBrains Mono",monospace; }
+  .f1 .tele div:last-child{ border-right:0; }
+  .f1 .tele b{ display:block; font-size:24px; font-weight:800; color:#ffd23f; line-height:1; }
+  .f1 .tele span{ font-size:8.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.6; margin-top:5px; display:block; }
+  @media (max-width:720px){ .f1-grid{ grid-template-columns:1fr; } .f1 .bignum{ font-size:130px; } }
 
-    .hero-title {
-      font-family: var(--fancy);
-      font-size: clamp(4.5rem, 14vw, 11rem);
-      font-weight: 900; line-height: .84; letter-spacing: -.04em;
-      color: #fff; margin-bottom: 2rem;
-    }
-    .hero-title em { font-style: italic; color: #ff3d2e; }
+  /* IRON / SBD */
+  .iron{ background:linear-gradient(180deg, #1a0709, #120607); border-top:1px solid rgba(255,255,255,.08); }
+  .prboard{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .lift{ position:relative; background:var(--surf); border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:28px 22px; text-align:center; overflow:hidden; }
+  .lift::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:4px; background:var(--accent); }
+  .lift .bar{ width:120px; height:34px; margin:0 auto 16px; color:#9a9aa2; }
+  .lift .ln{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:20px; letter-spacing:.04em; }
+  .lift .kg{ font-family:"JetBrains Mono",monospace; font-weight:800; font-size:clamp(34px,5vw,52px); color:var(--accent); line-height:1; margin-top:6px; }
+  .lift .kg small{ font-size:14px; opacity:.6; font-weight:500; }
+  .lift .sub{ font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; opacity:.5; margin-top:8px; }
+  .total{ margin-top:22px; display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; }
+  .total .lbl{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; opacity:.6; }
+  .total .val{ font-family:"Anton",sans-serif; font-size:clamp(40px,7vw,72px); color:#fff; }
+  .total .val small{ font-family:"JetBrains Mono",monospace; font-size:18px; color:var(--accent); }
+  .total .bw{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:.55; }
+  .disc-tags{ display:flex; gap:12px; margin-bottom:30px; flex-wrap:wrap; }
+  .disc-tags span{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; border:1px solid var(--accent); color:var(--accent); padding:6px 14px; border-radius:999px; }
+  @media (max-width:620px){ .prboard{ grid-template-columns:1fr; } }
 
-    .hero-sub {
-      font-family: var(--grotesk);
-      font-size: clamp(.9rem, 1.7vw, 1.1rem); line-height: 1.7;
-      color: rgba(240,240,248,.52); max-width: 500px;
-    }
+  /* WHAT I PLAY */
+  .play-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; }
+  .play{ position:relative; border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:24px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between; background:var(--surf); text-decoration:none; transition:transform .4s var(--ease), border-color .4s, background .4s; }
+  .play:hover{ transform:translateY(-6px); border-color:var(--accent); background:#2a0c10; }
+  .play .ico{ width:40px; height:40px; color:var(--accent); }
+  .play .pn{ font-family:"Anton",sans-serif; text-transform:uppercase; font-size:24px; margin-top:auto; }
+  .play .ext{ font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-top:6px; }
 
-    /* Quick-stat row at base of hero */
-    .hero-stats {
-      display: flex; gap: 0;
-      margin-top: 3.5rem;
-      border-top: 1px solid rgba(255,255,255,.07);
-    }
-    .hero-stat {
-      padding: 1.2rem 2rem 0 0;
-      flex: 0 0 auto;
-    }
-    .hero-stat__n {
-      font-family: var(--fancy); font-size: 2rem; font-weight: 700;
-      color: #fff; line-height: 1; display: block;
-    }
-    .hero-stat__l {
-      font-family: var(--grotesk); font-size: .62rem; letter-spacing: .14em;
-      text-transform: uppercase; color: rgba(240,240,248,.35);
-      display: block; margin-top: .25rem;
-    }
-
-    /* ── TICKER ────────────────────────────────────────────── */
-    .sports-ticker {
-      overflow: hidden;
-      background: rgba(255,61,46,.07);
-      border-top: 1px solid rgba(255,61,46,.18);
-      border-bottom: 1px solid rgba(255,61,46,.18);
-      padding: .75rem 0;
-    }
-    .sports-ticker__track {
-      display: flex; width: max-content;
-      animation: ticker 32s linear infinite;
-    }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .ticker-item {
-      font-family: var(--grotesk); font-size: .65rem;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(255,255,255,.25); padding: 0 2.2rem; white-space: nowrap;
-    }
-    .ticker-item--hot { color: #ff3d2e; font-weight: 600; }
-    .ticker-sep {
-      font-family: var(--grotesk); font-size: .65rem;
-      color: rgba(255,61,46,.3); padding: 0 .4rem;
-      letter-spacing: 0;
-    }
-
-    /* ── SHARED SECTION LABEL ──────────────────────────────── */
-    .s-label {
-      font-family: var(--grotesk); font-size: .65rem;
-      letter-spacing: .3em; text-transform: uppercase;
-      color: #ff3d2e; margin-bottom: 2.8rem;
-      display: flex; align-items: center; gap: 1.2rem;
-    }
-    .s-label::after {
-      content: ''; flex: 1; height: 1px;
-      background: linear-gradient(90deg, rgba(255,61,46,.35), transparent);
-    }
-
-    /* ── SPORTS I PLAY ─────────────────────────────────────── */
-    .sports-play { padding: 5.5rem 0 4rem; }
-
-    .play-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.06);
-      margin-bottom: 1px;
-    }
-    .play-grid--bottom {
-      grid-template-columns: 1fr;
-    }
-
-    .sport-card {
-      background: #0b0c16;
-      padding: 2.2rem 2rem;
-      position: relative; overflow: hidden;
-      transition: background .2s;
-    }
-    .sport-card:hover { background: #0e1020; }
-
-    /* Sliding color bar on right edge */
-    .sport-card::after {
-      content: '';
-      position: absolute; top: 0; right: 0;
-      width: 2px; height: 0;
-      background: var(--sc, #ff3d2e);
-      transition: height .35s cubic-bezier(.4,0,.2,1);
-    }
-    .sport-card:hover::after { height: 100%; }
-
-    /* Ghost number */
-    .sport-card__num {
-      font-family: var(--fancy); font-size: 3.5rem; font-weight: 800;
-      color: var(--sc, #ff3d2e); opacity: .1; line-height: 1;
-      position: absolute; top: 1.2rem; right: 1.5rem;
-      pointer-events: none; user-select: none;
-      transition: opacity .2s;
-    }
-    .sport-card:hover .sport-card__num { opacity: .18; }
-
-    .sport-card__name {
-      font-family: var(--fancy); font-size: 1.55rem; font-weight: 600;
-      color: #fff; line-height: 1.1; margin-bottom: .55rem;
-    }
-    /* Team badge replacing freq */
-    .sport-card__team {
-      display: flex; align-items: center; gap: .75rem;
-      padding: .6rem .85rem;
-      background: rgba(255,255,255,.04);
-      border-left: 2px solid var(--tc, #aaa);
-      margin-bottom: .95rem;
-    }
-    .sport-card__flag { font-size: 1.35rem; line-height: 1; flex-shrink: 0; }
-    .sport-card__team-info { display: flex; flex-direction: column; gap: .12rem; }
-    .sport-card__team-name {
-      font-family: var(--grotesk); font-size: .78rem; font-weight: 600;
-      color: rgba(240,240,248,.85); letter-spacing: .02em;
-    }
-    .sport-card__team-comp {
-      font-family: var(--grotesk); font-size: .58rem;
-      letter-spacing: .12em; text-transform: uppercase;
-      color: rgba(240,240,248,.28);
-    }
-    /* Gym streak counter */
-    .gym-streak { display: flex; align-items: baseline; gap: .4rem; margin-bottom: .95rem; }
-    .gym-streak__n {
-      font-family: var(--fancy); font-size: 2.6rem; font-weight: 800;
-      color: #ff3d2e; line-height: 1;
-    }
-    .gym-streak__l {
-      font-family: var(--grotesk); font-size: .62rem; letter-spacing: .16em;
-      text-transform: uppercase; color: rgba(240,240,248,.3);
-    }
-    .sport-card__note {
-      font-family: var(--grotesk); font-size: .85rem; line-height: 1.6;
-      color: rgba(240,240,248,.42);
-    }
-
-    /* GYM card — full-width hero treatment */
-    .sport-card--gym {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 2rem; align-items: center;
-      background: #0e0a0a;
-      border-top: 1px solid rgba(255,61,46,.15);
-    }
-    .sport-card--gym:hover { background: #130d0d; }
-    .sport-card--gym .sport-card__num {
-      font-size: 7rem; top: .8rem; right: 2rem; opacity: .07;
-    }
-    .sport-card--gym:hover .sport-card__num { opacity: .13; }
-    .sport-card--gym .sport-card__name { font-size: 2.2rem; }
-    .sport-card--gym .sport-card__note {
-      font-size: .9rem; line-height: 1.65;
-      color: rgba(240,240,248,.5);
-      border-left: 2px solid rgba(255,61,46,.3); padding-left: 1.2rem;
-    }
-
-    /* ── STATEMENT ─────────────────────────────────────────── */
-    .sports-statement {
-      background: #ff3d2e; padding: 4.5rem 0;
-      position: relative; overflow: hidden;
-    }
-    /* diagonal stripes texture */
-    .sports-statement::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        -45deg,
-        transparent, transparent 8px,
-        rgba(0,0,0,.04) 8px, rgba(0,0,0,.04) 9px
-      );
-    }
-    .statement-inner {
-      position: relative; z-index: 1;
-      max-width: 760px; margin: 0 auto; padding: 0 1.75rem;
-      text-align: center;
-    }
-    .statement-inner blockquote {
-      font-family: var(--fancy); font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-      font-weight: 700; line-height: 1.12; letter-spacing: -.025em;
-      color: #fff; margin-bottom: 1.5rem;
-    }
-    .statement-inner cite {
-      font-family: var(--grotesk); font-size: .65rem;
-      letter-spacing: .22em; text-transform: uppercase;
-      color: rgba(255,255,255,.5); font-style: normal;
-    }
-
-    /* ── WHAT I FOLLOW ─────────────────────────────────────── */
-    .sports-follow { padding: 5.5rem 0 6rem; }
-
-    .follow-list { list-style: none; }
-
-    .follow-item {
-      display: grid;
-      grid-template-columns: 48px 1fr auto;
-      align-items: start;
-      gap: 1.8rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid rgba(255,255,255,.055);
-      position: relative;
-    }
-    .follow-item:first-child { border-top: 1px solid rgba(255,255,255,.055); }
-
-    .follow-item__rank {
-      font-family: var(--fancy); font-size: 1.5rem; font-weight: 700;
-      color: rgba(255,255,255,.08); line-height: 1;
-      padding-top: .2rem;
-    }
-    .follow-item--current .follow-item__rank { color: rgba(255,61,46,.25); }
-
-    .follow-item__body { min-width: 0; }
-
-    .follow-item__name-row {
-      display: flex; align-items: center; gap: .9rem;
-      margin-bottom: .4rem;
-    }
-    .follow-item__name {
-      font-family: var(--fancy); font-size: 1.4rem; font-weight: 600;
-      color: #fff; line-height: 1.1;
-    }
-    .follow-item--current .follow-item__name { color: #ff3d2e; }
-
-    .live-badge {
-      font-family: var(--grotesk); font-size: .55rem;
-      letter-spacing: .15em; text-transform: uppercase;
-      color: #ff3d2e; border: 1px solid rgba(255,61,46,.5);
-      padding: .2rem .55rem; border-radius: 999px;
-      animation: pulseBadge 2.4s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes pulseBadge {
-      0%,100% { opacity: 1; border-color: rgba(255,61,46,.5); }
-      50% { opacity: .6; border-color: rgba(255,61,46,.2); }
-    }
-
-    .follow-item__desc {
-      font-family: var(--grotesk); font-size: .85rem; line-height: 1.6;
-      color: rgba(240,240,248,.38); max-width: 560px;
-    }
-
-    .follow-item__tag {
-      font-family: var(--grotesk); font-size: .6rem;
-      letter-spacing: .14em; text-transform: uppercase;
-      color: rgba(240,240,248,.2); white-space: nowrap;
-      padding-top: .3rem;
-    }
-
-    /* Stacked team badges */
-    .sport-card__team + .sport-card__team { margin-top: .4rem; }
-
-    /* RCB ★★ stars */
-    .rcb-stars { color: #D4AF37; letter-spacing: .04em; font-size: .9em; }
-
-    /* ── ICONS / LEGENDS ───────────────────────────────────── */
-    .sports-icons { padding: 5.5rem 0 5rem; background: #07080e; }
-
-    .icons-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .icon-card {
-      background: #0b0c16;
-      border: 1px solid rgba(255,255,255,.07);
-      padding: 2.4rem 2rem 2.2rem;
-      position: relative; overflow: hidden;
-      display: flex; flex-direction: column;
-      transition: border-color .25s, background .2s;
-    }
-    .icon-card:hover { background: #0e1020; border-color: rgba(255,255,255,.16); }
-
-    .icon-card__bar {
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--ic, #ff3d2e);
-    }
-
-    .icon-card__flag { font-size: 2rem; line-height: 1; margin-bottom: 1.2rem; display: block; }
-
-    .icon-card__name {
-      font-family: var(--fancy); font-size: 1.6rem; font-weight: 700;
-      color: #fff; line-height: 1; margin-bottom: .35rem;
-    }
-
-    .icon-card__detail {
-      font-family: var(--grotesk); font-size: .62rem;
-      letter-spacing: .16em; text-transform: uppercase;
-      color: var(--ic, #ff3d2e); margin-bottom: 1.6rem;
-    }
-
-    .icon-card__quote {
-      font-family: var(--fancy); font-style: italic;
-      font-size: .95rem; line-height: 1.65;
-      color: rgba(240,240,248,.55);
-      border-left: 2px solid color-mix(in srgb, var(--ic, #ff3d2e) 45%, transparent);
-      padding-left: 1rem;
-      flex: 1; margin: 0;
-    }
-
-    @media (max-width: 700px) {
-      .icons-grid { grid-template-columns: 1fr; gap: 1rem; }
-    }
-
-    /* ── RESPONSIVE ────────────────────────────────────────── */
-    @media (max-width: 860px) {
-      .play-grid { grid-template-columns: repeat(2, 1fr); }
-      .sport-card--gym { grid-template-columns: 1fr; }
-      .sport-card--gym .sport-card__note { border-left: none; padding-left: 0; margin-top: .6rem; }
-    }
-    @media (max-width: 560px) {
-      .play-grid { grid-template-columns: 1fr; }
-      .hero-stat:last-child { display: none; }
-      .follow-item { grid-template-columns: 40px 1fr; }
-      .follow-item__tag { display: none; }
-    }
-  </style>
+  footer{ padding:80px 0 70px; text-align:center; font-family:"JetBrains Mono",monospace; font-size:12px; letter-spacing:.06em; opacity:.6; border-top:1px solid rgba(255,255,255,.08); }
+  footer a{ border-bottom:1px solid currentColor; text-decoration:none; }
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; scroll-behavior:auto; } .reveal{ opacity:1; transform:none; } }
+</style>
 </head>
 <body>
-
-  <nav class="site-nav">
-    <div class="site-nav__inner">
-      <a href="index.html" class="site-nav__logo">Dhruv Chopra</a>
-      <ul class="site-nav__links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="blog.html">Writing</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
+  <header class="hero">
+    <div class="pitch"></div><div class="flood l"></div><div class="flood r"></div><div class="sweep"></div>
+    <div class="wrap hero-inner">
+      <div class="kicker"><span class="live"></span>Matchday, always</div>
+      <h1>Irrational<br><em>since</em> <span class="stroke">kickoff</span></h1>
+      <p class="lede">Ronaldo, Kohli, Verstappen, and a barbell. The athletes I'd build a religion around, the clubs I'd bleed for, and the iron I answer to. An irrational investment in results I cannot control, and a few I can.</p>
+      <div class="scoreline" id="scoreline"></div>
     </div>
-  </nav>
+    <div class="ticker"><div class="run" id="ticker"></div></div>
+  </header>
 
-  <main>
+  <section class="sec" id="fandoms">
+    <div class="wrap">
+      <div class="sec-h reveal"><div><div class="num">01 / THE OBSESSIONS</div><h2>Who I worship</h2></div><p>Pick a side once, defend it forever.</p></div>
+      <div id="fandoms-list"></div>
 
-    <!-- ── HERO ──────────────────────────────────────────── -->
-    <section class="sports-hero">
-      <div class="hero-bg"       aria-hidden="true"></div>
-      <div class="hero-grid"     aria-hidden="true"></div>
-      <div class="hero-vignette" aria-hidden="true"></div>
-
-      <div class="hero-content">
-        <p class="hero-eyebrow">Dhruv Chopra · Sports</p>
-        <h1 class="hero-title">Built<br>to <em>compete.</em></h1>
-        <p class="hero-sub">
-          Six sports in the rotation. Six competitions followed with unreasonable intensity. The gym every day without exception. Losing is not something I've made peace with.
-        </p>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat__n">6</span>
-            <span class="hero-stat__l">Sports I play</span>
-          </div>
-          <div class="hero-stat" style="margin-left: 2.5rem;">
-            <span class="hero-stat__n">6</span>
-            <span class="hero-stat__l">Competitions I follow</span>
-          </div>
-          <div class="hero-stat" style="margin-left: 2.5rem;">
-            <span class="hero-stat__n">365</span>
-            <span class="hero-stat__l">Days at the gym</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── TICKER ─────────────────────────────────────────── -->
-    <div class="sports-ticker" aria-hidden="true">
-      <div class="sports-ticker__track">
-        <span class="ticker-item ticker-item--hot">F1</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Football</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Badminton</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">La Liga</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Swimming</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Cricket</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">UCL</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Running</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">The Gym</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Olympics</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">ICC Cricket</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">FIFA</span><span class="ticker-sep">·</span>
-        <!-- duplicate for seamless loop -->
-        <span class="ticker-item ticker-item--hot">F1</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Football</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Badminton</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">La Liga</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Swimming</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Cricket</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">UCL</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Running</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">The Gym</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">Olympics</span><span class="ticker-sep">·</span>
-        <span class="ticker-item">ICC Cricket</span><span class="ticker-sep">·</span>
-        <span class="ticker-item ticker-item--hot">FIFA</span><span class="ticker-sep">·</span>
-      </div>
-    </div>
-
-    <!-- ── SPORTS I PLAY ──────────────────────────────────── -->
-    <section class="sports-play">
-      <div class="container--wide">
-        <p class="s-label">What I play</p>
-
-        <div class="play-grid">
-          <div class="sport-card" style="--sc: #e8e8e8; --tc: #c9a741;">
-            <span class="sport-card__num" aria-hidden="true">01</span>
-            <h3 class="sport-card__name">Football</h3>
-            <div class="sport-card__team">
-              <span class="sport-card__flag">🇪🇸</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">Real Madrid CF</span>
-                <span class="sport-card__team-comp">La Liga · UCL</span>
-              </div>
-            </div>
-            <div class="sport-card__team" style="--tc: #D4213D;">
-              <span class="sport-card__flag">🇵🇹</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">Portugal</span>
-                <span class="sport-card__team-comp">FIFA World Cup · Euro</span>
-              </div>
-            </div>
-            <p class="sport-card__note">First love. Always will be. Give me a ball and a patch of concrete and I'm set. Hala Madrid.</p>
-          </div>
-
-          <div class="sport-card" style="--sc: #ffe050; --tc: #FF9933;">
-            <span class="sport-card__num" aria-hidden="true">02</span>
-            <h3 class="sport-card__name">Badminton</h3>
-            <div class="sport-card__team">
-              <span class="sport-card__flag">🇮🇳</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">India</span>
-                <span class="sport-card__team-comp">BWF World Tour · Thomas Cup</span>
-              </div>
-            </div>
-            <p class="sport-card__note">Fast reflexes, tight angles, deceptive touch. Brutally competitive when played properly.</p>
-          </div>
-
-          <div class="sport-card" style="--sc: #51cbf5; --tc: #138808;">
-            <span class="sport-card__num" aria-hidden="true">03</span>
-            <h3 class="sport-card__name">Swimming</h3>
-            <div class="sport-card__team">
-              <span class="sport-card__flag">🇮🇳</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">India</span>
-                <span class="sport-card__team-comp">Olympics · Asian Games</span>
-              </div>
-            </div>
-            <p class="sport-card__note">The only sport where every thought disappears. Just you, the water, and the wall at the end.</p>
-          </div>
-
-          <div class="sport-card" style="--sc: #ff9e6b; --tc: #003f8a;">
-            <span class="sport-card__num" aria-hidden="true">04</span>
-            <h3 class="sport-card__name">Cricket</h3>
-            <div class="sport-card__team">
-              <span class="sport-card__flag">🇮🇳</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">Team India</span>
-                <span class="sport-card__team-comp">ICC · Test · ODI · T20</span>
-              </div>
-            </div>
-            <div class="sport-card__team" style="--tc: #CE1119;">
-              <span class="sport-card__flag">🏏</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">RCB <span class="rcb-stars">★★</span></span>
-                <span class="sport-card__team-comp">Indian Premier League</span>
-              </div>
-            </div>
-            <p class="sport-card__note">Grew up playing it. The patience it demands is its own kind of violence. Nothing like it.</p>
-          </div>
-
-          <div class="sport-card" style="--sc: #ff6b8a; --tc: #FF9933;">
-            <span class="sport-card__num" aria-hidden="true">05</span>
-            <h3 class="sport-card__name">Running</h3>
-            <div class="sport-card__team">
-              <span class="sport-card__flag">🇮🇳</span>
-              <div class="sport-card__team-info">
-                <span class="sport-card__team-name">India</span>
-                <span class="sport-card__team-comp">Athletics · Olympics</span>
-              </div>
-            </div>
-            <p class="sport-card__note">Not a runner by nature — but when I go, I always end up running further than I planned. The spite fuel is real.</p>
-          </div>
-        </div>
-
-        <!-- GYM — full-width, its own beast -->
-        <div class="play-grid play-grid--bottom">
-          <div class="sport-card sport-card--gym" style="--sc: #ff3d2e;">
+      <!-- F1 aggressive module -->
+      <div class="fblock reveal" id="f1-block">
+        <div class="fhead"><span class="st">Formula 1</span><span class="ss">lights out and away we go</span></div>
+        <div class="f1">
+          <div class="f1-grid">
             <div>
-              <span class="sport-card__num" aria-hidden="true">06</span>
-              <h3 class="sport-card__name">The Gym</h3>
-              <div class="gym-streak">
-                <span class="gym-streak__n">365</span>
-                <span class="gym-streak__l">Days / Year · No exceptions</span>
+              <div class="team">Oracle Red Bull Racing</div>
+              <div class="vname">MAX<br><span class="red">VERSTAPPEN</span></div>
+              <div class="vsub">Pure aggression with a steering wheel. The late-brake, send-it, apex-or-wall school of racing. If there is a gap, he is already through it.</div>
+              <div class="tele">
+                <div><b id="v-wdc">4&times;</b><span>World titles</span></div>
+                <div><b id="v-wins">60+</b><span>Race wins</span></div>
+                <div><b id="v-poles">40+</b><span>Poles</span></div>
               </div>
             </div>
-            <p class="sport-card__note">
-              Not optional. Not negotiable. Consistency is the one discipline that truly compounds — you feel the first missed day, and you hear about the second from yourself. The gym is where I remind myself what I'm capable of.
-            </p>
+            <div class="bignum">1</div>
           </div>
         </div>
-
-      </div>
-    </section>
-
-    <!-- ── STATEMENT ──────────────────────────────────────── -->
-    <section class="sports-statement">
-      <div class="statement-inner">
-        <blockquote>"If you no longer go for a gap that exists, you are no longer a racing driver."</blockquote>
-        <cite>Ayrton Senna</cite>
-      </div>
-    </section>
-
-    <!-- ── ICONS / LEGENDS ───────────────────────────────── -->
-    <section class="sports-icons">
-      <div class="container--wide">
-        <p class="s-label">People I ride with</p>
-        <div class="icons-grid">
-
-          <div class="icon-card" style="--ic: #D4213D;">
-            <div class="icon-card__bar" aria-hidden="true"></div>
-            <span class="icon-card__flag">🇵🇹</span>
-            <h3 class="icon-card__name">Cristiano Ronaldo</h3>
-            <p class="icon-card__detail">Portugal · Real Madrid · GOAT</p>
-            <p class="icon-card__quote">"Talent without working hard is nothing."</p>
-          </div>
-
-          <div class="icon-card" style="--ic: #CE1119;">
-            <div class="icon-card__bar" aria-hidden="true"></div>
-            <span class="icon-card__flag">🇮🇳</span>
-            <h3 class="icon-card__name">Virat Kohli</h3>
-            <p class="icon-card__detail">India · RCB · The King</p>
-            <p class="icon-card__quote">"Self-belief and hard work will always earn you success."</p>
-          </div>
-
-          <div class="icon-card" style="--ic: #F9C31F;">
-            <div class="icon-card__bar" aria-hidden="true"></div>
-            <span class="icon-card__flag">🇮🇳</span>
-            <h3 class="icon-card__name">MS Dhoni</h3>
-            <p class="icon-card__detail">India · CSK · Captain Cool</p>
-            <p class="icon-card__quote">"Winning and losing is not in your hands. What is in your hands is to give your 100 percent."</p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ── WHAT I FOLLOW ──────────────────────────────────── -->
-    <section class="sports-follow">
-      <div class="container--wide">
-        <p class="s-label">What I follow</p>
-
-        <ul class="follow-list">
-
-          <li class="follow-item follow-item--current">
-            <span class="follow-item__rank">01</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">Formula 1</span>
-                <span class="live-badge">Now</span>
-              </div>
-              <p class="follow-item__desc">Currently obsessed. Every race weekend, every qualifying lap, every team radio. Riding with Red Bull and Verstappen — the strategy calls, the politics, the mechanical artistry, the 1-second gap that rewrites everything. Chess at 340 km/h and I am completely gone for it.</p>
-            </div>
-            <span class="follow-item__tag">Motorsport</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">02</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">La Liga</span>
-              </div>
-              <p class="follow-item__desc">Where football philosophy actually lives. Technical, tactical, brutal in the best way. Spanish football made me understand the game differently.</p>
-            </div>
-            <span class="follow-item__tag">Football</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">03</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">UEFA Champions League</span>
-              </div>
-              <p class="follow-item__desc">The only club competition that still gives me actual nerves. Knockout football at its highest level is a different animal entirely.</p>
-            </div>
-            <span class="follow-item__tag">Football</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">04</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">FIFA World Cup</span>
-              </div>
-              <p class="follow-item__desc">Every four years, the whole world agrees on one thing. That shared attention — billions watching the same ninety minutes — is irreplaceable. Nothing else comes close.</p>
-            </div>
-            <span class="follow-item__tag">Football</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">05</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">ICC Cricket</span>
-              </div>
-              <p class="follow-item__desc">World Cups, Test matches, the works. Cricket is the sport I grew up arguing about at 11pm with strangers online. Still do. Never stop.</p>
-            </div>
-            <span class="follow-item__tag">Cricket</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">06</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">IPL — RCB <span class="rcb-stars">★★</span></span>
-              </div>
-              <p class="follow-item__desc">Royal Challengers Bengaluru. Two-time champions. I bleed red and gold every April. The IPL is the best cricket format ever invented and RCB is the most entertaining thing in it — always has been.</p>
-            </div>
-            <span class="follow-item__tag">Cricket · IPL</span>
-          </li>
-
-          <li class="follow-item">
-            <span class="follow-item__rank">07</span>
-            <div class="follow-item__body">
-              <div class="follow-item__name-row">
-                <span class="follow-item__name">Olympics</span>
-              </div>
-              <p class="follow-item__desc">Thirty sports, two weeks, one feeling. Athletes who've spent their entire lives building to this single moment. It's impossible to not get invested in every last one of them.</p>
-            </div>
-            <span class="follow-item__tag">Multi-sport</span>
-          </li>
-
-        </ul>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="site-footer__inner">
-      <p class="site-footer__copy">© 2025 Dhruv Chopra · still at the gym</p>
-      <div class="site-footer__links">
-        <a href="https://github.com/thisisdhruvchopra" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://linkedin.com/in/dhruvchopra92" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://youtube.com/@dchopra92" target="_blank" rel="noopener">YouTube</a>
-        <a href="mailto:dhruvc@iitk.ac.in">Email</a>
       </div>
     </div>
-  </footer>
+  </section>
 
+  <!-- IRON -->
+  <section class="sec iron" id="iron">
+    <div class="wrap">
+      <div class="sec-h reveal"><div><div class="num">02 / THE IRON</div><h2>Under the bar</h2></div><p>Where I left powerlifting. Every kilo earned, at sixty-six.</p></div>
+      <div class="disc-tags reveal"><span>Powerlifting</span><span>Bodybuilding</span><span>66 kg class</span></div>
+      <div class="prboard reveal" id="prboard"></div>
+      <div class="total reveal"><span class="lbl">Powerlifting total</span><span class="val" id="pr-total">—</span><span class="bw" id="pr-bw"></span></div>
+    </div>
+  </section>
+
+  <!-- WHAT I PLAY -->
+  <section class="sec" id="play">
+    <div class="wrap">
+      <div class="sec-h reveal"><div><div class="num">03 / OFF THE SCREEN</div><h2>What I play</h2></div><p>Less worship, more sweat. The ones I actually show up for.</p></div>
+      <div class="play-grid" id="play-grid"></div>
+    </div>
+  </section>
+
+  <footer class="wrap">More on the obsession at <a href="https://instagram.com/thisisntdhruv" target="_blank">@thisisntdhruv</a> · full time, never over</footer>
+
+<script>
+/* ============== ICONS ============== */
+const ICON = {
+  football:`<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="20"/><path d="M24 14l8 6-3 10h-10l-3-10z" fill="currentColor" fill-opacity=".18"/><path d="M24 4v10M44 24l-12-4M4 24l12-4M14 40l5-10M34 40l-5-10"/></svg>`,
+  cricket:`<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M14 34L32 16"/><path d="M30 14l6 6"/><circle cx="13" cy="35" r="4" fill="currentColor"/></svg>`,
+  badminton:`<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="24" cy="36" r="5" fill="currentColor"/><path d="M24 31L14 9M24 31L24 7M24 31L34 9M19 18h10"/></svg>`,
+  swimming:`<svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 30q6-6 12 0t12 0 12 0M4 40q6-6 12 0t12 0 12 0"/><circle cx="32" cy="14" r="4" fill="currentColor"/><path d="M10 22l10 4 8-6"/></svg>`,
+  chess:`<svg class="ico" viewBox="0 0 48 48" fill="currentColor"><path d="M15 12h3v3h4v-3h4v3h4v-3h3v9h-2l1 17h2v5H14v-5h2l1-17h-2z"/></svg>`,
+};
+
+/* ============== DATA ============== */
+const FANDOMS = [
+  { sport:"Football", tag:"the main religion",
+    player:{ name:"Cristiano Ronaldo", rate:"GOAT", pos:"FORWARD", number:7, color:"#cBA14B",
+      clubLine:"Real Madrid · Portugal", photo:null,
+      stats:[["900+","CAREER GOALS"],["5","BALLON D'OR"],["5","UCL TITLES"]] },
+    teams:[
+      { name:"Real Madrid", color:"#c8a24b", fill:"#f6f6f6", textColor:"#14245c", number:7, surname:"RONALDO", since:2009, league:"LaLiga" },
+      { name:"Portugal", color:"#c8102e", fill:"#9d2235", number:7, surname:"RONALDO", since:"forever" },
+    ] },
+  { sport:"Cricket", tag:"three-hour chaos, five-day patience",
+    player:{ name:"Virat Kohli", rate:"KING", pos:"BATTER", number:18, color:"#1a73e8",
+      clubLine:"India · RCB", photo:null,
+      stats:[["80+","INT CENTURIES"],["27k+","RUNS"],["KING","OF CHASES"]] },
+    teams:[
+      { name:"India", color:"#1565c0", fill:"#1f6fd6", number:18, surname:"KOHLI", since:2008 },
+      { name:"RCB", color:"#d5152b", fill:"#c11324", textColor:"#ffd23f", number:18, surname:"KOHLI", since:2008, league:"IPL", stripes:true },
+    ] },
+];
+
+/* Verstappen telemetry (edit numbers as seasons roll) */
+const F1 = { wdc:"4&times;", wins:"60+", poles:"40+" };
+
+/* Your SBD personal records. Put real kg in. */
+const PRS = { unit:"kg", bodyweight:66, squat:125, bench:75, deadlift:175 };
+
+const PLAY = [
+  { name:"Football", icon:"football" },
+  { name:"Badminton", icon:"badminton" },
+  { name:"Cricket", icon:"cricket" },
+  { name:"Swimming", icon:"swimming" },
+  { name:"Chess", icon:"chess", link:"https://www.chess.com/member/dhrv92", ext:"chess.com/dhrv92" },
+];
+
+/* ============== HERO STATS + TICKER ============== */
+const athletes = FANDOMS.map(f=>f.player.name).concat("Max Verstappen");
+const teams = FANDOMS.flatMap(f=>f.teams.map(t=>t.name)).concat("Red Bull Racing");
+document.getElementById("scoreline").innerHTML =
+  [["athletes",athletes.length],["teams",teams.length],["i play",PLAY.length]]
+  .map(c=>`<div class="cell"><b>${String(c[1]).padStart(2,"0")}</b><span>${c[0]}</span></div>`).join("");
+(function(){
+  const items=[...athletes, ...teams, "Powerlifting", ...PLAY.map(p=>p.name)];
+  const run=items.map(t=>`<span>${t}</span><span class="dot">/</span>`).join("");
+  document.getElementById("ticker").innerHTML=run+run;
+})();
+document.getElementById("v-wdc").innerHTML=F1.wdc;
+document.getElementById("v-wins").textContent=F1.wins;
+document.getElementById("v-poles").textContent=F1.poles;
+
+/* ============== JERSEY ============== */
+function jersey(c){
+  const tc=c.textColor||"#fff";
+  const stripes = c.stripes ? `<rect x="38" y="26" width="9" height="80" fill="rgba(0,0,0,.28)"/><rect x="60" y="26" width="9" height="80" fill="rgba(0,0,0,.28)"/><rect x="82" y="26" width="9" height="80" fill="rgba(0,0,0,.28)"/>` : "";
+  return `<svg viewBox="0 0 150 160" style="width:100%;height:100%">
+    <path d="M44 14 L60 8 Q75 22 90 8 L106 14 L140 36 L120 58 L108 50 L108 150 L42 150 L42 50 L30 58 L10 36 Z" fill="${c.fill||c.color}" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>
+    <path d="M60 8 Q75 22 90 8 L84 18 Q75 26 66 18 Z" fill="rgba(0,0,0,.18)"/>${stripes}
+    <text x="75" y="84" text-anchor="middle" font-family="Anton,sans-serif" font-size="18" fill="${tc}" letter-spacing="1">${c.surname||""}</text>
+    <text x="75" y="128" text-anchor="middle" font-family="Anton,sans-serif" font-size="46" fill="${tc}">${c.number??""}</text>
+  </svg>`;
+}
+function kitCard(t){
+  return `<div class="club" style="--c:${t.color}">
+    <div class="jersey">${jersey(t)}</div>
+    <div class="name">${t.name}</div>
+    <div class="since">since ${t.since}</div>
+    ${t.league?`<div class="league">${t.league}</div>`:""}
+  </div>`;
+}
+function playerCard(p){
+  return `<div class="pcard" style="--c:${p.color}">
+    <div class="foil"></div>
+    <div class="raterow"><div><div class="rate">${p.rate}</div><div class="pos">${p.pos}</div></div><div class="num">#${p.number}</div></div>
+    <div class="photo">${p.photo?`<img src="${p.photo}" alt="">`:`<div class="ph"><b>+</b>photo</div>`}</div>
+    <div class="pname">${p.name}</div>
+    <div class="club-line">${p.clubLine}</div>
+    <div class="stats">${p.stats.map(s=>`<div><b>${s[0]}</b><span>${s[1]}</span></div>`).join("")}</div>
+  </div>`;
+}
+
+/* ============== RENDER FANDOMS ============== */
+document.getElementById("fandoms-list").innerHTML = FANDOMS.map(f=>`
+  <div class="fblock reveal">
+    <div class="fhead"><span class="st">${f.sport}</span><span class="ss">${f.tag}</span></div>
+    <div class="fgrid">
+      <div>${playerCard(f.player)}</div>
+      <div class="kits">${f.teams.map(kitCard).join("")}</div>
+    </div>
+  </div>`).join("");
+
+/* ============== PR BOARD ============== */
+function barbell(){ return `<svg class="bar" viewBox="0 0 120 34" fill="currentColor"><rect x="20" y="15" width="80" height="4"/><rect x="14" y="6" width="6" height="22" rx="1"/><rect x="100" y="6" width="6" height="22" rx="1"/><rect x="8" y="10" width="6" height="14" rx="1"/><rect x="106" y="10" width="6" height="14" rx="1"/></svg>`; }
+const lifts=[["Squat","squat"],["Bench","bench"],["Deadlift","deadlift"]];
+document.getElementById("prboard").innerHTML = lifts.map(l=>{
+  const v=PRS[l[1]];
+  return `<div class="lift"><div>${barbell()}</div><div class="ln">${l[0]}</div>
+    <div class="kg">${v!=null?v:"—"}<small>${v!=null?" "+PRS.unit:""}</small></div>
+    <div class="sub">${l[0]==="Squat"?"S":l[0]==="Bench"?"B":"D"} · 1RM</div></div>`;
+}).join("");
+(function(){
+  const s=PRS.squat,b=PRS.bench,d=PRS.deadlift;
+  const el=document.getElementById("pr-total");
+  if(s!=null&&b!=null&&d!=null) el.innerHTML=(s+b+d)+`<small> ${PRS.unit}</small>`;
+  const bw=document.getElementById("pr-bw");
+  if(PRS.bodyweight) bw.textContent=`@ ${PRS.bodyweight} ${PRS.unit} bw · where I left it`;
+})();
+
+/* ============== WHAT I PLAY ============== */
+document.getElementById("play-grid").innerHTML = PLAY.map(p=>{
+  const inner=`${ICON[p.icon]||""}<div><div class="pn">${p.name}</div>${p.ext?`<div class="ext">${p.ext} &nearr;</div>`:""}</div>`;
+  return p.link ? `<a class="play reveal" href="${p.link}" target="_blank" rel="noopener">${inner}</a>` : `<div class="play reveal">${inner}</div>`;
+}).join("");
+
+/* ============== TILT + REVEAL ============== */
+function bindTilt(){
+  document.querySelectorAll(".pcard").forEach(card=>{
+    const foil=card.querySelector(".foil");
+    card.addEventListener("mousemove",e=>{
+      const r=card.getBoundingClientRect();
+      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+      card.style.transform=`rotateX(${(py-.5)*-16}deg) rotateY(${(px-.5)*16}deg) translateY(-6px) scale(1.02)`;
+      foil.style.backgroundPosition=`${px*100}% ${py*100}%`;
+    });
+    card.addEventListener("mouseleave",()=>{ card.style.transform=""; });
+  });
+}
+bindTilt();
+const io=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.15});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
