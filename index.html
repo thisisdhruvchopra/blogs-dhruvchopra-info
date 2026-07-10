@@ -41,7 +41,17 @@
 
   /* ---------- HUB ---------- */
   #hub{ display:flex; flex-direction:column; }
-  .hub-head{ padding:clamp(20px,4vw,46px) clamp(22px,5vw,64px) 0; }
+  .hub-head{ padding:clamp(20px,4vw,46px) clamp(22px,5vw,64px) 0; display:flex; align-items:flex-start; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
+  .hub-head__text{ max-width:36ch; }
+  .hub-photo-wrap{ position:relative; flex-shrink:0; margin-top:.5rem; margin-right:clamp(0px,2vw,2rem); }
+  .hub-photo{ width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid rgba(185,166,255,.6); box-shadow:0 0 0 6px rgba(185,166,255,.08); }
+  .hub-annotation{ position:absolute; top:-2.4rem; right:-3rem; font-family:"Comic Sans MS","Segoe Print",cursive; font-size:1rem; color:#b9a6ff; transform:rotate(-8deg); white-space:nowrap; pointer-events:none; }
+  .hub-annotation svg{ position:absolute; top:1.3rem; left:-1.5rem; width:56px; height:64px; transform:rotate(8deg); }
+  .hub-annotation svg path{ fill:none; stroke:#b9a6ff; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  @media (max-width:680px){
+    .hub-head{ flex-direction:column-reverse; align-items:flex-start; }
+    .hub-annotation{ right:auto; left:6.5rem; }
+  }
   .hub-name{ font-family:"Fraunces",serif; font-weight:400; font-size:clamp(34px,6vw,72px); letter-spacing:-.02em; line-height:.95; color:#f4f1ea; }
   .hub-name em{ font-style:italic; font-weight:300; opacity:.7; }
   .hub-sub{ margin-top:14px; max-width:36ch; color:#9aa0b5; font-size:clamp(13px,1.4vw,15px); line-height:1.5; font-weight:300; }
@@ -168,9 +178,22 @@
     <!-- HUB -->
     <section id="hub" class="view show">
       <div class="hub-head">
-        <h1 class="hub-name">Dhruv <em>Chopra</em></h1>
-        <p class="hub-sub">A thinking journal that happens to be public. Some of it fits a subject below. Some of it is just whatever I could not stop thinking about.</p>
-        <a class="hub-start" href="#/notebook">Read the notebook &nbsp;&rarr;</a>
+        <div class="hub-head__text">
+          <h1 class="hub-name">Dhruv <em>Chopra</em></h1>
+          <p class="hub-sub">A thinking journal that happens to be public. Some of it fits a subject below. Some of it is just whatever I could not stop thinking about.</p>
+          <a class="hub-start" href="#/notebook">Read the notebook &nbsp;&rarr;</a>
+        </div>
+        <div class="hub-photo-wrap">
+          <img src="photos/me1.png" alt="Dhruv Chopra" class="hub-photo" />
+          <span class="hub-annotation">
+            this is me
+            <svg viewBox="0 0 60 70" aria-hidden="true">
+              <path d="M50 5 C 30 15, 15 35, 12 60" />
+              <path d="M4 48 C 7 54, 9 58, 12 60" />
+              <path d="M20 52 C 16 56, 13 58, 12 60" />
+            </svg>
+          </span>
+        </div>
       </div>
       <nav class="constellation" id="constellation" aria-label="Subjects"></nav>
       <div class="hub-foot">
